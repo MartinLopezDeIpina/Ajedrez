@@ -1,5 +1,8 @@
 package migrupo.ajedrez.model.BD;
 
+import migrupo.ajedrez.AjedrezApplication;
+
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +20,9 @@ public class ConfiguracionBD {
 
     private void cargarPropiedades(){
         try{
-            InputStream input = new FileInputStream("migrupo/ajedrez/configBD.properties");
+            File fiheroConfiguracion = new File(AjedrezApplication.class.getResource("configBD.properties").getFile());
+            InputStream input = new FileInputStream(fiheroConfiguracion);
+
             propiedades.load(input);
         }catch (IOException e){
             System.out.printf("Error al cargar configuracion de base de datos");
