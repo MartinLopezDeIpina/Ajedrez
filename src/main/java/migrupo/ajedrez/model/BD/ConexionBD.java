@@ -17,7 +17,8 @@ public class ConexionBD {
     final String usuario = mConfiguracionBD.getUsuario();
     final String contrasena = mConfiguracionBD.getContrasena();
 
-    Connection con = null;
+    private Connection con = null;
+
 
     private void establecerConexion(){
         try{
@@ -29,12 +30,29 @@ public class ConexionBD {
             System.out.println("Driver pel");
         }catch (SQLException e){
             e.printStackTrace();
-        }finally{
-            try{
-                con.close();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
         }
+    }
+
+    public void cerrarConexion(){
+        try {
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ResultSet executeQuery(String query) throws SQLException {
+        PreparedStatement st = con.prepareStatement(query);
+        return st.executeQuery();
+    }
+
+    public void executeUpdate(String update)  {
+        try {
+            PreparedStatement st = con.prepareStatement(update);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

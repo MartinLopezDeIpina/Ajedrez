@@ -37,6 +37,4 @@ public class ConfiguracionBD {
     public String getContrasena(){
         return propiedades.getProperty("bd.contrasena");
     }
-
-
 }

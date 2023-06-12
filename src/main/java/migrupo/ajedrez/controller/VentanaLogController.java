@@ -52,7 +52,4 @@ public class VentanaLogController implements Initializable {
 
     }
 
-
-
-
 }

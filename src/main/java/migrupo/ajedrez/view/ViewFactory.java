@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import migrupo.ajedrez.AjedrezApplication;
+import migrupo.ajedrez.model.BD.ConexionBD;
 
 import java.io.IOException;
 
@@ -18,6 +19,8 @@ public class ViewFactory {
         stage.setOnCloseRequest(e ->System.exit(0));
         stage.setTitle(titulo);
         stage.show();
+
+        stage.setOnCloseRequest(windowEvent -> ConexionBD.getInstance().cerrarConexion());
     }
 
     public static void mostrarVentanaLog() throws IOException{
