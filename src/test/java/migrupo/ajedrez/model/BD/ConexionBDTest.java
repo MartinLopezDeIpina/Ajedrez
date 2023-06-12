@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -54,17 +55,17 @@ class ConexionBDTest {
     }
     private void insertarValoresPrueba(){
         String updatePrueba = "insert into usuario values ('usuarioPrueba', 'contrasenaPrueba')";
-        conexion.executeUpdate(updatePrueba);
+        conexion.executeUpdate(updatePrueba, new Object[0]);
     }
     private String getContrasenaPrueba() throws SQLException {
         String queryPrueba = "select contrasena from usuario where nombre = 'usuarioPrueba'";
-        ResultSet rsPrueba = conexion.executeQuery(queryPrueba);
+        ResultSet rsPrueba = conexion.executeQuery(queryPrueba, new Object[0]);
         rsPrueba.next();
         return rsPrueba.getString("contrasena");
     }
     private void vaciarPruebas(){
         String queryVaciar = "delete from usuario where nombre = 'usuarioPrueba'";
-        conexion.executeUpdate(queryVaciar);
+        conexion.executeUpdate(queryVaciar, new Object[0]);
     }
 
     @Test

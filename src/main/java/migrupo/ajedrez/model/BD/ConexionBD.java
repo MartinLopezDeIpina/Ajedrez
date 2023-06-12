@@ -23,13 +23,8 @@ public class ConexionBD {
     private void establecerConexion(){
         try{
 
-            if(con == null){
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                con = DriverManager.getConnection(String.format("%s?user=%s&password=%s", url, usuario, contrasena));
-            }else if(con.isClosed()){
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                con = DriverManager.getConnection(String.format("%s?user=%s&password=%s", url, usuario, contrasena));
-            }
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(String.format("%s?user=%s&password=%s", url, usuario, contrasena));
 
         }catch (ClassNotFoundException e){
             System.out.println("Driver pel");
@@ -46,15 +41,30 @@ public class ConexionBD {
         }
     }
 
-    public ResultSet executeQuery(String query) throws SQLException {
-        PreparedStatement st = con.prepareStatement(query);
+    public ResultSet executeQuery(String query, Object[] args) throws SQLException {
+
+        PreparedStatement st = crearPreparedStatement(query, args);
+
         return st.executeQuery();
     }
+    private PreparedStatement crearPreparedStatement(String query, Object[] args) throws SQLException {
 
-    public void executeUpdate(String update)  {
+        PreparedStatement st = con.prepareStatement(query);
+
+        for(int i = 0; i < args.length; i++){
+            st.setObject(i+1, args[i]);
+        }
+
+        return st;
+    }
+
+    public void executeUpdate(String update, Object[] args)  {
         try {
-            PreparedStatement st = con.prepareStatement(update);
+
+            PreparedStatement st = crearPreparedStatement(update, args);
+
             st.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

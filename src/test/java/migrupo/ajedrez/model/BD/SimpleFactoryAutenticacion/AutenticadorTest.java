@@ -19,7 +19,7 @@ class AutenticadorTest {
     }
     private void anadirUsuarioPrueba(){
         //todo: cuando haya una clase que haga esto reemplazarlo
-        mConexionBD.executeUpdate("insert into usuario values ('nombrePrueba', 'contrasenaPrueba')");
+        mConexionBD.executeUpdate("insert into usuario values ('nombrePrueba', 'contrasenaPrueba')", new Object[0]);
     }
     @Test
     void getAutenticacion() {
@@ -39,6 +39,6 @@ class AutenticadorTest {
         eliminarUsuariosPrueba();
     }
     private void eliminarUsuariosPrueba(){
-        mConexionBD.executeUpdate("delete from usuario where nombre = 'nombrePrueba'");
+        mConexionBD.executeUpdate("delete from usuario where nombre = 'nombrePrueba'", new Object[0]);
     }
 }

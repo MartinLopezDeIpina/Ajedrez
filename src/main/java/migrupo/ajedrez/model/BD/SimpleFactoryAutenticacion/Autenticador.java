@@ -36,7 +36,7 @@ public class Autenticador {
     }
 
     private ResultSet getResultSet(String nombre) throws SQLException {
-        return conexionBD.executeQuery(String.format("select contrasena from usuario where nombre = '%s'", nombre));
+        return conexionBD.executeQuery("select contrasena from usuario where nombre = ?", new Object[]{nombre});
     }
 
     private Autenticacion generarAutenticador(ResultSet rs, String contrasena) throws SQLException {
