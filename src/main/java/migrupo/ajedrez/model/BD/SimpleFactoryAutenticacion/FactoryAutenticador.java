@@ -9,12 +9,12 @@ import java.sql.SQLException;
  * Clase factory
  */
 
-public class Autenticador {
-    private Autenticador(){
+public class FactoryAutenticador {
+    private FactoryAutenticador(){
 
     }
-    private static final Autenticador mAutenticador = new Autenticador();
-    public static Autenticador getInstance(){
+    private static final FactoryAutenticador mAutenticador = new FactoryAutenticador();
+    public static FactoryAutenticador getInstance(){
         return mAutenticador;
     }
 
@@ -42,14 +42,14 @@ public class Autenticador {
     private Autenticacion generarAutenticador(ResultSet rs, String contrasena) throws SQLException {
 
         if(!rs.next()){
-            return new NombreInexistenteAutenticacion();
+            return new AutenticacionNombreInexistente();
         }
 
         if(rs.getString("contrasena").equals(contrasena)){
-            return new CorrectoAutenticacion();
+            return new AutenticacionCorrecto();
         }
 
-        return new ContrasenaIncorrectaAutenticacion();
+        return new AutenticacionContrasenaIncorrecta();
     }
 
 }

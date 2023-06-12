@@ -1,6 +1,5 @@
 package migrupo.ajedrez.model.BD.SimpleFactoryAutenticacion;
 
-import com.sun.prism.shader.DrawEllipse_ImagePattern_AlphaTest_Loader;
 import migrupo.ajedrez.model.BD.ConexionBD;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,10 +7,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-class AutenticadorTest {
+class FactoryAutenticadorTest {
 
     ConexionBD mConexionBD = ConexionBD.getInstance();
-    Autenticador mAutenticador = Autenticador.getInstance();
+    FactoryAutenticador mFactoryAutenticador = FactoryAutenticador.getInstance();
 
     @BeforeEach
     void setUp(){
@@ -24,13 +23,13 @@ class AutenticadorTest {
     @Test
     void getAutenticacion() {
 
-        Autenticacion autenticacionCorrecta = mAutenticador.getAutenticacion("nombrePrueba", "contrasenaPrueba");
-        Autenticacion autenticacionContrasenaIncorrecta = mAutenticador.getAutenticacion("nombrePrueba", "contrasenaIncorrecta");
-        Autenticacion autenticacionNombreInexistente = mAutenticador.getAutenticacion("nombreInexistente", "contrasenaPrueba");
+        Autenticacion autenticacionCorrecta = mFactoryAutenticador.getAutenticacion("nombrePrueba", "contrasenaPrueba");
+        Autenticacion autenticacionContrasenaIncorrecta = mFactoryAutenticador.getAutenticacion("nombrePrueba", "contrasenaIncorrecta");
+        Autenticacion autenticacionNombreInexistente = mFactoryAutenticador.getAutenticacion("nombreInexistente", "contrasenaPrueba");
 
-        assertInstanceOf(CorrectoAutenticacion.class, autenticacionCorrecta);
-        assertInstanceOf(ContrasenaIncorrectaAutenticacion.class, autenticacionContrasenaIncorrecta);
-        assertInstanceOf(NombreInexistenteAutenticacion.class, autenticacionNombreInexistente);
+        assertInstanceOf(AutenticacionCorrecto.class, autenticacionCorrecta);
+        assertInstanceOf(AutenticacionContrasenaIncorrecta.class, autenticacionContrasenaIncorrecta);
+        assertInstanceOf(AutenticacionNombreInexistente.class, autenticacionNombreInexistente);
 
     }
 

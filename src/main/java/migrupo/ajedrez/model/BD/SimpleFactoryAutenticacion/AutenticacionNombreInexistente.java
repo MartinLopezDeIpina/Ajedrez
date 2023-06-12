@@ -1,7 +1,7 @@
 package migrupo.ajedrez.model.BD.SimpleFactoryAutenticacion;
 
-public class NombreInexistenteAutenticacion extends Autenticacion{
-    public NombreInexistenteAutenticacion(){
+public class AutenticacionNombreInexistente extends Autenticacion{
+    public AutenticacionNombreInexistente(){
         autenticado = false;
 
         mensajeAutenticacion = "Contraseña incorrecta";
