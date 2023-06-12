@@ -23,8 +23,13 @@ public class ConexionBD {
     private void establecerConexion(){
         try{
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(String.format("%s?user=%s&password=%s", url, usuario, contrasena));
+            if(con == null){
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                con = DriverManager.getConnection(String.format("%s?user=%s&password=%s", url, usuario, contrasena));
+            }else if(con.isClosed()){
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                con = DriverManager.getConnection(String.format("%s?user=%s&password=%s", url, usuario, contrasena));
+            }
 
         }catch (ClassNotFoundException e){
             System.out.println("Driver pel");

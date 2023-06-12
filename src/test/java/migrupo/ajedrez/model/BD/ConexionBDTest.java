@@ -34,10 +34,7 @@ class ConexionBDTest {
         metodoEstablecerConexion.setAccessible(true);
         metodoEstablecerConexion.invoke(conexion);
     }
-    @AfterEach
-    void tearDown(){
-        conexion.cerrarConexion();
-    }
+
 
     @Test
     void executeQueryandUpdateQuery()  {
