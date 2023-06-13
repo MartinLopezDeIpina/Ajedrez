@@ -1,43 +1,44 @@
 package migrupo.ajedrez.model.BD.SimpleFactoryAutenticacion;
 
 import migrupo.ajedrez.model.BD.ConexionBD;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import migrupo.ajedrez.model.BD.SimpleFactoryRegistro.FactoryRegistro;
+import org.junit.jupiter.api.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
 class FactoryAutenticadorTest {
 
-    ConexionBD mConexionBD = ConexionBD.getInstance();
-    FactoryAutenticador mFactoryAutenticador = FactoryAutenticador.getInstance();
+    static ConexionBD mConexionBD = ConexionBD.getInstance();
+    static FactoryAutenticador mFactoryAutenticador = FactoryAutenticador.getInstance();
 
-    @BeforeEach
-    void setUp(){
+    @BeforeAll
+    static void setUp(){
         anadirUsuarioPrueba();
     }
-    private void anadirUsuarioPrueba(){
-        //todo: cuando haya una clase que haga esto reemplazarlo
-        mConexionBD.executeUpdate("insert into usuario values ('nombrePrueba', 'contrasenaPrueba')", new Object[0]);
-    }
-    @Test
-    void getAutenticacion() {
-
-        Autenticacion autenticacionCorrecta = mFactoryAutenticador.getAutenticacion("nombrePrueba", "contrasenaPrueba");
-        Autenticacion autenticacionContrasenaIncorrecta = mFactoryAutenticador.getAutenticacion("nombrePrueba", "contrasenaIncorrecta");
-        Autenticacion autenticacionNombreInexistente = mFactoryAutenticador.getAutenticacion("nombreInexistente", "contrasenaPrueba");
-
-        assertInstanceOf(AutenticacionCorrecto.class, autenticacionCorrecta);
-        assertInstanceOf(AutenticacionContrasenaIncorrecta.class, autenticacionContrasenaIncorrecta);
-        assertInstanceOf(AutenticacionNombreInexistente.class, autenticacionNombreInexistente);
-
-    }
-
-    @AfterEach
-    void tearDown(){
+    @AfterAll
+    static void tearDown(){
         eliminarUsuariosPrueba();
     }
-    private void eliminarUsuariosPrueba(){
+    private static void eliminarUsuariosPrueba(){
         mConexionBD.executeUpdate("delete from usuario where nombre = 'nombrePrueba'", new Object[0]);
+    }
+    private static void anadirUsuarioPrueba(){
+        FactoryRegistro.getInstance().getRegistro("nombrePrueba", "contrasenaPrueba");
+    }
+    @Test
+    void correcto() {
+        Autenticacion autenticacionCorrecta = mFactoryAutenticador.getAutenticacion("nombrePrueba", "contrasenaPrueba");
+        assertInstanceOf(AutenticacionCorrecto.class, autenticacionCorrecta);
+    }
+    @Test
+    void contrasenaIncorrecta(){
+        Autenticacion autenticacionContrasenaIncorrecta = mFactoryAutenticador.getAutenticacion("nombrePrueba", "contrasenaIncorrecta");
+        assertInstanceOf(AutenticacionContrasenaIncorrecta.class, autenticacionContrasenaIncorrecta);
+    }
+    @Test
+    void nombreInexistente(){
+        Autenticacion autenticacionNombreInexistente = mFactoryAutenticador.getAutenticacion("nombreInexistente", "contrasenaPrueba");
+        assertInstanceOf(AutenticacionNombreInexistente.class, autenticacionNombreInexistente);
     }
 }
