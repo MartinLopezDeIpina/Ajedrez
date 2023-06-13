@@ -41,11 +41,17 @@ public class ConexionBD {
         }
     }
 
-    public ResultSet executeQuery(String query, Object[] args) throws SQLException {
+    public ResultSet executeQuery(String query, Object[] args){
+        try {
 
-        PreparedStatement st = crearPreparedStatement(query, args);
+            PreparedStatement st = crearPreparedStatement(query, args);
 
-        return st.executeQuery();
+            return st.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
     private PreparedStatement crearPreparedStatement(String query, Object[] args) throws SQLException {
 
@@ -68,6 +74,5 @@ public class ConexionBD {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 }

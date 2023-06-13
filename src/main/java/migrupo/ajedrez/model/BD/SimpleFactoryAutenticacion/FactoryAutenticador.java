@@ -5,10 +5,6 @@ import migrupo.ajedrez.model.BD.ConexionBD;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Clase factory
- */
-
 public class FactoryAutenticador {
     private FactoryAutenticador(){
 
