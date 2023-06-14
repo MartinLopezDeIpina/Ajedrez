@@ -1,5 +1,7 @@
 package migrupo.ajedrez.model.BD.SimpleFactoryAutenticacion;
 
+import migrupo.ajedrez.model.Sesion;
+
 public abstract class Autenticacion {
 
     public Autenticacion(boolean autenticado, String mensajeAutenticacion){

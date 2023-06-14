@@ -1,6 +1,8 @@
 package migrupo.ajedrez.model.BD.SimpleFactoryAutenticacion;
 
 import migrupo.ajedrez.model.BD.ConexionBD;
+import migrupo.ajedrez.model.BD.UsuarioDAOImpl;
+import migrupo.ajedrez.model.Sesion;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,7 +17,7 @@ public class FactoryAutenticador {
     }
 
     ConexionBD conexionBD = ConexionBD.getInstance();
-
+    UsuarioDAOImpl mUsuarioDAOImpl = UsuarioDAOImpl.getInstance();
     public Autenticacion getAutenticacion(String nombre, String contrasena){
 
         try {
@@ -42,6 +44,10 @@ public class FactoryAutenticador {
         }
 
         if(rs.getString("contrasena").equals(contrasena)){
+            //todo: hacer test de esto
+
+            mUsuarioDAOImpl.setJugador(rs.getString("nombre"));
+
             return new AutenticacionCorrecto();
         }
 

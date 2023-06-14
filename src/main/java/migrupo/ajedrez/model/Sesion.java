@@ -7,7 +7,7 @@ public class Sesion {
 
     private final static Sesion mSesion = new Sesion();
 
-    public Sesion getInstance(){
+    public static Sesion getInstance(){
         return mSesion;
     }
 

@@ -8,4 +8,6 @@ public interface UsuarioDAO {
     Bot getBot(String nombre);
     Jugador getJugador(String nombre);
 
+    void setJugador(String nombre);
+
 }
