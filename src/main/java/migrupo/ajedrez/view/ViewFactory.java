@@ -9,21 +9,34 @@ import migrupo.ajedrez.model.BD.ConexionBD;
 import java.io.IOException;
 
 public class ViewFactory {
-    private static void mostrarVentana(String url, String titulo) throws IOException {
-        FXMLLoader loader = new FXMLLoader(AjedrezApplication.class.getResource(url));
-        Scene scene = new Scene(loader.load());
+    private static void mostrarVentana(String url, String titulo){
+        try {
 
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setResizable(true);
-        stage.setOnCloseRequest(e ->System.exit(0));
-        stage.setTitle(titulo);
-        stage.show();
+            FXMLLoader loader = new FXMLLoader(AjedrezApplication.class.getResource(url));
+            Scene scene = new Scene(loader.load());
 
-        stage.setOnCloseRequest(windowEvent -> ConexionBD.getInstance().cerrarConexion());
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setResizable(true);
+            stage.setOnCloseRequest(e ->System.exit(0));
+            stage.setTitle(titulo);
+            stage.show();
+
+            stage.setOnCloseRequest(windowEvent -> ConexionBD.getInstance().cerrarConexion());
+
+        }catch (IOException e){
+            System.out.println(String.format("Error al mostrar la ventana %s", titulo));
+            e.printStackTrace();
+        }
     }
 
-    public static void mostrarVentanaLog() throws IOException{
-        mostrarVentana("ventanaLog.fxml", "Log");
+    public static void mostrarVentanaLog(){
+        mostrarVentana("fxml/ventanaLog.fxml", "Log");
+    }
+    public static void mostrarVentanaInicio(){
+        mostrarVentana("fxml/ventanaInicio.fxml", "Inicio");
+    }
+    public static void mostrarVentanaRegistro(){
+        mostrarVentana("fxml/ventanaRegistro.fxml", "Registro");
     }
 }

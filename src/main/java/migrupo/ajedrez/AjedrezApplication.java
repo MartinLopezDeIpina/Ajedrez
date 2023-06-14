@@ -11,7 +11,7 @@ import java.io.IOException;
 public class AjedrezApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        ViewFactory.mostrarVentanaLog();
+        ViewFactory.mostrarVentanaInicio();
     }
 
     public static void main(String[] args) {

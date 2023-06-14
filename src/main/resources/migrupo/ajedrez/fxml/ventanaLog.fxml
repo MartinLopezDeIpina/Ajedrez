@@ -6,26 +6,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="migrupo.ajedrez.controller.VentanaLogController">
    <children>
-      <BorderPane fx:id="inicioPane" prefHeight="400.0" prefWidth="600.0" visible="false">
-         <top>
-            <Button fx:id="iniciarSesionButton" mnemonicParsing="false" onAction="#onIniciarSesionButtonClicked" scaleX="3.0" scaleY="3.0" text="Iniciar Sesión" BorderPane.alignment="BOTTOM_CENTER">
-               <BorderPane.margin>
-                  <Insets top="125.0" />
-               </BorderPane.margin>
-            </Button>
-         </top>
-         <bottom>
-            <Button fx:id="registrarseButton" mnemonicParsing="false" onAction="#onRegistrarseButtonClicked" scaleX="3.0" scaleY="3.0" text="Registrarse" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets bottom="125.0" />
-               </BorderPane.margin>
-            </Button>
-         </bottom>
-      </BorderPane>
-      <BorderPane fx:id="datosPane" prefHeight="400.0" prefWidth="600.0">
+      <BorderPane fx:id="inicioSesionPane" prefHeight="400.0" prefWidth="600.0">
          <top>
             <TextField fx:id="nombreTextField" alignment="CENTER" promptText="Nombre" scaleX="1.75" scaleY="1.75" BorderPane.alignment="CENTER">
                <BorderPane.margin>
@@ -47,7 +30,7 @@
                </BorderPane.margin>
                <children>
                   <Button fx:id="cancelarButton" layoutX="136.0" layoutY="63.0" mnemonicParsing="false" onAction="#onCancelarButtonClicked" scaleX="2.0" scaleY="2.0" text="Cancelar" />
-                  <Button fx:id="aceptarButton" layoutX="385.0" layoutY="63.0" mnemonicParsing="false" onAction="#onAceptarButtonClicked" scaleX="2.0" scaleY="2.0" text="Aceptar" />
+                  <Button fx:id="iniciarSesionButton" layoutX="385.0" layoutY="63.0" mnemonicParsing="false" onAction="#onAceptarButtonClicked" scaleX="2.0" scaleY="2.0" text="Iniciar Sesión" />
                </children>
             </AnchorPane>
          </bottom>

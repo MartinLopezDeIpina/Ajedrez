@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="migrupo.ajedrez.controller.VentanaRegistroController">
+    <children>
+        <BorderPane fx:id="datosPane" prefHeight="400.0" prefWidth="600.0">
+            <top>
+                <TextField fx:id="nombreTextField" alignment="CENTER" promptText="Nombre" scaleX="1.75" scaleY="1.75" BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets left="200.0" right="200.0" top="75.0" />
+                    </BorderPane.margin>
+                </TextField>
+            </top>
+            <center>
+                <TextField fx:id="contrasenaTextField" alignment="CENTER" promptText="Contraseña" scaleX="1.75" scaleY="1.75" BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets left="200.0" right="200.0" />
+                    </BorderPane.margin>
+                </TextField>
+            </center>
+            <bottom>
+                <AnchorPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets />
+                    </BorderPane.margin>
+                    <children>
+                        <Button fx:id="cancelarButton" layoutX="136.0" layoutY="63.0" mnemonicParsing="false" onAction="#onCancelarButtonClicked" scaleX="2.0" scaleY="2.0" text="Cancelar" />
+                        <Button fx:id="registrarseButton" layoutX="385.0" layoutY="63.0" mnemonicParsing="false" onAction="#onAceptarButtonClicked" scaleX="2.0" scaleY="2.0" text="Registrarse" />
+                    </children>
+                </AnchorPane>
+            </bottom>
+        </BorderPane>
+    </children>
+</AnchorPane>
