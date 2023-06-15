@@ -11,6 +11,7 @@ public interface UsuarioDAO {
     String getContrasena(String nombre);
     boolean existeJugador(String nombre);
     void registrarUsuario(String nombre, String contrasena);
+    void eliminarUsuario(String nombre);
 
 
 }

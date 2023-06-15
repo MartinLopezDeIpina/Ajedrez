@@ -22,9 +22,9 @@ public class UsuarioDAOImpl implements UsuarioDAO{
 
     @Override
     public Bot getBot(String nombre) {
-        return null;
+        return new Bot(nombre, getContrasena(nombre));
     }
-    //todo: hacer test de esto
+
     @Override
     public Jugador getJugador(String nombre) {
         return new Jugador(nombre, getContrasena(nombre));
@@ -54,6 +54,11 @@ public class UsuarioDAOImpl implements UsuarioDAO{
     @Override
     public void registrarUsuario(String nombre, String contrasena) {
         mConexionBD.executeUpdate("insert into usuario values (?, ?)", new Object[]{nombre, contrasena});
+    }
+
+    @Override
+    public void eliminarUsuario(String nombre) {
+        mConexionBD.executeUpdate("delete from usuario where nombre = ?", new Object[]{nombre});
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class FactoryAutenticador {
-    //todo: hacer que dependa del dao en vez de la conexión
+
     private FactoryAutenticador(){
 
     }
