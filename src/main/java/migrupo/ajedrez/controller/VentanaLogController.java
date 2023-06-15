@@ -53,7 +53,7 @@ public class VentanaLogController implements Initializable {
 
     }
     private Autenticacion getAutenticacion(){
-        return mFactoryAutenticador.getAutenticacion(textNombre.getText(), textContrasena.getText());
+        return mFactoryAutenticador.generarAutenticador(textNombre.getText(), textContrasena.getText());
     }
     private void mostrarError(String mensaje){
         paneDatos.setVisible(false);

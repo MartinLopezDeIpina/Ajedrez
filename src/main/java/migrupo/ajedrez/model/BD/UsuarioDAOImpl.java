@@ -27,22 +27,37 @@ public class UsuarioDAOImpl implements UsuarioDAO{
     //todo: hacer test de esto
     @Override
     public Jugador getJugador(String nombre) {
-        try {
+        return new Jugador(nombre, getContrasena(nombre));
+    }
+    @Override
+    public String getContrasena(String nombre){
+        try{
 
             ResultSet rs = mConexionBD.executeQuery("select contrasena from usuario where nombre = ?", new Object[]{nombre});
-            rs.next();
-            String contrasena = rs.getString("contrasena");
 
-            return new Jugador(nombre, contrasena);
+            if(!rs.next()){
+                return("null");
+            }
 
-        } catch (SQLException e) {
+            return rs.getString("contrasena");
+
+        }catch (SQLException e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
+    }
+    @Override
+    public boolean existeJugador(String nombre) {
+        return !getContrasena(nombre).equals("null");
     }
 
     @Override
-    public void setJugador(String nombre) {
+    public void registrarUsuario(String nombre, String contrasena) {
+        mConexionBD.executeUpdate("insert into usuario values (?, ?)", new Object[]{nombre, contrasena});
+    }
+
+    @Override
+    public void setJugadorSesion(String nombre) {
         mSesion.setJugador(getJugador(nombre));
     }
 }

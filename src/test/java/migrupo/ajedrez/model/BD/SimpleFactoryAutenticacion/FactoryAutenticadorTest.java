@@ -28,17 +28,17 @@ class FactoryAutenticadorTest {
     }
     @Test
     void correcto() {
-        Autenticacion autenticacionCorrecta = mFactoryAutenticador.getAutenticacion("nombrePrueba", "contrasenaPrueba");
+        Autenticacion autenticacionCorrecta = mFactoryAutenticador.generarAutenticador("nombrePrueba", "contrasenaPrueba");
         assertInstanceOf(AutenticacionCorrecto.class, autenticacionCorrecta);
     }
     @Test
     void contrasenaIncorrecta(){
-        Autenticacion autenticacionContrasenaIncorrecta = mFactoryAutenticador.getAutenticacion("nombrePrueba", "contrasenaIncorrecta");
+        Autenticacion autenticacionContrasenaIncorrecta = mFactoryAutenticador.generarAutenticador("nombrePrueba", "contrasenaIncorrecta");
         assertInstanceOf(AutenticacionContrasenaIncorrecta.class, autenticacionContrasenaIncorrecta);
     }
     @Test
     void nombreInexistente(){
-        Autenticacion autenticacionNombreInexistente = mFactoryAutenticador.getAutenticacion("nombreInexistente", "contrasenaPrueba");
+        Autenticacion autenticacionNombreInexistente = mFactoryAutenticador.generarAutenticador("nombreInexistente", "contrasenaPrueba");
         assertInstanceOf(AutenticacionNombreInexistente.class, autenticacionNombreInexistente);
     }
 }
