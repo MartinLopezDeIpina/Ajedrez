@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="migrupo.ajedrez.controller.VentanaMenuPrincipalController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="migrupo.ajedrez.controller.VentanaMenuPrincipalController">
    <children>
       <BorderPane prefHeight="400.0" prefWidth="600.0">
          <center>
@@ -28,7 +27,7 @@
             </VBox>
          </center>
          <top>
-            <TextField fx:id="TextFieldNombre" alignment="CENTER" scaleX="2.0" scaleY="2.0" text="Nombre" BorderPane.alignment="CENTER">
+            <TextField fx:id="textFieldNombre" alignment="CENTER" editable="false" scaleX="2.0" scaleY="2.0" text="Nombre" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets left="200.0" right="200.0" top="50.0" />
                </BorderPane.margin>

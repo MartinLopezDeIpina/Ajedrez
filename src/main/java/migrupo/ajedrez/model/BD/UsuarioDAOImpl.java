@@ -1,5 +1,6 @@
 package migrupo.ajedrez.model.BD;
 
+import javafx.scene.input.GestureEvent;
 import migrupo.ajedrez.model.Bot;
 import migrupo.ajedrez.model.Jugador;
 import migrupo.ajedrez.model.Sesion;
@@ -25,10 +26,6 @@ public class UsuarioDAOImpl implements UsuarioDAO{
         return new Bot(nombre, getContrasena(nombre));
     }
 
-    @Override
-    public Jugador getJugador(String nombre) {
-        return new Jugador(nombre, getContrasena(nombre));
-    }
     @Override
     public String getContrasena(String nombre){
         try{
@@ -63,6 +60,12 @@ public class UsuarioDAOImpl implements UsuarioDAO{
 
     @Override
     public void setJugadorSesion(String nombre) {
-        mSesion.setJugador(getJugador(nombre));
+        Jugador jugador = getJugador(nombre);
+        mSesion.setJugador(jugador);
+    }
+    @Override
+    public Jugador getJugador(String nombre) {
+        String contrasena = getContrasena(nombre);
+        return new Jugador(nombre, contrasena);
     }
 }

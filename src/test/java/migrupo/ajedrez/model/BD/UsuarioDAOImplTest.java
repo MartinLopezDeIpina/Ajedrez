@@ -1,8 +1,5 @@
 package migrupo.ajedrez.model.BD;
 
-import migrupo.ajedrez.model.BD.SimpleFactoryAutenticacion.FactoryAutenticador;
-import migrupo.ajedrez.model.BD.SimpleFactoryRegistro.FactoryRegistro;
-import migrupo.ajedrez.model.BD.SimpleFactoryRegistro.Registro;
 import migrupo.ajedrez.model.Jugador;
 import migrupo.ajedrez.model.Sesion;
 import org.junit.jupiter.api.AfterAll;
@@ -46,7 +43,7 @@ class UsuarioDAOImplTest {
         mUsuarioDAOImpl.setJugadorSesion("usuarioPrueba");
         Jugador jugador = mSesion.getJugador();
 
-        assertEquals("usuarioPrueba", jugador.getNombre());
+        assertEquals("usuarioPrueba", jugador.getNombreValue());
     }
 
     @Test
