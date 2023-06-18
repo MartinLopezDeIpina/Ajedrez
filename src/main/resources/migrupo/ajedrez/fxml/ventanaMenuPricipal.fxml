@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="migrupo.ajedrez.controller.VentanaMenuPrincipalController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="migrupo.ajedrez.controller.VentanaMenuPrincipalController">
     <children>
         <BorderPane prefHeight="400.0" prefWidth="600.0">
             <center>
@@ -37,7 +37,7 @@
                 </TextField>
             </top>
             <bottom>
-                <Button fx:id="ButtonCerrarSesion" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" text="Cerrar Sesión" BorderPane.alignment="CENTER_LEFT">
+                <Button fx:id="ButtonCerrarSesion" mnemonicParsing="false" onAction="#onCerrarSesionButtonClicked" scaleX="1.5" scaleY="1.5" text="Cerrar Sesión" BorderPane.alignment="CENTER_LEFT">
                     <BorderPane.margin>
                         <Insets bottom="25.0" left="50.0" />
                     </BorderPane.margin>
@@ -46,4 +46,3 @@
         </BorderPane>
     </children>
 </AnchorPane>
-

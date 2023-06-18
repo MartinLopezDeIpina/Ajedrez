@@ -8,7 +8,6 @@ import java.sql.SQLException;
 
 public class FactoryRegistro {
 
-    //todo: hacer que dependa del dao en vez de la conexión
     private FactoryRegistro(){
 
     }

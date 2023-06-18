@@ -13,6 +13,10 @@ public class Sesion {
 
     private Jugador jugador;
 
+    public void cerrarSesion(){
+        jugador = null;
+    }
+
     public Jugador getJugador() {
         return jugador;
     }
