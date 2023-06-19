@@ -40,4 +40,5 @@ public class ViewFactory {
         mostrarVentana("fxml/ventanaRegistro.fxml", "Registro");
     }
     public static void mostrarVentanaMenuPrincipal(){mostrarVentana("fxml/ventanaMenuPricipal.fxml", "Menu Principal");}
+    public static void mostrarVentanaJuego(){mostrarVentana("fxml/ventanaJuego.fxml", "Juego");}
 }

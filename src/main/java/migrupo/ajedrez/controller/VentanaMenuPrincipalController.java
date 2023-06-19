@@ -4,13 +4,13 @@ import javafx.beans.DefaultProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import migrupo.ajedrez.model.*;
+import migrupo.ajedrez.model.BD.PartidaDAOImpl;
 import migrupo.ajedrez.model.BD.UsuarioDAOImpl;
-import migrupo.ajedrez.model.Partida;
-import migrupo.ajedrez.model.Sesion;
-import migrupo.ajedrez.model.Usuario;
 import migrupo.ajedrez.view.ViewFactory;
 
 import java.net.URL;
@@ -22,9 +22,12 @@ public class VentanaMenuPrincipalController implements Initializable {
     @FXML TextArea textFieldMensaje;
     @FXML Button buttonCancelar, buttonCrearPartida, buttonPartidaNueva;
     @FXML Pane paneMenu, paneContrincante, paneMensaje;
+    @FXML CheckBox checkBoxEsBot;
 
     Sesion mSesion = Sesion.getInstance();
     UsuarioDAOImpl mUsuarioDAOImpl = UsuarioDAOImpl.getInstance();
+    PartidaDAOImpl mPartidaDAOImpl = PartidaDAOImpl.getInstance();
+    Partida mPartida = Partida.getInstance();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -67,6 +70,7 @@ public class VentanaMenuPrincipalController implements Initializable {
     @FXML protected void onButtonCrearPartidaClicked(){
         if(existeContrincante()){
             crearPartida();
+            pasarAJuego();
         }else{
             mostrarError("El jugador no existe");
         }
@@ -80,6 +84,25 @@ public class VentanaMenuPrincipalController implements Initializable {
     }
     private void crearPartida(){
 
+        Jugador jugador1 = mSesion.getJugador();
+        Usuario jugador2 = getContrincante();
+
+        int numPartida = mPartidaDAOImpl.registrarPartida(jugador1, jugador2);
+
+        mPartida.setPartida(numPartida);
+    }
+    private Usuario getContrincante(){
+        String nombreJugador2 = textFieldNombreContrincante.getText();
+
+        if(checkBoxEsBot.isSelected()){
+            return new Bot(nombreJugador2, mUsuarioDAOImpl.getContrasena(nombreJugador2));
+        }else{
+            return new Jugador(nombreJugador2, mUsuarioDAOImpl.getContrasena(nombreJugador2));
+        }
+    }
+    private void pasarAJuego(){
+        cerrarVentana();
+        ViewFactory.mostrarVentanaJuego();
     }
     @FXML private void mostrarError(String mensaje){
         paneContrincante.setVisible(false);
