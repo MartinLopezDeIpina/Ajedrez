@@ -6,5 +6,4 @@ import migrupo.ajedrez.model.Usuario;
 public interface PartidaDAO {
     int registrarPartida(Usuario dueno, Usuario contrinctante);
 
-    Partida getPartida(int codPartida);
 }

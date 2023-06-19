@@ -89,7 +89,7 @@ public class VentanaMenuPrincipalController implements Initializable {
 
         int numPartida = mPartidaDAOImpl.registrarPartida(jugador1, jugador2);
 
-        mPartida.setPartida(numPartida);
+        mPartida.setPartida(numPartida, jugador1, jugador2);
     }
     private Usuario getContrincante(){
         String nombreJugador2 = textFieldNombreContrincante.getText();

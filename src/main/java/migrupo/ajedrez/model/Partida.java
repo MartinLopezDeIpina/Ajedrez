@@ -6,9 +6,20 @@ public class Partida {
     }
     private final static Partida mPartida = new Partida();
     public static Partida getInstance(){return mPartida;}
-    private int identificador;
 
-    public void setPartida(int identificador){
+    GestorDeMovimientos mGestorDeMovimientos = GestorDeMovimientos.getInstance();
+
+    private int identificador;
+    private Usuario usuarioA;
+    private Usuario usuarioB;
+
+    public void setPartida(int identificador, Usuario usuarioA, Usuario usuarioB){
         this.identificador = identificador;
+        this.usuarioA = usuarioA;
+        this.usuarioB = usuarioB;
+
+        mGestorDeMovimientos.setPartida(identificador);
     }
+
+
 }

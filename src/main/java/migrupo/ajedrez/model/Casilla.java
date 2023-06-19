@@ -19,4 +19,5 @@ public class Casilla {
         return num;
     }
     public Pieza getPieza() {return pieza;}
+    public void setPieza(Pieza pieza) {this.pieza = pieza;}
 }
