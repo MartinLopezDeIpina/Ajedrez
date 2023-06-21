@@ -15,9 +15,20 @@ public class Casilla {
     public char getLetra(){
         return letra;
     }
+    public int getNumLetra(){
+        return letra - 'a';
+    }
     public int getNum(){
         return num;
     }
     public Pieza getPieza() {return pieza;}
     public void setPieza(Pieza pieza) {this.pieza = pieza;}
+
+    public boolean estaVacia() {
+        return pieza == null;
+    }
+
+    public boolean piezaPuedeMoverseACasillaDestino(Casilla destino) {
+        return pieza.puedeMoverseA(this, destino);
+    }
 }

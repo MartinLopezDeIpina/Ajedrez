@@ -56,8 +56,20 @@ public class Tablero {
     }
     private void ponerPosicionesInicialesPeones() {
         for(int i = 0; i <= 7; i++){
-            casillas[1][i].setPieza(new Peon(Color.BLANCO));
-            casillas[6][i].setPieza(new Peon(Color.NEGRO));
+            casillas[1][i].setPieza(new PeonBlanco());
+            casillas[6][i].setPieza(new PeonNegro());
         }
+    }
+
+    public void hacerMovimiento(Movimiento movimiento){
+        //todo
+    }
+
+    public Color getColorPiezaEnCasilla(Casilla casilla) {
+        return casillas[casilla.getNum()][casilla.getNumLetra()].getPieza().getColor();
+    }
+
+    public boolean casillaVacia(Casilla casilla){
+        return casillas[casilla.getNum()][casilla.getNumLetra()].estaVacia();
     }
 }

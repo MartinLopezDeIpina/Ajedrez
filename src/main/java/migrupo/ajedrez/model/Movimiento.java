@@ -8,5 +8,16 @@ public class Movimiento {
 
     private Casilla origen;
     private Casilla destino;
+
+    public Casilla getCasillaOrigen() {
+        return origen;
+    }
+    public Casilla getCasillaDestino() {
+        return destino;
+    }
+
+    public boolean piezaPuedeMoverseACasillaDestino(){
+        return origen.piezaPuedeMoverseACasillaDestino(destino);
+    }
 }
 
