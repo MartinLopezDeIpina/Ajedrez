@@ -3,6 +3,7 @@ package migrupo.ajedrez.model;
 import migrupo.ajedrez.model.Piezas.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Tablero {
@@ -156,5 +157,35 @@ public class Tablero {
         }
 
         return casillasEntreOrigenYDestino;
+    }
+
+    public boolean reyQuedaEnJaque(Casilla casillaOrigen, Casilla casillaDestino) {
+
+        Pieza piezaDestino = getPiezaEnCasilla(casillaDestino);
+
+        hacerMovimiento(casillaOrigen, casillaDestino);
+
+        boolean reyQuedaEnJaque = algunaPiezaAmenazaAlRey(getColorPiezaEnCasilla(casillaOrigen));
+
+        desacerMovimiento(casillaOrigen, casillaDestino, piezaDestino);
+
+        return reyQuedaEnJaque;
+    }
+    private void desacerMovimiento(Casilla casillaOrigen, Casilla casillaDestino, Pieza piezaDestino) {
+        setPiezaEnCasilla(casillaOrigen, getPiezaEnCasilla(casillaDestino));
+        setPiezaEnCasilla(casillaDestino, piezaDestino);
+    }
+    private boolean algunaPiezaAmenazaAlRey(Color colorRey) {
+        Casilla casillaRey = getCasillaRey(colorRey);
+
+        return Arrays.stream(casillas).flatMap(Arrays::stream)
+                .filter(casilla -> !casilla.equals(casillaRey))
+                .anyMatch(casilla -> casilla.getPieza().puedeMoverseA(casilla, casillaRey));
+    }
+    private Casilla getCasillaRey(Color colorRey) {
+
+        return Arrays.stream(casillas).flatMap(Arrays::stream)
+                .filter(casilla -> getPiezaEnCasilla(casilla) instanceof Rey && getPiezaEnCasilla(casilla).getColor() == colorRey).findFirst().get();
+
     }
 }

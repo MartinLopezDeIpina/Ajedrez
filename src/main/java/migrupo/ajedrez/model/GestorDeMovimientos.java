@@ -29,7 +29,7 @@ public class GestorDeMovimientos {
                 casillaDestinoNoTienePiezaDelMismoColor(movimiento.getCasillaDestino()) &&
                 piezaPuedeMoverseACasillaDestino(movimiento) &&
                 noHayPiezasEntreCasillaOrigenYCasillaDestino(movimiento) &&
-                reyNoQuedaEnJaque();
+                reyNoQuedaEnJaque(movimiento);
     }
     private boolean casillaOrigenNoEstaVacia(Casilla casilla) {return !mTablero.casillaVacia(casilla);}
     private boolean casillaOrigenTienePiezaCorrecta(Casilla casilla) {return mTablero.getColorPiezaEnCasilla(casilla) == mGestorDeTurnos.getColorTurno();}
@@ -38,9 +38,9 @@ public class GestorDeMovimientos {
     private boolean piezaPuedeMoverseACasillaDestino(Movimiento movimiento) {return movimiento.piezaPuedeMoverseACasillaDestino();}
     private boolean noHayPiezasEntreCasillaOrigenYCasillaDestino(Movimiento movimiento) {
         return !mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());}
-    private boolean reyNoQuedaEnJaque() {
+    private boolean reyNoQuedaEnJaque(Movimiento movimiento) {
         //todo
-        return true;
+        return !mTablero.reyQuedaEnJaque(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
     }
 
     public void setPartida(int identificador) {
