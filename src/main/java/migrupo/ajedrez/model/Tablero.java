@@ -2,6 +2,9 @@ package migrupo.ajedrez.model;
 
 import migrupo.ajedrez.model.Piezas.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Tablero {
     private Tablero(){
 
@@ -61,15 +64,97 @@ public class Tablero {
         }
     }
 
-    public void hacerMovimiento(Movimiento movimiento){
-        //todo
+    public void hacerMovimiento(Casilla origen, Casilla destino){
+        setPiezaEnCasilla(destino, getPiezaEnCasilla(origen));
+        setPiezaEnCasilla(origen, null);
+    }
+
+    private Pieza getPiezaEnCasilla(Casilla casilla){
+        return casillas[casilla.getNumLetra()][casilla.getNum()-1].getPieza();
+    }
+    private void setPiezaEnCasilla(Casilla casilla, Pieza pieza){
+        casillas[casilla.getNumLetra()][casilla.getNum()-1].setPieza(pieza);
     }
 
     public Color getColorPiezaEnCasilla(Casilla casilla) {
-        return casillas[casilla.getNum()][casilla.getNumLetra()].getPieza().getColor();
+        return getPiezaEnCasilla(casilla).getColor();
     }
 
     public boolean casillaVacia(Casilla casilla){
-        return casillas[casilla.getNum()][casilla.getNumLetra()].estaVacia();
+        return getPiezaEnCasilla(casilla) == null;
+    }
+
+    public boolean hayPiezasEntreCasillaOrigenYCasillaDestino(Casilla casillaOrigen, Casilla casillaDestino) {
+
+        List<Casilla> casillasEntreOrigenYDestino = getCasillasEntraOrigenYDestino(casillaOrigen, casillaDestino);
+
+        return casillasEntreOrigenYDestino.stream().anyMatch(Casilla::estaOcupada);
+    }
+    private List<Casilla> getCasillasEntraOrigenYDestino(Casilla casillaOrigen, Casilla casillaDestino) {
+
+        List<Casilla> casillasEntreOrigenYDestino = new ArrayList<>();
+
+        if(casillaOrigen.estaEnMismaColumna(casillaDestino)){
+            casillasEntreOrigenYDestino = getCasillasEnMismaColumna(casillaOrigen, casillaDestino);
+        }
+
+        if(casillaOrigen.estaEnMismaFila(casillaDestino)){
+            casillasEntreOrigenYDestino = getCasillasEnMismaFila(casillaOrigen, casillaDestino);
+        }
+
+        if(casillaOrigen.estaEnMismaDiagonal(casillaDestino)){
+            casillasEntreOrigenYDestino = getCasillasEnMismaDiagonal(casillaOrigen, casillaDestino);
+        }
+
+        return casillasEntreOrigenYDestino;
+    }
+    private List<Casilla> getCasillasEnMismaColumna(Casilla casillaOrigen, Casilla casillaDestino) {
+
+        List<Casilla> casillasEntreOrigenYDestino = new ArrayList<>();
+
+        Casilla casillaMasAlta = casillaOrigen.getNum() > casillaDestino.getNum() ? casillaOrigen : casillaDestino;
+        Casilla casillaMasBaja = casillaOrigen.getNum() < casillaDestino.getNum() ? casillaOrigen : casillaDestino;
+
+        for(int i = casillaMasAlta.getNum() - 1; i > casillaMasBaja.getNum(); i--){
+            casillasEntreOrigenYDestino.add(casillas[casillaOrigen.getNumLetra()][i]);
+        }
+
+        return casillasEntreOrigenYDestino;
+    }
+
+    private List<Casilla> getCasillasEnMismaFila(Casilla casillaOrigen, Casilla casillaDestino) {
+
+        List<Casilla> casillasEntreOrigenYDestino = new ArrayList<>();
+
+        Casilla casillaMasALaDerecha = casillaOrigen.getNumLetra() > casillaDestino.getNumLetra() ? casillaOrigen : casillaDestino;
+        Casilla casillaMasALaIzquierda = casillaOrigen.getNumLetra() < casillaDestino.getNumLetra() ? casillaOrigen : casillaDestino;
+
+        for(int i = casillaMasALaDerecha.getNumLetra() - 1; i > casillaMasALaIzquierda.getNumLetra(); i--){
+            casillasEntreOrigenYDestino.add(casillas[i][casillaOrigen.getNum()]);
+        }
+
+        return casillasEntreOrigenYDestino;
+    }
+
+    private List<Casilla> getCasillasEnMismaDiagonal(Casilla casillaOrigen, Casilla casillaDestino) {
+
+        List<Casilla> casillasEntreOrigenYDestino = new ArrayList<>();
+
+        Casilla casillaMasAlta = casillaOrigen.getNum() > casillaDestino.getNum() ? casillaOrigen : casillaDestino;
+        Casilla casillaMasBaja = casillaOrigen.getNum() < casillaDestino.getNum() ? casillaOrigen : casillaDestino;
+
+        int cont = 0;
+        for(int i = casillaMasAlta.getNum() - 1; i > casillaMasBaja.getNum(); i--){
+
+            if(casillaMasAlta.getNumLetra() < casillaMasBaja.getNumLetra()){
+                cont++;
+            }else{
+                cont--;
+            }
+
+            casillasEntreOrigenYDestino.add(casillas[i][casillaOrigen.getNumLetra()+cont]);
+        }
+
+        return casillasEntreOrigenYDestino;
     }
 }

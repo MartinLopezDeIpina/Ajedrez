@@ -27,6 +27,9 @@ public class Casilla {
     public boolean estaVacia() {
         return pieza == null;
     }
+    public boolean estaOcupada() {
+        return !estaVacia();
+    }
 
     public boolean piezaPuedeMoverseACasillaDestino(Casilla destino) {
         return pieza.puedeMoverseA(this, destino);

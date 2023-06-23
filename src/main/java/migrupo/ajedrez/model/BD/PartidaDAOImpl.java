@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class PartidaDAOImpl implements PartidaDAO{
-    //TODO: Implementar esos dos metodos
     private PartidaDAOImpl(){
 
     }

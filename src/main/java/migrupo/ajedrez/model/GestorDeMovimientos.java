@@ -18,7 +18,7 @@ public class GestorDeMovimientos {
 
     public void hacerMovimiento(Movimiento movimiento){
         if(movimientoPosible(movimiento)){
-            mTablero.hacerMovimiento(movimiento);
+            mTablero.hacerMovimiento(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
         }
     }
     private boolean movimientoPosible(Movimiento movimiento) {
@@ -28,7 +28,7 @@ public class GestorDeMovimientos {
                 leTocaJugarAlJugadorCorrecto(movimiento.getCasillaOrigen()) &&
                 casillaDestinoNoTienePiezaDelMismoColor(movimiento.getCasillaDestino()) &&
                 piezaPuedeMoverseACasillaDestino(movimiento) &&
-                noHayPiezasEntreCasillaOrigenYCasillaDestino() &&
+                noHayPiezasEntreCasillaOrigenYCasillaDestino(movimiento) &&
                 reyNoQuedaEnJaque();
     }
     private boolean casillaOrigenNoEstaVacia(Casilla casilla) {return !mTablero.casillaVacia(casilla);}
@@ -36,6 +36,12 @@ public class GestorDeMovimientos {
     private boolean leTocaJugarAlJugadorCorrecto(Casilla casilla) {return mTablero.getColorPiezaEnCasilla(casilla) == mGestorDeTurnos.getColorTurno();}
     private boolean casillaDestinoNoTienePiezaDelMismoColor(Casilla casilla) {return mTablero.getColorPiezaEnCasilla(casilla) != mGestorDeTurnos.getColorTurno();}
     private boolean piezaPuedeMoverseACasillaDestino(Movimiento movimiento) {return movimiento.piezaPuedeMoverseACasillaDestino();}
+    private boolean noHayPiezasEntreCasillaOrigenYCasillaDestino(Movimiento movimiento) {
+        return !mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());}
+    private boolean reyNoQuedaEnJaque() {
+        //todo
+        return true;
+    }
 
     public void setPartida(int identificador) {
         ponerPosicionesIniciales();
