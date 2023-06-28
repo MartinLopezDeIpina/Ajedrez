@@ -21,10 +21,12 @@ public class VentanaRegistroController implements Initializable {
     @FXML protected TextArea textMensaje;
     @FXML protected Pane paneDatos, paneMensaje;
 
-    FactoryRegistro mFactoryRegistro = FactoryRegistro.getInstance();
+    FactoryRegistro mFactoryRegistro;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        mFactoryRegistro = FactoryRegistro.getInstance();
 
         paneMensaje.setVisible(false);
         paneDatos.setVisible(true);

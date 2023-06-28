@@ -4,21 +4,27 @@ import java.sql.*;
 
 
 public class ConexionBD {
-    private ConexionBD(){
-        establecerConexion();
-    }
     private final static ConexionBD instance = new ConexionBD();
     public static ConexionBD getInstance(){
         return instance;
     }
 
-    private ConfiguracionBD mConfiguracionBD = ConfiguracionBD.getInstance();
-    final String url = mConfiguracionBD.getUrl();
-    final String usuario = mConfiguracionBD.getUsuario();
-    final String contrasena = mConfiguracionBD.getContrasena();
+    private ConfiguracionBD mConfiguracionBD;
+    final String url;
+    final String usuario;
+    final String contrasena;
 
-    private Connection con = null;
+    private Connection con;
 
+    private ConexionBD(){
+        mConfiguracionBD = ConfiguracionBD.getInstance();
+
+        url = mConfiguracionBD.getUrl();
+        usuario = mConfiguracionBD.getUsuario();
+        contrasena = mConfiguracionBD.getContrasena();
+
+        establecerConexion();
+    }
 
     private void establecerConexion(){
         try{

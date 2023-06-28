@@ -9,17 +9,18 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class PartidaDAOImpl implements PartidaDAO{
-    private PartidaDAOImpl(){
-
-    }
     private final static PartidaDAOImpl mPartidaDAOImpl = new PartidaDAOImpl();
     public static PartidaDAOImpl getInstance(){
         return mPartidaDAOImpl;
     }
 
-    ConexionBD mConexionBD = ConexionBD.getInstance();
-    Partida mPartida = Partida.getInstance();
+    ConexionBD mConexionBD;
+    Partida mPartida;
 
+    private PartidaDAOImpl(){
+        mPartida = Partida.getInstance();
+        mConexionBD = ConexionBD.getInstance();
+    }
 
     @Override
     public int registrarPartida(Usuario dueno, Usuario contrinctante) {

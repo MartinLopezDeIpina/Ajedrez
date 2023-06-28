@@ -1,8 +1,6 @@
 package migrupo.ajedrez.model;
 
 public class GestorDeTurnos {
-    private GestorDeTurnos() {
-    }
     private final static GestorDeTurnos instance = new GestorDeTurnos();
     public static GestorDeTurnos getInstance() {
         return instance;
@@ -11,6 +9,9 @@ public class GestorDeTurnos {
     private Usuario usuarioA;
     private Usuario usuarioB;
     private Usuario usuarioActual;
+
+    private GestorDeTurnos() {
+    }
 
     public void iniciarPartida(Usuario usuarioA, Usuario usuarioB) {
         asignarUsuarios(usuarioA, usuarioB);

@@ -4,11 +4,11 @@ import migrupo.ajedrez.model.Casilla;
 import migrupo.ajedrez.model.Color;
 
 public abstract class Pieza {
+    private Color color;
+
     public Pieza(Color color){
         this.color = color;
     }
-
-    private Color color;
 
     public Color getColor(){return color;}
 

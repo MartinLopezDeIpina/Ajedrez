@@ -1,11 +1,11 @@
 package migrupo.ajedrez.model;
 
 public class Sesion {
+    private final static Sesion mSesion = new Sesion();
+
     private Sesion(){
 
     }
-
-    private final static Sesion mSesion = new Sesion();
 
     public static Sesion getInstance(){
         return mSesion;

@@ -10,16 +10,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UsuarioDAOImpl implements UsuarioDAO{
-    private UsuarioDAOImpl(){
-
-    }
     private final static UsuarioDAOImpl mUsuarioDAOImpl= new UsuarioDAOImpl();
     public static UsuarioDAOImpl getInstance(){
         return mUsuarioDAOImpl;
     }
 
-    private Sesion mSesion = Sesion.getInstance();
-    private ConexionBD mConexionBD = ConexionBD.getInstance();
+    private Sesion mSesion;
+    private ConexionBD mConexionBD;
+
+    private UsuarioDAOImpl(){
+        mSesion = Sesion.getInstance();
+        mConexionBD = ConexionBD.getInstance();
+    }
 
     @Override
     public Bot getBot(String nombre) {

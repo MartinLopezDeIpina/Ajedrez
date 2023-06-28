@@ -24,16 +24,24 @@ public class VentanaMenuPrincipalController implements Initializable {
     @FXML Pane paneMenu, paneContrincante, paneMensaje;
     @FXML CheckBox checkBoxEsBot;
 
-    Sesion mSesion = Sesion.getInstance();
-    UsuarioDAOImpl mUsuarioDAOImpl = UsuarioDAOImpl.getInstance();
-    PartidaDAOImpl mPartidaDAOImpl = PartidaDAOImpl.getInstance();
-    Partida mPartida = Partida.getInstance();
+    Sesion mSesion;
+    UsuarioDAOImpl mUsuarioDAOImpl;
+    PartidaDAOImpl mPartidaDAOImpl;
+    Partida mPartida;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        iniciarVariables();
+
         ocultarNecesario();
 
         ponerListennerNombre();
+    }
+    private void iniciarVariables() {
+        mSesion = Sesion.getInstance();
+        mUsuarioDAOImpl = UsuarioDAOImpl.getInstance();
+        mPartidaDAOImpl = PartidaDAOImpl.getInstance();
+        mPartida = Partida.getInstance();
     }
     private void ocultarNecesario(){
         paneContrincante.setVisible(false);

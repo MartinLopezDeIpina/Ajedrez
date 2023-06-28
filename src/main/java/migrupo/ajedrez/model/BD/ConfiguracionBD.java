@@ -13,8 +13,10 @@ public class ConfiguracionBD {
     public static ConfiguracionBD getInstance(){
         return instance;
     }
-    private Properties propiedades = new Properties();
+    private Properties propiedades;
     private ConfiguracionBD(){
+        propiedades = new Properties();
+
         cargarPropiedades();
     }
 

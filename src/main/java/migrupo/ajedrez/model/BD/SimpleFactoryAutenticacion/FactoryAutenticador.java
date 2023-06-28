@@ -7,16 +7,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class FactoryAutenticador {
-
-    private FactoryAutenticador(){
-
-    }
     private static final FactoryAutenticador mAutenticador = new FactoryAutenticador();
     public static FactoryAutenticador getInstance(){
         return mAutenticador;
     }
 
-    UsuarioDAOImpl mUsuarioDAOImpl = UsuarioDAOImpl.getInstance();
+    UsuarioDAOImpl mUsuarioDAOImpl;
+
+    private FactoryAutenticador(){
+        mUsuarioDAOImpl = UsuarioDAOImpl.getInstance();
+    }
 
     public Autenticacion generarAutenticador(String nombre, String contrasena){
 

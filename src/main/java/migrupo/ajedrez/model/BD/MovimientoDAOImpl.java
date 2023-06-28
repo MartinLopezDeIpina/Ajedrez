@@ -9,14 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovimientoDAOImpl implements MovimientoDAO{
-    private MovimientoDAOImpl() {
-    }
     private final static MovimientoDAOImpl instance = new MovimientoDAOImpl();
     public static MovimientoDAOImpl getInstance() {
         return instance;
     }
 
-    private ConexionBD mConexionBD = ConexionBD.getInstance();
+    private ConexionBD mConexionBD;
+
+    private MovimientoDAOImpl() {
+        mConexionBD = ConexionBD.getInstance();
+    }
 
     @Override
     public List<Movimiento> getMovimientosPartida(int identificador) {

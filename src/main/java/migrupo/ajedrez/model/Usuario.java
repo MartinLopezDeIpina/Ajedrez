@@ -2,9 +2,11 @@ package migrupo.ajedrez.model;
 
 
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 public abstract class Usuario {
-    protected SimpleObjectProperty<String> nombre = new SimpleObjectProperty<>();
+    protected SimpleStringProperty nombre = new SimpleStringProperty();
+
     protected String contrasena;
     protected Color color;
 
@@ -14,7 +16,7 @@ public abstract class Usuario {
     }
 
     public String getNombreValue(){return nombre.getValue();}
-    public SimpleObjectProperty<String> getNombre(){return nombre;}
+    public SimpleStringProperty getNombre(){return nombre;}
     public void setColor(Color color){this.color = color;}
     public Color getColor(){return color;}
 }

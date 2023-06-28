@@ -45,9 +45,9 @@ class CasillaTest {
 
     @Test
     void getDistanciaVertical() {
-         assertEquals(7, casillas[7][0].getDistanciaVertical(casillas[0][0]));
-         assertEquals(-7, casillas[0][0].getDistanciaVertical(casillas[7][0]));
-        assertEquals(7, casillas[7][0].getDistanciaVerticalAbs(casillas[0][4]));
+       assertEquals(7, casillas[7][0].getDistanciaVertical(casillas[0][0]));
+       assertEquals(-7, casillas[0][0].getDistanciaVertical(casillas[7][0]));
+       assertEquals(7, casillas[7][0].getDistanciaVerticalAbs(casillas[0][4]));
     }
 
     @Test

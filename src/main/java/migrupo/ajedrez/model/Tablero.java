@@ -7,9 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Tablero {
-    private Tablero(){
-
-    }
     private final static Tablero mTablero = new Tablero();
     public static Tablero getInstance(){return mTablero;}
 
@@ -23,6 +20,9 @@ public class Tablero {
             {new Casilla('a', 7), new Casilla('b', 7), new Casilla('c', 7), new Casilla('d', 7), new Casilla('e', 7), new Casilla('f', 7), new Casilla('g', 7), new Casilla('h', 7)},
             {new Casilla('a', 8), new Casilla('b', 8), new Casilla('c', 8), new Casilla('d', 8), new Casilla('e', 8), new Casilla('f', 8), new Casilla('g', 8), new Casilla('h', 8)}
     };
+
+    private Tablero(){
+    }
 
     public void ponerPosicionesIniciales() {
         ponerPosicionesInicialesPeones();

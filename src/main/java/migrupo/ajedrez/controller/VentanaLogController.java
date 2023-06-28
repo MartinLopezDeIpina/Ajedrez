@@ -22,14 +22,15 @@ public class VentanaLogController implements Initializable {
     @FXML protected TextArea textMensaje;
     @FXML protected Pane paneDatos, paneMensaje;
 
-    FactoryAutenticador  mFactoryAutenticador = FactoryAutenticador.getInstance();
+    FactoryAutenticador  mFactoryAutenticador;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        mFactoryAutenticador = FactoryAutenticador.getInstance();
+
         paneMensaje.setVisible(false);
         paneDatos.setVisible(true);
-
     }
 
     @FXML protected void onCancelarButtonClicked() {

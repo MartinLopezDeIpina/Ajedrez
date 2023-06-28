@@ -2,19 +2,24 @@ package migrupo.ajedrez.model;
 
 import migrupo.ajedrez.model.BD.MovimientoDAOImpl;
 
+import java.lang.reflect.GenericArrayType;
 import java.util.List;
 
 public class GestorDeMovimientos {
-    private GestorDeMovimientos() {
-    }
     private final static GestorDeMovimientos instance = new GestorDeMovimientos();
     public static GestorDeMovimientos getInstance() {
         return instance;
     }
 
-    private MovimientoDAOImpl movimientoDAO = MovimientoDAOImpl.getInstance();
-    private Tablero mTablero = Tablero.getInstance();
-    private GestorDeTurnos mGestorDeTurnos = GestorDeTurnos.getInstance();
+    private MovimientoDAOImpl mMovimientoDAO;
+    private Tablero mTablero;
+    private GestorDeTurnos mGestorDeTurnos;
+
+    private GestorDeMovimientos() {
+        mMovimientoDAO = MovimientoDAOImpl.getInstance();
+        mTablero = Tablero.getInstance();
+        mGestorDeTurnos = GestorDeTurnos.getInstance();
+    }
 
     public void hacerMovimiento(Movimiento movimiento){
         if(movimientoPosible(movimiento)){
@@ -39,7 +44,6 @@ public class GestorDeMovimientos {
     private boolean noHayPiezasEntreCasillaOrigenYCasillaDestino(Movimiento movimiento) {
         return !mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());}
     private boolean reyNoQuedaEnJaque(Movimiento movimiento) {
-        //todo
         return !mTablero.reyQuedaEnJaque(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
     }
 
@@ -54,7 +58,7 @@ public class GestorDeMovimientos {
 
     private void ejecutarMovimientosGuardados(int identificador) {
 
-        List<Movimiento> movimientos = movimientoDAO.getMovimientosPartida(identificador);
+        List<Movimiento> movimientos = mMovimientoDAO.getMovimientosPartida(identificador);
 
         movimientos.stream().forEach(movimiento -> hacerMovimiento(movimiento));
     }
