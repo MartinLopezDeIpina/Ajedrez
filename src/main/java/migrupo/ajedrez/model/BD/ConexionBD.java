@@ -26,7 +26,7 @@ public class ConexionBD {
         establecerConexion();
     }
 
-    private void establecerConexion(){
+    public void establecerConexion(){
         try{
 
             Class.forName("com.mysql.cj.jdbc.Driver");

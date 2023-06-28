@@ -9,22 +9,33 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FactoryAutenticadorTest {
 
-    static ConexionBD mConexionBD = ConexionBD.getInstance();
-    static FactoryAutenticador mFactoryAutenticador = FactoryAutenticador.getInstance();
+    static ConexionBD mConexionBD;
+    static FactoryAutenticador mFactoryAutenticador;
 
     @BeforeAll
     static void setUp(){
+        iniciarVariables();
+
+        mConexionBD.establecerConexion();
+
         anadirUsuarioPrueba();
+    }
+    private static void iniciarVariables() {
+        mConexionBD = ConexionBD.getInstance();
+        mFactoryAutenticador = FactoryAutenticador.getInstance();
+    }
+
+    private static void anadirUsuarioPrueba(){
+        FactoryRegistro.getInstance().getRegistro("nombrePrueba", "contrasenaPrueba");
     }
     @AfterAll
     static void tearDown(){
         eliminarUsuariosPrueba();
+
+        mConexionBD.cerrarConexion();
     }
     private static void eliminarUsuariosPrueba(){
         mConexionBD.executeUpdate("delete from usuario where nombre = 'nombrePrueba'", new Object[0]);
-    }
-    private static void anadirUsuarioPrueba(){
-        FactoryRegistro.getInstance().getRegistro("nombrePrueba", "contrasenaPrueba");
     }
     @Test
     void correcto() {

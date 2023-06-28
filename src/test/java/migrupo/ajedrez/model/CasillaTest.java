@@ -18,10 +18,10 @@ class CasillaTest {
     static void setUp() throws NoSuchFieldException, IllegalAccessException {
        mtablero = Tablero.getInstance();
 
-       hacerAccesibleCasillas();
+       iniciarCasillas();
     }
 
-    private static void hacerAccesibleCasillas() throws NoSuchFieldException, IllegalAccessException {
+    private static void iniciarCasillas() throws NoSuchFieldException, IllegalAccessException {
         Field field = mtablero.getClass().getDeclaredField("casillas");
         field.setAccessible(true);
         casillas = (Casilla[][]) field.get(mtablero);

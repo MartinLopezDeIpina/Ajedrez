@@ -10,13 +10,25 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UsuarioDAOImplTest {
 
-    static UsuarioDAOImpl mUsuarioDAOImpl = UsuarioDAOImpl.getInstance();
-    static Sesion mSesion = Sesion.getInstance();
+    static UsuarioDAOImpl mUsuarioDAOImpl;
+    static Sesion mSesion;
 
     @BeforeAll
     static void setUp(){
+        iniciarVariables();
+
+        registrarUsuarioPrueba();
+    }
+
+    private static void iniciarVariables() {
+        mUsuarioDAOImpl = UsuarioDAOImpl.getInstance();
+        mSesion = Sesion.getInstance();
+    }
+
+    private static void registrarUsuarioPrueba() {
         mUsuarioDAOImpl.registrarUsuario("nombrePrueba", "contrasena");
     }
+
     @AfterAll
     static void tearDown(){
         mUsuarioDAOImpl.eliminarUsuario("nombrePrueba");

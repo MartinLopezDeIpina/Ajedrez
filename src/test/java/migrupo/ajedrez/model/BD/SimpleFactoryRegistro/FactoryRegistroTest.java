@@ -7,15 +7,33 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FactoryRegistroTest {
 
-    static FactoryRegistro mFactoryRegistro = FactoryRegistro.getInstance();
-    static ConexionBD mConexionBD = ConexionBD.getInstance();
+    static FactoryRegistro mFactoryRegistro;
+    static ConexionBD mConexionBD;
 
     @BeforeAll
     public static void setUp(){
+        iniciarVariables();
+
+        mConexionBD.establecerConexion();
+
+        registrarUsuarioPrueba();
+    }
+    private static void iniciarVariables() {
+        mFactoryRegistro = FactoryRegistro.getInstance();
+        mConexionBD = ConexionBD.getInstance();
+    }
+    private static void registrarUsuarioPrueba() {
         mFactoryRegistro.getRegistro("nombrePrueba", "contrasenaPrueba");
     }
+
     @AfterAll
     public static void tearDown(){
+        eliminarUsuarioPrueba();
+
+        mConexionBD.cerrarConexion();
+    }
+
+    private static void eliminarUsuarioPrueba() {
         mConexionBD.executeUpdate("delete from usuario where nombre = 'nombrePrueba' or nombre = 'nombreDePrueba'", new Object[0]);
     }
 

@@ -1,15 +1,11 @@
 package migrupo.ajedrez.model.BD;
 
-import com.sun.jdi.event.StepEvent;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -17,25 +13,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ConexionBDTest {
 
-    ConexionBD conexion = ConexionBD.getInstance();
+    static ConexionBD mConexion;
 
-    @BeforeEach
-    void setUp(){
-        try{
+    @BeforeAll
+    static void setUpAll(){
+        mConexion = ConexionBD.getInstance();
 
-            establecerConexion();
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        mConexion.establecerConexion();
     }
 
-    private void establecerConexion() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Method metodoEstablecerConexion = ConexionBD.class.getDeclaredMethod("establecerConexion");
-        metodoEstablecerConexion.setAccessible(true);
-        metodoEstablecerConexion.invoke(conexion);
+    @AfterAll
+    static void tearDownAll(){
+        mConexion.cerrarConexion();
     }
-
 
     @Test
     void executeQueryandUpdateQuery()  {
@@ -55,17 +45,17 @@ class ConexionBDTest {
     }
     private void insertarValoresPrueba(){
         String updatePrueba = "insert into usuario values ('usuarioPrueba', 'contrasenaPrueba')";
-        conexion.executeUpdate(updatePrueba, new Object[0]);
+        mConexion.executeUpdate(updatePrueba, new Object[0]);
     }
     private String getContrasenaPrueba() throws SQLException {
         String queryPrueba = "select contrasena from usuario where nombre = 'usuarioPrueba'";
-        ResultSet rsPrueba = conexion.executeQuery(queryPrueba, new Object[0]);
+        ResultSet rsPrueba = mConexion.executeQuery(queryPrueba, new Object[0]);
         rsPrueba.next();
         return rsPrueba.getString("contrasena");
     }
     private void vaciarPruebas(){
         String queryVaciar = "delete from usuario where nombre = 'usuarioPrueba'";
-        conexion.executeUpdate(queryVaciar, new Object[0]);
+        mConexion.executeUpdate(queryVaciar, new Object[0]);
     }
 
     @Test
@@ -81,7 +71,7 @@ class ConexionBDTest {
     }
     private Connection getConnection() throws IllegalAccessException, NoSuchFieldException {
         Field conField = crearConfield();
-        return (Connection) conField.get(conexion);
+        return (Connection) conField.get(mConexion);
     }
     private Field crearConfield() throws NoSuchFieldException {
         Field conField = ConexionBD.class.getDeclaredField("con");
@@ -91,8 +81,10 @@ class ConexionBDTest {
 
     @Test
     void cerrarConexion() throws SQLException, NoSuchFieldException, IllegalAccessException {
-        conexion.cerrarConexion();
+        mConexion.cerrarConexion();
         Connection con = getConnection();
         assertTrue(con.isClosed());
+
+        mConexion.establecerConexion();
     }
 }
