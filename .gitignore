@@ -39,3 +39,4 @@ build/
 
 /src/main/resources/migrupo/ajedrez/configBD.properties
 /src/test/java/migrupo/ajedrez/model/BD/ConfiguracionBDTest.java
+java/

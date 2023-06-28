@@ -35,10 +35,6 @@ public class Casilla {
         return pieza.puedeMoverseA(this, destino);
     }
 
-    public boolean estaEnMismaColumna(Casilla destino) {
-        return getNumLetra() == destino.getNumLetra();
-    }
-
     public int getDistanciaVertical(Casilla destino) {
         return getNum() - destino.getNum();
     }
@@ -47,7 +43,7 @@ public class Casilla {
     }
 
     public int getDistanciaHorizontalAbs(Casilla destino) {
-        return Math.abs(getNumLetra() - destino.getNumLetra());
+       return Math.abs(getNumLetra() - destino.getNumLetra());
     }
     public int getDistanciaHorizontal(Casilla destino) {
         return getNumLetra() - destino.getNumLetra();
@@ -57,12 +53,16 @@ public class Casilla {
         return !estaVacia() && pieza.esColor(color);
     }
 
+    public boolean estaEnMismaColumna(Casilla destino) {
+        return getNumLetra() == destino.getNumLetra();
+    }
+
     public boolean estaEnMismaFila(Casilla destino) {
         return getNum() == destino.getNum();
     }
 
     public boolean estaEnMismaDiagonal(Casilla destino) {
-        return getDistanciaHorizontal(destino) == getDistanciaVertical(destino);
+        return getDistanciaDiagonalAbs(destino) == getDistanciaVerticalAbs(destino);
     }
 
     public boolean estaEnL(Casilla destino) {
