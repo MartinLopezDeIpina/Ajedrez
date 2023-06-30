@@ -34,11 +34,11 @@ public class Tablero {
     }
     private void ponerPosicionesInicialesReyes() {
         casillas[0][4].setPieza(new Rey(Color.BLANCO));
-        casillas[7][3].setPieza(new Rey(Color.NEGRO));
+        casillas[7][4].setPieza(new Rey(Color.NEGRO));
     }
     private void ponerPosicionesInicialesReinas() {
         casillas[0][3].setPieza(new Reina(Color.BLANCO));
-        casillas[7][4].setPieza(new Reina(Color.NEGRO));
+        casillas[7][3].setPieza(new Reina(Color.NEGRO));
     }
     private void ponerPosicionesInicialesAlfiles() {
         casillas[0][2].setPieza(new Alfil(Color.BLANCO));

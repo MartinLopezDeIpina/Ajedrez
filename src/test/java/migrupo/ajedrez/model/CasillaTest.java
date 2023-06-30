@@ -11,20 +11,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CasillaTest {
 
-    private static Tablero mtablero;
+    private static Tablero mTablero;
     private static Casilla[][] casillas;
 
    @BeforeAll
     static void setUp() throws NoSuchFieldException, IllegalAccessException {
-       mtablero = Tablero.getInstance();
+       mTablero = Tablero.getInstance();
 
        iniciarCasillas();
     }
 
     private static void iniciarCasillas() throws NoSuchFieldException, IllegalAccessException {
-        Field field = mtablero.getClass().getDeclaredField("casillas");
+        Field field = mTablero.getClass().getDeclaredField("casillas");
         field.setAccessible(true);
-        casillas = (Casilla[][]) field.get(mtablero);
+        casillas = (Casilla[][]) field.get(mTablero);
     }
 
     @Test

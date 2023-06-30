@@ -7,8 +7,10 @@ public class Partida {
     GestorDeMovimientos mGestorDeMovimientos;
 
     private int identificador;
-    private Usuario usuarioA;
+
+    //todo: cuando se inicie la partida que se decida que usuario es negro y blanco
     private Usuario usuarioB;
+    private Usuario usuarioN;
 
     private Partida(){
         mGestorDeMovimientos = GestorDeMovimientos.getInstance();
@@ -16,8 +18,8 @@ public class Partida {
 
     public void setPartida(int identificador, Usuario usuarioA, Usuario usuarioB){
         this.identificador = identificador;
-        this.usuarioA = usuarioA;
-        this.usuarioB = usuarioB;
+        this.usuarioB = usuarioA;
+        this.usuarioN = usuarioB;
 
         mGestorDeMovimientos.setPartida(identificador);
     }

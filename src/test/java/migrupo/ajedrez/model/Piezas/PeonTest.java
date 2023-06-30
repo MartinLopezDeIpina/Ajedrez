@@ -11,7 +11,7 @@ class PeonTest {
     static PeonBlanco peonB;
     static PeonNegro peonN;
 
-    static Casilla casillaA, casillaB, casillaC, casillaD, casillaE, casillaF, casillaG, casillaH, casillaI, casillaJ, casillaK, casillaL, casillaM, casillaN, casillaO, casillaP;
+    static Casilla casillaA, casillaB, casillaC, casillaD, casillaE, casillaF, casillaG, casillaH, casillaI, casillaJ, casillaK, casillaL, casillaM, casillaN;
 
     @BeforeAll
     static void setUp(){

@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AlfilTest {
 
-    Alfil alfil = new Alfil(Color.NEGRO);
+    static Alfil alfil;
 
     static Casilla casillaA;
     static Casilla casillaB;
@@ -19,6 +19,8 @@ class AlfilTest {
 
     @BeforeAll
     static void setUp() {
+        alfil = new Alfil(Color.BLANCO);
+
         casillaA = new Casilla('a', 0);
         casillaB = new Casilla('h', 7);
         casillaC = new Casilla('d', 2);
