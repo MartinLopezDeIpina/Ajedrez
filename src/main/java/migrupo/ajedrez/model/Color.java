@@ -1,5 +1,5 @@
 package migrupo.ajedrez.model;
 
 public enum Color {
-    BLANCO, NEGRO
+    BLANCO, NULO, NEGRO
 }

@@ -17,4 +17,12 @@ public abstract class Pieza {
     public boolean esColor(Color color) {
         return this.color == color;
     }
+
+    public Color getColorRival() {
+        if(color == Color.BLANCO){
+            return color.NEGRO;
+        }else{
+            return color.BLANCO;
+        }
+    }
 }

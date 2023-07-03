@@ -1,6 +1,7 @@
 package migrupo.ajedrez.model;
 
 import migrupo.ajedrez.model.Piezas.Pieza;
+import migrupo.ajedrez.model.Piezas.PiezaNula;
 
 public class Casilla {
     private char letra;
@@ -11,6 +12,7 @@ public class Casilla {
     public Casilla(char letra, int num){
         this.letra = letra;
         this.num = num;
+        this.pieza = new PiezaNula();
     }
 
     public int getNumLetra(){
@@ -23,7 +25,7 @@ public class Casilla {
     public void setPieza(Pieza pieza) {this.pieza = pieza;}
 
     public boolean estaVacia() {
-        return pieza == null;
+        return pieza instanceof PiezaNula;
     }
     public boolean estaOcupada() {
         return !estaVacia();
@@ -70,5 +72,9 @@ public class Casilla {
 
     public int getDistanciaDiagonalAbs(Casilla destino) {
         return Math.abs(getDistanciaHorizontal(destino));
+    }
+
+    public Color getColorRival() {
+        return pieza.getColorRival();
     }
 }

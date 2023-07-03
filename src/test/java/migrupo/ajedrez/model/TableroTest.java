@@ -67,32 +67,70 @@ class TableroTest {
 
     @Test
     void hacerMovimiento() throws NoSuchFieldException, IllegalAccessException {
-        mTablero.ponerPosicionesIniciales();
-        iniciarCasillas();
+        iniciarTableroYCasillas();
 
-        //todo: aqui falla algo
         mTablero.hacerMovimiento(casillas[1][0], casillas[2][0]);
-        mTablero.hacerMovimiento(casillas[7][1], casillas[5][3]);
+        mTablero.hacerMovimiento(casillas[7][1], casillas[5][2]);
 
         iniciarCasillas();
 
         assertEquals(casillas[2][0].getPieza().getClass(), PeonBlanco.class);
-        assertEquals(casillas[5][3].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Alfil.class);
+        assertEquals(casillas[5][2].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Caballo.class);
+    }
+
+    private void iniciarTableroYCasillas() throws NoSuchFieldException, IllegalAccessException {
+        mTablero.vaciarTablero();
+        mTablero.ponerPosicionesIniciales();
+        iniciarCasillas();
     }
 
     @Test
-    void getColorPiezaEnCasilla() {
+    void getColorPiezaEnCasilla() throws NoSuchFieldException, IllegalAccessException {
+        iniciarTableroYCasillas();
+
+        assertEquals(mTablero.getColorPiezaEnCasilla(casillas[0][0]), Color.BLANCO);
+        assertEquals(mTablero.getColorPiezaEnCasilla(casillas[1][1]), Color.BLANCO);
+        assertEquals(mTablero.getColorPiezaEnCasilla(casillas[7][7]), Color.NEGRO);
+        assertEquals(mTablero.getColorPiezaEnCasilla(casillas[7][0]), Color.NEGRO);
     }
 
     @Test
-    void casillaVacia() {
+    void casillaVacia() throws NoSuchFieldException, IllegalAccessException {
+        iniciarTableroYCasillas();
+
+        assertTrue(mTablero.casillaVacia(new Casilla('c', 4)));
+        assertTrue(mTablero.casillaVacia(new Casilla('f', 5)));
+        assertFalse(mTablero.casillaVacia(new Casilla('b', 1)));
+        assertFalse(mTablero.casillaVacia(new Casilla('h', 8)));
     }
 
     @Test
-    void hayPiezasEntreCasillaOrigenYCasillaDestino() {
+    void hayPiezasEntreCasillaOrigenYCasillaDestino() throws NoSuchFieldException, IllegalAccessException {
+        iniciarTableroYCasillas();
+
+        mTablero.hacerMovimiento(new Casilla('d', 2), new Casilla('d', 4));
+
+        assertTrue(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('a', 1), new Casilla('a', 3)));
+        assertTrue(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('a', 4), new Casilla('h', 4)));
+        assertTrue(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('a', 1), new Casilla('h', 8)));
+
+        assertFalse(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('a', 6), new Casilla('a', 3)));
+        assertFalse(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('a', 6), new Casilla('h', 6)));
+        assertFalse(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('d', 3), new Casilla('g', 6)));
     }
 
     @Test
-    void reyQuedaEnJaque() {
+    void reyQuedaEnJaque() throws NoSuchFieldException, IllegalAccessException {
+        iniciarTableroYCasillas();
+
+        assertFalse(mTablero.reyQuedaEnJaque(new Casilla('e', 2), new Casilla('e', 3)));
+
+        mTablero.hacerMovimiento(new Casilla('h', 8), new Casilla('e', 2));
+        assertTrue(mTablero.reyQuedaEnJaque(new Casilla('e', 3), new Casilla('e', 4)));
+        assertFalse(mTablero.reyQuedaEnJaque(new Casilla('e', 1), new Casilla('e', 2)));
+
+        mTablero.hacerMovimiento(new Casilla('b', 8), new Casilla('d', 3));
+        assertTrue(mTablero.reyQuedaEnJaque(new Casilla('e', 4), new Casilla('e', 5)));
+        assertFalse(mTablero.reyQuedaEnJaque(new Casilla('e', 1), new Casilla('e', 2)));
     }
 }

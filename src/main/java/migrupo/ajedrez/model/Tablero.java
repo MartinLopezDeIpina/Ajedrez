@@ -49,14 +49,14 @@ public class Tablero {
     private void ponerPosicionesInicialesCaballos() {
         casillas[0][1].setPieza(new Caballo(Color.BLANCO));
         casillas[0][6].setPieza(new Caballo(Color.BLANCO));
-        casillas[7][1].setPieza(new Caballo(Color.BLANCO));
-        casillas[7][6].setPieza(new Caballo(Color.BLANCO));
+        casillas[7][1].setPieza(new Caballo(Color.NEGRO));
+        casillas[7][6].setPieza(new Caballo(Color.NEGRO));
     }
     private void ponerPosicionesInicialesTorres() {
         casillas[0][0].setPieza(new Torre(Color.BLANCO));
         casillas[0][7].setPieza(new Torre(Color.BLANCO));
-        casillas[7][0].setPieza(new Torre(Color.BLANCO));
-        casillas[7][7].setPieza(new Torre(Color.BLANCO));
+        casillas[7][0].setPieza(new Torre(Color.NEGRO));
+        casillas[7][7].setPieza(new Torre(Color.NEGRO));
     }
     private void ponerPosicionesInicialesPeones() {
         for(int i = 0; i <= 7; i++){
@@ -67,14 +67,14 @@ public class Tablero {
 
     public void hacerMovimiento(Casilla origen, Casilla destino){
         setPiezaEnCasilla(destino, getPiezaEnCasilla(origen));
-        setPiezaEnCasilla(origen, null);
+        setPiezaEnCasilla(origen, new PiezaNula());
     }
 
     private Pieza getPiezaEnCasilla(Casilla casilla){
-        return casillas[casilla.getNumLetra()][casilla.getNum()-1].getPieza();
+        return casillas[casilla.getNum()-1][casilla.getNumLetra()].getPieza();
     }
     private void setPiezaEnCasilla(Casilla casilla, Pieza pieza){
-        casillas[casilla.getNumLetra()][casilla.getNum()-1].setPieza(pieza);
+        casillas[casilla.getNum()-1][casilla.getNumLetra()].setPieza(pieza);
     }
 
     public Color getColorPiezaEnCasilla(Casilla casilla) {
@@ -82,7 +82,7 @@ public class Tablero {
     }
 
     public boolean casillaVacia(Casilla casilla){
-        return getPiezaEnCasilla(casilla) == null;
+        return getPiezaEnCasilla(casilla) instanceof PiezaNula;
     }
 
     public boolean hayPiezasEntreCasillaOrigenYCasillaDestino(Casilla casillaOrigen, Casilla casillaDestino) {
@@ -117,7 +117,7 @@ public class Tablero {
         Casilla casillaMasBaja = casillaOrigen.getNum() < casillaDestino.getNum() ? casillaOrigen : casillaDestino;
 
         for(int i = casillaMasAlta.getNum() - 1; i > casillaMasBaja.getNum(); i--){
-            casillasEntreOrigenYDestino.add(casillas[casillaOrigen.getNumLetra()][i]);
+            casillasEntreOrigenYDestino.add(casillas[i-1][casillaMasAlta.getNumLetra()]);
         }
 
         return casillasEntreOrigenYDestino;
@@ -131,7 +131,7 @@ public class Tablero {
         Casilla casillaMasALaIzquierda = casillaOrigen.getNumLetra() < casillaDestino.getNumLetra() ? casillaOrigen : casillaDestino;
 
         for(int i = casillaMasALaDerecha.getNumLetra() - 1; i > casillaMasALaIzquierda.getNumLetra(); i--){
-            casillasEntreOrigenYDestino.add(casillas[i][casillaOrigen.getNum()]);
+            casillasEntreOrigenYDestino.add(casillas[casillaMasALaDerecha.getNum()-1][i]);
         }
 
         return casillasEntreOrigenYDestino;
@@ -153,7 +153,7 @@ public class Tablero {
                 cont--;
             }
 
-            casillasEntreOrigenYDestino.add(casillas[i][casillaOrigen.getNumLetra()+cont]);
+            casillasEntreOrigenYDestino.add(casillas[i-1][casillaMasAlta.getNumLetra()+cont]);
         }
 
         return casillasEntreOrigenYDestino;
@@ -165,13 +165,13 @@ public class Tablero {
 
         hacerMovimiento(casillaOrigen, casillaDestino);
 
-        boolean reyQuedaEnJaque = algunaPiezaAmenazaAlRey(getColorPiezaEnCasilla(casillaOrigen));
+        boolean reyQuedaEnJaque = algunaPiezaAmenazaAlRey(casillaOrigen.getColorRival());
 
-        desacerMovimiento(casillaOrigen, casillaDestino, piezaDestino);
+        deshacerMovimiento(casillaOrigen, casillaDestino, piezaDestino);
 
         return reyQuedaEnJaque;
     }
-    private void desacerMovimiento(Casilla casillaOrigen, Casilla casillaDestino, Pieza piezaDestino) {
+    private void deshacerMovimiento(Casilla casillaOrigen, Casilla casillaDestino, Pieza piezaDestino) {
         setPiezaEnCasilla(casillaOrigen, getPiezaEnCasilla(casillaDestino));
         setPiezaEnCasilla(casillaDestino, piezaDestino);
     }
@@ -179,13 +179,18 @@ public class Tablero {
         Casilla casillaRey = getCasillaRey(colorRey);
 
         return Arrays.stream(casillas).flatMap(Arrays::stream)
-                .filter(casilla -> !casilla.equals(casillaRey))
-                .anyMatch(casilla -> casilla.getPieza().puedeMoverseA(casilla, casillaRey));
+                .filter(casilla -> !casilla.equals(casillaRey) && getColorPiezaEnCasilla(casilla) != colorRey)
+                .anyMatch(casilla -> casilla.getPieza().puedeMoverseA(casilla, casillaRey) &&
+                        (!hayPiezasEntreCasillaOrigenYCasillaDestino(casilla, casillaRey) || casilla.getPieza() instanceof Caballo));
     }
     private Casilla getCasillaRey(Color colorRey) {
 
         return Arrays.stream(casillas).flatMap(Arrays::stream)
                 .filter(casilla -> getPiezaEnCasilla(casilla) instanceof Rey && getPiezaEnCasilla(casilla).getColor() == colorRey).findFirst().get();
 
+    }
+
+    public void vaciarTablero() {
+        Arrays.stream(casillas).flatMap(Arrays::stream).forEach(casilla -> casilla.setPieza(new PiezaNula()));
     }
 }
