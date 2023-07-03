@@ -69,7 +69,7 @@ class PeonTest {
         casillaE.setPieza(new PeonNegro());
         assertTrue(peonB.puedeMoverseA(casillaA, casillaE));
 
-        casillaE.setPieza(null);
+        casillaE.setPieza(new PiezaNula());
         assertFalse(peonB.puedeMoverseA(casillaA, casillaE));
 
         casillaE.setPieza(new PeonBlanco());
@@ -94,7 +94,7 @@ class PeonTest {
         casillaL.setPieza(new PeonBlanco());
         assertTrue(peonN.puedeMoverseA(casillaH, casillaL));
 
-        casillaL.setPieza(null);
+        casillaL.setPieza(new PiezaNula());
         assertFalse(peonN.puedeMoverseA(casillaH, casillaL));
 
         casillaL.setPieza(new PeonNegro());

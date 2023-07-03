@@ -2,7 +2,6 @@ package migrupo.ajedrez.model;
 
 import migrupo.ajedrez.model.BD.MovimientoDAOImpl;
 
-import java.lang.reflect.GenericArrayType;
 import java.util.List;
 
 public class GestorDeMovimientos {
@@ -21,10 +20,12 @@ public class GestorDeMovimientos {
         mGestorDeTurnos = GestorDeTurnos.getInstance();
     }
 
-    public void hacerMovimiento(Movimiento movimiento){
+    public void hacerMovimientoYPasarTurno(Movimiento movimiento){
         if(movimientoPosible(movimiento)){
             mTablero.hacerMovimiento(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
         }
+
+        mGestorDeTurnos.pasarTurno();
     }
     private boolean movimientoPosible(Movimiento movimiento) {
 
@@ -60,7 +61,7 @@ public class GestorDeMovimientos {
 
         List<Movimiento> movimientos = mMovimientoDAO.getMovimientosPartida(identificador);
 
-        movimientos.stream().forEach(movimiento -> hacerMovimiento(movimiento));
+        movimientos.stream().forEach(movimiento -> hacerMovimientoYPasarTurno(movimiento));
     }
 
 

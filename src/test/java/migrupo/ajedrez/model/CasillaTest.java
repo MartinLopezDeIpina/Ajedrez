@@ -2,6 +2,7 @@ package migrupo.ajedrez.model;
 
 import migrupo.ajedrez.model.Piezas.PeonBlanco;
 import migrupo.ajedrez.model.Piezas.PeonNegro;
+import migrupo.ajedrez.model.Piezas.PiezaNula;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +18,8 @@ class CasillaTest {
    @BeforeAll
     static void setUp() throws NoSuchFieldException, IllegalAccessException {
        mTablero = Tablero.getInstance();
+
+       mTablero.vaciarTablero();
 
        iniciarCasillas();
     }
@@ -75,7 +78,7 @@ class CasillaTest {
     void hayPiezaColor() {
        casillas[0][0].setPieza(new PeonBlanco());
        casillas[0][1].setPieza(new PeonNegro());
-       casillas[0][2].setPieza(null);
+       casillas[0][2].setPieza(new PiezaNula());
 
        assertTrue(casillas[0][0].hayPiezaColor(Color.BLANCO));
        assertFalse(casillas[0][0].hayPiezaColor(Color.NEGRO));

@@ -190,7 +190,16 @@ public class Tablero {
 
     }
 
+    public void reiniciarTablero(){
+        vaciarTablero();
+        ponerPosicionesIniciales();
+    }
+
     public void vaciarTablero() {
         Arrays.stream(casillas).flatMap(Arrays::stream).forEach(casilla -> casilla.setPieza(new PiezaNula()));
+    }
+
+    public Casilla getCasilla(char letra, int num) {
+        return casillas[num-1][Casilla.getNumLetra(letra)];
     }
 }

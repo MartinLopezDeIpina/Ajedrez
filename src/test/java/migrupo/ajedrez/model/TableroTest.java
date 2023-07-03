@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -80,8 +82,7 @@ class TableroTest {
     }
 
     private void iniciarTableroYCasillas() throws NoSuchFieldException, IllegalAccessException {
-        mTablero.vaciarTablero();
-        mTablero.ponerPosicionesIniciales();
+        mTablero.reiniciarTablero();
         iniciarCasillas();
     }
 
@@ -136,10 +137,13 @@ class TableroTest {
     }
 
     @Test
-    void vaciarTablero() throws NoSuchFieldException, IllegalAccessException {
+    void vaciarTablero() throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         iniciarTableroYCasillas();
 
-        mTablero.vaciarTablero();
+        Method vaciarTablero = mTablero.getClass().getDeclaredMethod("vaciarTablero");
+        vaciarTablero.setAccessible(true);
+        vaciarTablero.invoke(mTablero);
+
 
         Arrays.stream(casillas).forEach(fila -> Arrays.stream(fila).forEach(casilla -> assertTrue(casilla.estaVacia())));
     }

@@ -18,6 +18,9 @@ public class Casilla {
     public int getNumLetra(){
         return letra - 'a';
     }
+    public static int getNumLetra(char letra){
+        return letra - 'a';
+    }
     public int getNum(){
         return num;
     }

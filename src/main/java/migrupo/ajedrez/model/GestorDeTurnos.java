@@ -44,4 +44,8 @@ public class GestorDeTurnos {
     public Color getColorTurno() {
         return usuarioActual.getColor();
     }
+
+    public void pasarTurno(){
+        usuarioActual = (usuarioActual == usuarioA) ? usuarioB : usuarioA;
+    }
 }
