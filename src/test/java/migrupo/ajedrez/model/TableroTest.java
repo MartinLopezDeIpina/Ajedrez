@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -132,5 +133,14 @@ class TableroTest {
         mTablero.hacerMovimiento(new Casilla('b', 8), new Casilla('d', 3));
         assertTrue(mTablero.reyQuedaEnJaque(new Casilla('e', 4), new Casilla('e', 5)));
         assertFalse(mTablero.reyQuedaEnJaque(new Casilla('e', 1), new Casilla('e', 2)));
+    }
+
+    @Test
+    void vaciarTablero() throws NoSuchFieldException, IllegalAccessException {
+        iniciarTableroYCasillas();
+
+        mTablero.vaciarTablero();
+
+        Arrays.stream(casillas).forEach(fila -> Arrays.stream(fila).forEach(casilla -> assertTrue(casilla.estaVacia())));
     }
 }
