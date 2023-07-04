@@ -21,28 +21,27 @@ class PeonTest {
     private static void setUpBlanco(){
         peonB = new PeonBlanco();
 
-        casillaA = new Casilla('b', 1);
+        casillaA = new Casilla('b', 2);
 
-        casillaB = new Casilla('b', 2);
-        casillaC = new Casilla('b', 3);
-        casillaE = new Casilla('a', 2);
+        casillaB = new Casilla('b', 3);
+        casillaC = new Casilla('b', 4);
+        casillaE = new Casilla('a', 3);
 
-        casillaD = new Casilla('b', 4);
-        casillaF = new Casilla('c', 3);
-        casillaG = new Casilla('b', 0);
+        casillaD = new Casilla('b', 5);
+        casillaF = new Casilla('c', 4);
+        casillaG = new Casilla('b', 1);
     }
     private static void setUpNegro(){
         peonN = new PeonNegro();
 
-        casillaH = new Casilla('b', 6);
+        casillaH = new Casilla('b', 7);
+        casillaI = new Casilla('b', 6);
+        casillaJ = new Casilla('b', 5);
+        casillaL = new Casilla('a', 6);
 
-        casillaI = new Casilla('b', 5);
-        casillaJ = new Casilla('b', 4);
-        casillaL = new Casilla('a', 5);
-
-        casillaK = new Casilla('b', 3);
-        casillaM = new Casilla('c', 5);
-        casillaN = new Casilla('b', 7);
+        casillaK = new Casilla('b', 4);
+        casillaM = new Casilla('c', 6);
+        casillaN = new Casilla('b', 8);
     }
 
     @Test

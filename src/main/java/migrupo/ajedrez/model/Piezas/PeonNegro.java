@@ -15,7 +15,7 @@ public class PeonNegro extends Peon{
 
     @Override
     protected boolean origenEstaADosDesdeInicio(Casilla origen, Casilla destino) {
-        return origen.estaEnMismaColumna(destino) && origen.getNum() == 6 && origen.getDistanciaVertical(destino) == 2;
+        return origen.estaEnMismaColumna(destino) && origen.getNum() == 7 && origen.getDistanciaVertical(destino) == 2;
     }
 
     @Override
