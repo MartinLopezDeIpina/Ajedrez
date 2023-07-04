@@ -136,6 +136,11 @@ class GestorDeMovimientosTest {
 
         Method reyNoQuedaEnJaque = getMetodo("reyNoQuedaEnJaque", Movimiento.class);
 
+        amenazarConPiezasNormales(reyNoQuedaEnJaque);
+
+        amenazarConCaballo(reyNoQuedaEnJaque);
+    }
+    private void amenazarConPiezasNormales(Method reyNoQuedaEnJaque) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         assertTrue((boolean) reyNoQuedaEnJaque.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('e', 1), mTablero.getCasilla('e', 2))));
 
         mTablero.hacerMovimiento(mTablero.getCasilla('f', 2), mTablero.getCasilla('f', 3));
@@ -143,6 +148,13 @@ class GestorDeMovimientosTest {
 
         assertFalse((boolean) reyNoQuedaEnJaque.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('f', 3), mTablero.getCasilla('f', 4))));
         assertTrue((boolean) reyNoQuedaEnJaque.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('f', 3), mTablero.getCasilla('f', 2))));
+    }
+    private void amenazarConCaballo(Method reyNoQuedaEnJaque) throws InvocationTargetException, IllegalAccessException {
+        mTablero.hacerMovimiento(mTablero.getCasilla('g', 3), mTablero.getCasilla('d', 8));
+        mTablero.hacerMovimiento(mTablero.getCasilla('b', 8), mTablero.getCasilla('f', 3));
+
+        assertFalse((boolean) reyNoQuedaEnJaque.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('a', 2), mTablero.getCasilla('a', 3))));
+        assertTrue((boolean) reyNoQuedaEnJaque.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('e', 2), mTablero.getCasilla('f', 3))));
     }
 
     @Test
