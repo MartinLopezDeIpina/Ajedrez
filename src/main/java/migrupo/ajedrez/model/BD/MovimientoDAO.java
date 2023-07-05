@@ -5,6 +5,7 @@ import migrupo.ajedrez.model.Movimiento;
 import java.util.List;
 
 public interface MovimientoDAO {
-
     List<Movimiento> getMovimientosPartida(int identificador);
+
+    void guardarMovimiento(int identificador, Movimiento movimiento);
 }

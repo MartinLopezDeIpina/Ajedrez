@@ -26,7 +26,7 @@ public class PartidaDAOImpl implements PartidaDAO{
     public int registrarPartida(Usuario dueno, Usuario contrinctante) {
         try {
 
-            int identificador = getIdentificadorCorrespondiente(dueno, contrinctante);
+            int identificador = getIdentificadorCorrespondiente();
 
             registrarPartida(identificador, dueno, contrinctante);
 
@@ -38,13 +38,26 @@ public class PartidaDAOImpl implements PartidaDAO{
         }
     }
 
-    private int getIdentificadorCorrespondiente(Usuario dueno, Usuario contrinctante)throws SQLException{
-        String queryGetIdentificador = "select max(identificador) from partida where nombreJugadorA = ?";
-        return mConexionBD.executeQuery(queryGetIdentificador, new Object[]{dueno.getNombre()}).getInt("identificador") + 1;
+    private int getIdentificadorCorrespondiente()throws SQLException{
+        String queryGetIdentificador = "select max(identificador) from partida";
+
+        ResultSet rs = mConexionBD.executeQuery(queryGetIdentificador, new Object[]{});
+        rs.next();
+
+        return rs.getInt("max(identificador)") + 1;
     }
     private void registrarPartida(int identificador, Usuario dueno, Usuario contrinctante) throws SQLException{
         String queryRegistrarPartida = "insert into partida values (?, ?, ?)";
-        mConexionBD.executeUpdate(queryRegistrarPartida, new Object[]{identificador, dueno.getNombre(), contrinctante.getNombre()});
+        mConexionBD.executeUpdate(queryRegistrarPartida, new Object[]{identificador, dueno.getNombre().get(), contrinctante.getNombre().get()});
+    }
+
+    @Override
+    public void eliminarPartida(int identificador) {
+
+        String queryEliminarPartida = "delete from partida where identificador = ?";
+
+        mConexionBD.executeUpdate(queryEliminarPartida, new Object[]{identificador});
+
     }
 
 }

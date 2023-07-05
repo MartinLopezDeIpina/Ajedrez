@@ -1,7 +1,10 @@
 package migrupo.ajedrez.model;
 
+import migrupo.ajedrez.model.BD.MovimientoDAOImpl;
+import migrupo.ajedrez.model.BD.PartidaDAOImpl;
 import migrupo.ajedrez.model.Piezas.Caballo;
 import migrupo.ajedrez.model.Piezas.PeonBlanco;
+import migrupo.ajedrez.model.Piezas.PeonNegro;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +20,9 @@ import static org.testng.AssertJUnit.assertTrue;
 class GestorDeMovimientosTest {
 
     static private GestorDeMovimientos mGestorDeMovimientos;
+    static private MovimientoDAOImpl mMovimientoDAO;
+    static private PartidaDAOImpl mPartidaDAO;
+
     static private Tablero mTablero;
     static private GestorDeTurnos mGestorDeTurnos;
 
@@ -27,6 +33,8 @@ class GestorDeMovimientosTest {
         mGestorDeMovimientos = GestorDeMovimientos.getInstance();
         mTablero = Tablero.getInstance();
         mGestorDeTurnos = GestorDeTurnos.getInstance();
+        mMovimientoDAO = MovimientoDAOImpl.getInstance();
+        mPartidaDAO = PartidaDAOImpl.getInstance();
 
         mGestorDeTurnos.iniciarPartida(new Jugador("pepe", "123"), new Jugador("juan", "123"));
 
@@ -159,6 +167,27 @@ class GestorDeMovimientosTest {
 
     @Test
     void setPartida() {
-        //todo
+
+        int idPartida = crearPartidaPrueba();
+
+        mGestorDeMovimientos.setPartida(idPartida);
+
+        assertInstanceOf(PeonBlanco.class, mTablero.getCasilla('a', 4).getPieza());
+        assertInstanceOf(PeonNegro.class, mTablero.getCasilla('a', 5).getPieza());
+        assertInstanceOf(PeonBlanco.class, mTablero.getCasilla('b', 4).getPieza());
+        assertInstanceOf(PeonNegro.class, mTablero.getCasilla('b', 5).getPieza());
+
+        mPartidaDAO.eliminarPartida(idPartida);
+    }
+
+    private int crearPartidaPrueba(){
+        int idPartida = mPartidaDAO.registrarPartida(new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
+
+        mMovimientoDAO.guardarMovimiento(idPartida, new Movimiento(mTablero.getCasilla('a', 2), mTablero.getCasilla('a', 4)));
+        mMovimientoDAO.guardarMovimiento(idPartida, new Movimiento(mTablero.getCasilla('a', 7), mTablero.getCasilla('a', 5)));
+        mMovimientoDAO.guardarMovimiento(idPartida, new Movimiento(mTablero.getCasilla('b', 2), mTablero.getCasilla('b', 4)));
+        mMovimientoDAO.guardarMovimiento(idPartida, new Movimiento(mTablero.getCasilla('b', 7), mTablero.getCasilla('b', 5)));
+
+        return idPartida;
     }
 }

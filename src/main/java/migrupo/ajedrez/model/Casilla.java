@@ -80,4 +80,8 @@ public class Casilla {
     public Color getColorRival() {
         return pieza.getColorRival();
     }
+
+    public String toString() {
+        return letra + "" + num;
+    }
 }

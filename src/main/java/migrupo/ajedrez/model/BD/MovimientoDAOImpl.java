@@ -5,6 +5,7 @@ import migrupo.ajedrez.model.Casilla;
 import migrupo.ajedrez.model.Movimiento;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +39,33 @@ public class MovimientoDAOImpl implements MovimientoDAO{
             throw new RuntimeException(e);
         }
     }
+
     private ResultSet getRsMovimientosPartida(int identificador){
         String queryGetMovimientosPartida = "select * from movimiento where identificador = ?";
         return mConexionBD.executeQuery(queryGetMovimientosPartida, new Object[]{identificador});
     }
+
+    @Override
+    public void guardarMovimiento(int identificador, Movimiento movimiento) {
+
+        String queryGuardarMovimiento = "insert into movimientoPartida values (?, ?, ?, ?)";
+
+        mConexionBD.executeUpdate(queryGuardarMovimiento, new Object[]{identificador, getNumMovimiento(identificador), movimiento.getCasillaOrigen().toString(), movimiento.getCasillaDestino().toString()});
+
+    }
+
+    private int getNumMovimiento(int identificador){
+        try {
+
+            String queryGetNumMovimiento = "select max(numMovimiento) from movimientoPartida where identificador = ?";
+
+            return mConexionBD.executeQuery(queryGetNumMovimiento, new Object[]{identificador}).getInt("numMovimiento") + 1;
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }
