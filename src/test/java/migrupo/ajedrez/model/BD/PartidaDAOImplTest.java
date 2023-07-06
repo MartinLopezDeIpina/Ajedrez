@@ -1,6 +1,7 @@
 package migrupo.ajedrez.model.BD;
 
 import migrupo.ajedrez.model.Jugador;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -16,9 +17,14 @@ class PartidaDAOImplTest {
 
     @BeforeAll
     static void setUp() {
-
         mPartidaDAO = PartidaDAOImpl.getInstance();
         mConexionBD = ConexionBD.getInstance();
+
+        mConexionBD.establecerConexion();
+    }
+    @AfterAll
+    static void tearDown() {
+        mConexionBD.cerrarConexion();
     }
 
     @Test

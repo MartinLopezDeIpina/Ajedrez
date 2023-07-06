@@ -41,7 +41,7 @@ public class MovimientoDAOImpl implements MovimientoDAO{
     }
 
     private ResultSet getRsMovimientosPartida(int identificador){
-        String queryGetMovimientosPartida = "select * from movimiento where identificador = ?";
+        String queryGetMovimientosPartida = "select * from movimientoPartida where idPartida = ?";
         return mConexionBD.executeQuery(queryGetMovimientosPartida, new Object[]{identificador});
     }
 
@@ -57,9 +57,10 @@ public class MovimientoDAOImpl implements MovimientoDAO{
     private int getNumMovimiento(int identificador){
         try {
 
-            String queryGetNumMovimiento = "select max(numMovimiento) from movimientoPartida where identificador = ?";
-
-            return mConexionBD.executeQuery(queryGetNumMovimiento, new Object[]{identificador}).getInt("numMovimiento") + 1;
+            String queryGetNumMovimiento = "select max(numMovimiento) from movimientoPartida where idPartida = ?";
+            ResultSet rs = mConexionBD.executeQuery(queryGetNumMovimiento, new Object[]{identificador});
+            rs.next();
+            return rs.getInt("max(numMovimiento)") + 1;
 
         }catch (SQLException e){
             e.printStackTrace();

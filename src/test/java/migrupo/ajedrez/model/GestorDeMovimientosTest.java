@@ -1,10 +1,12 @@
 package migrupo.ajedrez.model;
 
+import migrupo.ajedrez.model.BD.ConexionBD;
 import migrupo.ajedrez.model.BD.MovimientoDAOImpl;
 import migrupo.ajedrez.model.BD.PartidaDAOImpl;
 import migrupo.ajedrez.model.Piezas.Caballo;
 import migrupo.ajedrez.model.Piezas.PeonBlanco;
 import migrupo.ajedrez.model.Piezas.PeonNegro;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,7 @@ class GestorDeMovimientosTest {
     static private GestorDeMovimientos mGestorDeMovimientos;
     static private MovimientoDAOImpl mMovimientoDAO;
     static private PartidaDAOImpl mPartidaDAO;
+    private static ConexionBD mConexionBD;
 
     static private Tablero mTablero;
     static private GestorDeTurnos mGestorDeTurnos;
@@ -30,15 +33,22 @@ class GestorDeMovimientosTest {
 
     @BeforeAll
     static void setUp() throws NoSuchMethodException {
+        mConexionBD = ConexionBD.getInstance();
         mGestorDeMovimientos = GestorDeMovimientos.getInstance();
         mTablero = Tablero.getInstance();
         mGestorDeTurnos = GestorDeTurnos.getInstance();
         mMovimientoDAO = MovimientoDAOImpl.getInstance();
         mPartidaDAO = PartidaDAOImpl.getInstance();
 
+        mConexionBD.establecerConexion();
+
         mGestorDeTurnos.iniciarPartida(new Jugador("pepe", "123"), new Jugador("juan", "123"));
 
         hacerGetPiezaAccesible();
+    }
+    @AfterAll
+    static void tearDown() {
+        mConexionBD.cerrarConexion();
     }
 
     @BeforeEach
