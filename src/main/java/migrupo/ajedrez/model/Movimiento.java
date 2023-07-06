@@ -1,5 +1,7 @@
 package migrupo.ajedrez.model;
 
+import migrupo.ajedrez.model.Piezas.Pieza;
+
 public class Movimiento {
     private Casilla origen;
     private Casilla destino;
@@ -18,6 +20,11 @@ public class Movimiento {
 
     public boolean piezaPuedeMoverseACasillaDestino(){
         return origen.piezaPuedeMoverseACasillaDestino(destino);
+    }
+
+    public void actualizarPiezas(Pieza[] piezas){
+        origen.setPieza(piezas[0]);
+        destino.setPieza(piezas[1]);
     }
 }
 

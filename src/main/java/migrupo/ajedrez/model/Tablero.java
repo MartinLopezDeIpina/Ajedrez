@@ -202,4 +202,14 @@ public class Tablero {
     public Casilla getCasilla(char letra, int num) {
         return casillas[num-1][Casilla.getNumLetra(letra)];
     }
+
+    public Pieza[] getPiezas(Casilla casillaOrigen, Casilla casillaDestino) {
+
+            Pieza[] piezas = new Pieza[2];
+
+            piezas[0] = getPiezaEnCasilla(casillaOrigen);
+            piezas[1] = getPiezaEnCasilla(casillaDestino);
+
+            return piezas;
+    }
 }

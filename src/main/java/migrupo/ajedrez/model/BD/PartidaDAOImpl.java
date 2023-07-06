@@ -54,8 +54,10 @@ public class PartidaDAOImpl implements PartidaDAO{
     @Override
     public void eliminarPartida(int identificador) {
 
-        String queryEliminarPartida = "delete from partida where identificador = ?";
+        String queryEliminarMovimientos = "delete from movimientoPartida where idPartida = ?";
+        mConexionBD.executeUpdate(queryEliminarMovimientos, new Object[]{identificador});
 
+        String queryEliminarPartida = "delete from partida where identificador = ?";
         mConexionBD.executeUpdate(queryEliminarPartida, new Object[]{identificador});
 
     }

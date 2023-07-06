@@ -191,6 +191,7 @@ class GestorDeMovimientosTest {
     }
 
     private int crearPartidaPrueba(){
+
         int idPartida = mPartidaDAO.registrarPartida(new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
 
         mMovimientoDAO.guardarMovimiento(idPartida, new Movimiento(mTablero.getCasilla('a', 2), mTablero.getCasilla('a', 4)));

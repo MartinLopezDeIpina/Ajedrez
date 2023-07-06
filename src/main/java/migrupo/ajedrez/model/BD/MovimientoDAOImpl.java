@@ -29,8 +29,8 @@ public class MovimientoDAOImpl implements MovimientoDAO{
 
             List<Movimiento> movimientos = new ArrayList<>();
             while (rsMovimientosPartida.next()){
-                movimientos.add(new Movimiento(new Casilla(rsMovimientosPartida.getString("casillaOrigen").charAt(0), rsMovimientosPartida.getString("casillaOrigen").charAt(1) ),
-                        new Casilla(rsMovimientosPartida.getString("casillaDestino").charAt(0), rsMovimientosPartida.getString("casillaDestino").charAt(1) )));
+                movimientos.add(new Movimiento(new Casilla(rsMovimientosPartida.getString("casillaOrigen").charAt(0), Character.getNumericValue(rsMovimientosPartida.getString("casillaOrigen").charAt(1))),
+                        new Casilla(rsMovimientosPartida.getString("casillaDestino").charAt(0), Character.getNumericValue(rsMovimientosPartida.getString("casillaDestino").charAt(1)) )));
             }
             return movimientos;
 

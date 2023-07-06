@@ -52,14 +52,20 @@ public class GestorDeMovimientos {
         ejecutarMovimientosGuardados(identificador);
     }
     private void ponerPosicionesIniciales() {
-        mTablero.ponerPosicionesIniciales();
+        mTablero.reiniciarTablero();
     }
 
     private void ejecutarMovimientosGuardados(int identificador) {
 
         List<Movimiento> movimientos = mMovimientoDAO.getMovimientosPartida(identificador);
 
+        movimientos.stream().forEach(movimiento -> cargarPiezasEnMovimiento(movimiento));
+
         movimientos.stream().forEach(movimiento -> hacerMovimientoYPasarTurno(movimiento));
+    }
+
+    private void cargarPiezasEnMovimiento(Movimiento movimiento) {
+        movimiento.actualizarPiezas(mTablero.getPiezas(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino()));
     }
 
 
