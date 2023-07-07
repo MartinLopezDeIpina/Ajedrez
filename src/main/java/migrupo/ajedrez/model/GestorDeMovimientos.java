@@ -46,8 +46,10 @@ public class GestorDeMovimientos {
         return !mTablero.reyQuedaEnJaque(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
     }
 
-    public void setPartida(int identificador) {
+    public void setPartida(int identificador, Usuario usuarioB, Usuario usuarioN) {
         ponerPosicionesIniciales();
+
+        mGestorDeTurnos.iniciarPartida(usuarioB, usuarioN);
 
         ejecutarMovimientosGuardados(identificador);
     }

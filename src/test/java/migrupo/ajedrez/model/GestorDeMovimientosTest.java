@@ -28,6 +28,7 @@ class GestorDeMovimientosTest {
 
     static private Tablero mTablero;
     static private GestorDeTurnos mGestorDeTurnos;
+    static private Partida mPartida;
 
     static Method getPiezaTablero;
 
@@ -39,10 +40,9 @@ class GestorDeMovimientosTest {
         mGestorDeTurnos = GestorDeTurnos.getInstance();
         mMovimientoDAO = MovimientoDAOImpl.getInstance();
         mPartidaDAO = PartidaDAOImpl.getInstance();
+        mPartida = Partida.getInstance();
 
         mConexionBD.establecerConexion();
-
-        mGestorDeTurnos.iniciarPartida(new Jugador("pepe", "123"), new Jugador("juan", "123"));
 
         hacerGetPiezaAccesible();
     }
@@ -180,7 +180,7 @@ class GestorDeMovimientosTest {
 
         int idPartida = crearPartidaPrueba();
 
-        mGestorDeMovimientos.setPartida(idPartida);
+        mPartida.setPartida(idPartida, new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
 
         assertInstanceOf(PeonBlanco.class, mTablero.getCasilla('a', 4).getPieza());
         assertInstanceOf(PeonNegro.class, mTablero.getCasilla('a', 5).getPieza());

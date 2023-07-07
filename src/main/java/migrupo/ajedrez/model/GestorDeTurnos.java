@@ -16,7 +16,6 @@ public class GestorDeTurnos {
     public void iniciarPartida(Usuario usuarioA, Usuario usuarioB) {
         asignarUsuarios(usuarioA, usuarioB);
 
-        ponerColores(usuarioA, usuarioB);
 
         iniciarTurno();
     }
@@ -24,21 +23,9 @@ public class GestorDeTurnos {
         this.usuarioA = usuarioA;
         this.usuarioB = usuarioB;
     }
-    private void ponerColores(Usuario usuarioA, Usuario usuarioB) {
-        if (Math.random() < 0.5) {
-            usuarioA.setColor(Color.BLANCO);
-            usuarioB.setColor(Color.NEGRO);
-        } else {
-            usuarioA.setColor(Color.BLANCO);
-            usuarioB.setColor(Color.NEGRO);
-        }
-    }
+
     private void iniciarTurno(){
-        if(usuarioA.getColor().equals(Color.BLANCO)){
-            usuarioActual = usuarioA;
-        }else{
-            usuarioActual = usuarioB;
-        }
+        usuarioActual = usuarioA.getColor().equals(Color.BLANCO) ? usuarioA : usuarioB;
     }
 
     public Color getColorTurno() {
