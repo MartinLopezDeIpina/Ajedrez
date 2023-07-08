@@ -12,4 +12,9 @@ public class Reina extends Pieza{
     public boolean puedeMoverseA(Casilla origen, Casilla destino) {
         return origen.estaEnMismaColumna(destino) || origen.estaEnMismaFila(destino) || origen.estaEnMismaDiagonal(destino);
     }
+
+    @Override
+    public String getNombre() {
+        return getColor() == Color.BLANCO ? "reinaB" : "reinaN";
+    }
 }

@@ -1,5 +1,6 @@
 package migrupo.ajedrez.model;
 
+import javafx.beans.property.SimpleObjectProperty;
 import migrupo.ajedrez.model.Piezas.*;
 
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class Tablero {
     }
 
     private Pieza getPiezaEnCasilla(Casilla casilla){
-        return casillas[casilla.getNum()-1][casilla.getNumLetra()].getPieza();
+        return casillas[casilla.getNum()-1][casilla.getNumLetra()].getPiezaValue();
     }
     private void setPiezaEnCasilla(Casilla casilla, Pieza pieza){
         casillas[casilla.getNum()-1][casilla.getNumLetra()].setPieza(pieza);
@@ -180,8 +181,8 @@ public class Tablero {
 
         return Arrays.stream(casillas).flatMap(Arrays::stream)
                 .filter(casilla -> !casilla.equals(casillaRey) && getColorPiezaEnCasilla(casilla) != colorRey)
-                .anyMatch(casilla -> casilla.getPieza().puedeMoverseA(casilla, casillaRey) &&
-                        (!hayPiezasEntreCasillaOrigenYCasillaDestino(casilla, casillaRey) || casilla.getPieza() instanceof Caballo));
+                .anyMatch(casilla -> casilla.getPiezaValue().puedeMoverseA(casilla, casillaRey) &&
+                        (!hayPiezasEntreCasillaOrigenYCasillaDestino(casilla, casillaRey) || casilla.getPiezaValue() instanceof Caballo));
     }
     private Casilla getCasillaRey(Color colorRey) {
 
@@ -201,6 +202,10 @@ public class Tablero {
 
     public Casilla getCasilla(char letra, int num) {
         return casillas[num-1][Casilla.getNumLetra(letra)];
+    }
+
+    public SimpleObjectProperty<Pieza> getPiezaEnCasilla(int fila, int columna) {
+        return casillas[fila][columna].getPieza();
     }
 
     public Pieza[] getPiezas(Casilla casillaOrigen, Casilla casillaDestino) {

@@ -14,4 +14,9 @@ public class PiezaNula extends Pieza{
     public boolean puedeMoverseA(Casilla origen, Casilla destino) {
         return false;
     }
+
+    @Override
+    public String getNombre() {
+        return "nulo";
+    }
 }

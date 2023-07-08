@@ -12,4 +12,9 @@ public class Caballo extends Pieza{
     public boolean puedeMoverseA(Casilla origen, Casilla destino) {
         return origen.estaEnL(destino);
     }
+
+    @Override
+    public String getNombre() {
+        return getColor() == Color.BLANCO ? "caballoB" : "caballoN";
+    }
 }

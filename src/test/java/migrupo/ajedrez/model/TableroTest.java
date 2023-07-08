@@ -43,29 +43,29 @@ class TableroTest {
     }
     private void comprobarBlancas() {
         for(int i = 0; i < 8; i++){
-            assertEquals(casillas[1][i].getPieza().getClass(), PeonBlanco.class);
+            assertEquals(casillas[1][i].getPiezaValue().getClass(), PeonBlanco.class);
         }
-        assertEquals(casillas[0][0].getPieza().getClass(), Torre.class);
-        assertEquals(casillas[0][7].getPieza().getClass(), Torre.class);
-        assertEquals(casillas[0][1].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Caballo.class);
-        assertEquals(casillas[0][6].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Caballo.class);
-        assertEquals(casillas[0][2].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Alfil.class);
-        assertEquals(casillas[0][5].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Alfil.class);
-        assertEquals(casillas[0][3].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Reina.class);
-        assertEquals(casillas[0][4].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Rey.class);
+        assertEquals(casillas[0][0].getPiezaValue().getClass(), Torre.class);
+        assertEquals(casillas[0][7].getPiezaValue().getClass(), Torre.class);
+        assertEquals(casillas[0][1].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.Caballo.class);
+        assertEquals(casillas[0][6].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.Caballo.class);
+        assertEquals(casillas[0][2].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.Alfil.class);
+        assertEquals(casillas[0][5].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.Alfil.class);
+        assertEquals(casillas[0][3].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.Reina.class);
+        assertEquals(casillas[0][4].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.Rey.class);
     }
     private void comprobarNegras() {
         for(int i = 0; i < 8; i++){
-            assertEquals(casillas[6][i].getPieza().getClass(), migrupo.ajedrez.model.Piezas.PeonNegro.class);
+            assertEquals(casillas[6][i].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.PeonNegro.class);
         }
-        assertEquals(casillas[7][0].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Torre.class);
-        assertEquals(casillas[7][7].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Torre.class);
-        assertEquals(casillas[7][1].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Caballo.class);
-        assertEquals(casillas[7][6].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Caballo.class);
-        assertEquals(casillas[7][2].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Alfil.class);
-        assertEquals(casillas[7][5].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Alfil.class);
-        assertEquals(casillas[7][3].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Reina.class);
-        assertEquals(casillas[7][4].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Rey.class);
+        assertEquals(casillas[7][0].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.Torre.class);
+        assertEquals(casillas[7][7].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.Torre.class);
+        assertEquals(casillas[7][1].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.Caballo.class);
+        assertEquals(casillas[7][6].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.Caballo.class);
+        assertEquals(casillas[7][2].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.Alfil.class);
+        assertEquals(casillas[7][5].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.Alfil.class);
+        assertEquals(casillas[7][3].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.Reina.class);
+        assertEquals(casillas[7][4].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.Rey.class);
     }
 
     @Test
@@ -77,8 +77,8 @@ class TableroTest {
 
         iniciarCasillas();
 
-        assertEquals(casillas[2][0].getPieza().getClass(), PeonBlanco.class);
-        assertEquals(casillas[5][2].getPieza().getClass(), migrupo.ajedrez.model.Piezas.Caballo.class);
+        assertEquals(casillas[2][0].getPiezaValue().getClass(), PeonBlanco.class);
+        assertEquals(casillas[5][2].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.Caballo.class);
     }
 
     private void iniciarTableroYCasillas() throws NoSuchFieldException, IllegalAccessException {

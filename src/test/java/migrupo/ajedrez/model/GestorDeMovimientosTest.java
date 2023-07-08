@@ -3,7 +3,6 @@ package migrupo.ajedrez.model;
 import migrupo.ajedrez.model.BD.ConexionBD;
 import migrupo.ajedrez.model.BD.MovimientoDAOImpl;
 import migrupo.ajedrez.model.BD.PartidaDAOImpl;
-import migrupo.ajedrez.model.Piezas.Caballo;
 import migrupo.ajedrez.model.Piezas.PeonBlanco;
 import migrupo.ajedrez.model.Piezas.PeonNegro;
 import org.junit.jupiter.api.AfterAll;
@@ -182,10 +181,10 @@ class GestorDeMovimientosTest {
 
         mPartida.setPartida(idPartida, new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
 
-        assertInstanceOf(PeonBlanco.class, mTablero.getCasilla('a', 4).getPieza());
-        assertInstanceOf(PeonNegro.class, mTablero.getCasilla('a', 5).getPieza());
-        assertInstanceOf(PeonBlanco.class, mTablero.getCasilla('b', 4).getPieza());
-        assertInstanceOf(PeonNegro.class, mTablero.getCasilla('b', 5).getPieza());
+        assertInstanceOf(PeonBlanco.class, mTablero.getCasilla('a', 4).getPiezaValue());
+        assertInstanceOf(PeonNegro.class, mTablero.getCasilla('a', 5).getPiezaValue());
+        assertInstanceOf(PeonBlanco.class, mTablero.getCasilla('b', 4).getPiezaValue());
+        assertInstanceOf(PeonNegro.class, mTablero.getCasilla('b', 5).getPiezaValue());
 
         mPartidaDAO.eliminarPartida(idPartida);
     }

@@ -22,5 +22,10 @@ public class PeonBlanco extends Peon {
     protected boolean origenEstaAUnaDiagonal(Casilla origen, Casilla destino) {
         return origen.getDistanciaVertical(destino) == -1 && origen.getDistanciaHorizontalAbs(destino) == 1 && destino.hayPiezaColor(Color.NEGRO);
     }
+
+    @Override
+    public String getNombre() {
+        return "peonB";
+    }
 }
 

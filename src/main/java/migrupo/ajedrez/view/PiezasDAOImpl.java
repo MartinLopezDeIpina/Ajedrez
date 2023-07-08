@@ -29,6 +29,7 @@ public class PiezasDAOImpl implements PiezasDAO {
     }
 
     private String getPathImagenPieza(String nombrePieza) {
+
         String query = String.format("SELECT pathImagen FROM imagenesPiezas WHERE tipoPieza = ?");
 
         try {

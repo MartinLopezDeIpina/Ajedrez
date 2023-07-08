@@ -1,5 +1,6 @@
 package migrupo.ajedrez.model;
 
+import javafx.beans.property.SimpleObjectProperty;
 import migrupo.ajedrez.model.Piezas.Pieza;
 import migrupo.ajedrez.model.Piezas.PiezaNula;
 
@@ -7,12 +8,12 @@ public class Casilla {
     private char letra;
     private int num;
 
-    private Pieza pieza;
+    private SimpleObjectProperty<Pieza> pieza;
 
     public Casilla(char letra, int num){
         this.letra = letra;
         this.num = num;
-        this.pieza = new PiezaNula();
+        this.pieza = new SimpleObjectProperty<>(new PiezaNula());
     }
 
     public int getNumLetra(){
@@ -24,18 +25,19 @@ public class Casilla {
     public int getNum(){
         return num;
     }
-    public Pieza getPieza() {return pieza;}
-    public void setPieza(Pieza pieza) {this.pieza = pieza;}
+    public  SimpleObjectProperty<Pieza> getPieza() {return pieza;}
+    public Pieza getPiezaValue() {return pieza.getValue();}
+    public void setPieza(Pieza pieza) {this.pieza.set(pieza);}
 
     public boolean estaVacia() {
-        return pieza instanceof PiezaNula;
+        return pieza.getValue() instanceof PiezaNula;
     }
     public boolean estaOcupada() {
         return !estaVacia();
     }
 
     public boolean piezaPuedeMoverseACasillaDestino(Casilla destino) {
-        return pieza.puedeMoverseA(this, destino);
+        return pieza.getValue().puedeMoverseA(this, destino);
     }
 
     public int getDistanciaVertical(Casilla destino) {
@@ -53,7 +55,7 @@ public class Casilla {
     }
 
     public boolean hayPiezaColor(Color color) {
-        return !estaVacia() && pieza.esColor(color);
+        return !estaVacia() && pieza.getValue().esColor(color);
     }
 
     public boolean estaEnMismaColumna(Casilla destino) {
@@ -78,7 +80,7 @@ public class Casilla {
     }
 
     public Color getColorRival() {
-        return pieza.getColorRival();
+        return pieza.getValue().getColorRival();
     }
 
     public String toString() {

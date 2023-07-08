@@ -12,4 +12,9 @@ public class Alfil extends Pieza{
     public boolean puedeMoverseA(Casilla origen, Casilla destino) {
         return origen.estaEnMismaDiagonal(destino);
     }
+
+    @Override
+    public String getNombre() {
+        return getColor() == Color.BLANCO ? "alfilB" : "alfilN";
+    }
 }

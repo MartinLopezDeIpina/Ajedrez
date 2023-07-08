@@ -25,6 +25,9 @@ public class Rey extends Pieza{
         return origen.estaEnMismaDiagonal(destino) && origen.getDistanciaDiagonalAbs(destino) == 1;
     }
 
-
+    @Override
+    public String getNombre() {
+        return getColor() == Color.BLANCO ? "reyB" : "reyN";
+    }
 
 }

@@ -25,4 +25,6 @@ public abstract class Pieza {
             return color.BLANCO;
         }
     }
+
+    public abstract String getNombre();
 }
