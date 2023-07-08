@@ -1,6 +1,7 @@
 package migrupo.ajedrez.view;
 
 import javafx.scene.image.Image;
+import migrupo.ajedrez.AjedrezApplication;
 import migrupo.ajedrez.model.BD.ConexionBD;
 
 import java.sql.ResultSet;
@@ -23,11 +24,12 @@ public class PiezasDAOImpl implements PiezasDAO {
     public Image getImagenPieza(String nombrePieza) {
         String pathImagen = getPathImagenPieza(nombrePieza);
 
-        return new Image(pathImagen);
+
+        return new Image(AjedrezApplication.class.getResource(pathImagen).toExternalForm());
     }
 
     private String getPathImagenPieza(String nombrePieza) {
-        String query = String.format("SELECT pathImagen FROM piezas WHERE tipoPieza = ?");
+        String query = String.format("SELECT pathImagen FROM imagenesPiezas WHERE tipoPieza = ?");
 
         try {
 

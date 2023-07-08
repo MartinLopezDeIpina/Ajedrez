@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import migrupo.ajedrez.AjedrezApplication;
+import migrupo.ajedrez.view.PiezasDAOImpl;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,6 +20,8 @@ public class VentanaJuegoController implements Initializable {
 
     private static final float TAMANO_CASILLA = 93.75f;
     private static final float TAMANO_PIEZA = 75f;
+
+    private PiezasDAOImpl mPiezasDAOImpl = PiezasDAOImpl.getInstance();
 
     @FXML protected GridPane gridPaneTablero;
     @FXML protected TextField textFieldNombreA;
@@ -66,7 +69,7 @@ public class VentanaJuegoController implements Initializable {
         imagen.setFitHeight(TAMANO_PIEZA);
         imagen.setFitWidth(TAMANO_PIEZA);
 
-        imagen.setImage(new Image(AjedrezApplication.class.getResource("imagenes/piezas/peonN.png").toExternalForm()));
+        imagen.setImage(mPiezasDAOImpl.getImagenPieza("CaballoN"));
 
         imagen.layoutXProperty().set( (TAMANO_CASILLA - TAMANO_PIEZA) / 2);
         imagen.layoutYProperty().set( (TAMANO_CASILLA - TAMANO_PIEZA) / 2);
