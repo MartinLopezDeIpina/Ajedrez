@@ -32,7 +32,7 @@ public class VentanaJuegoController implements Initializable {
     private void iniciarTablero() {
         ponerCasillas();
 
-
+        
     }
     private void ponerCasillas() {
         for(int i = 0; i < 8; i++){
