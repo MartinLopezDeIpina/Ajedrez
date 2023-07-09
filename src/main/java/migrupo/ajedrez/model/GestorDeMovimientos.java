@@ -1,6 +1,7 @@
 package migrupo.ajedrez.model;
 
 import migrupo.ajedrez.model.BD.MovimientoDAOImpl;
+import migrupo.ajedrez.model.StateCasilla.Casilla;
 
 import java.util.List;
 

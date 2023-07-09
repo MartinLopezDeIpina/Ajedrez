@@ -1,6 +1,6 @@
 package migrupo.ajedrez.model.Piezas;
 
-import migrupo.ajedrez.model.Casilla;
+import migrupo.ajedrez.model.StateCasilla.Casilla;
 import migrupo.ajedrez.model.Color;
 
 public abstract class Peon extends Pieza {

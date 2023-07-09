@@ -2,17 +2,10 @@ package migrupo.ajedrez.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import migrupo.ajedrez.AjedrezApplication;
-import migrupo.ajedrez.model.Casilla;
-import migrupo.ajedrez.model.Piezas.Pieza;
 import migrupo.ajedrez.model.Tablero;
 import migrupo.ajedrez.view.PiezasDAOImpl;
 

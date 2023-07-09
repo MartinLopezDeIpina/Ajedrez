@@ -2,6 +2,7 @@ package migrupo.ajedrez.model;
 
 import migrupo.ajedrez.model.Piezas.PeonBlanco;
 import migrupo.ajedrez.model.Piezas.Torre;
+import migrupo.ajedrez.model.StateCasilla.Casilla;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

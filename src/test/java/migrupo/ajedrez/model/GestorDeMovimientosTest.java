@@ -5,6 +5,7 @@ import migrupo.ajedrez.model.BD.MovimientoDAOImpl;
 import migrupo.ajedrez.model.BD.PartidaDAOImpl;
 import migrupo.ajedrez.model.Piezas.PeonBlanco;
 import migrupo.ajedrez.model.Piezas.PeonNegro;
+import migrupo.ajedrez.model.StateCasilla.Casilla;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

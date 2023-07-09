@@ -2,6 +2,7 @@ package migrupo.ajedrez.model;
 
 import javafx.beans.property.SimpleObjectProperty;
 import migrupo.ajedrez.model.Piezas.*;
+import migrupo.ajedrez.model.StateCasilla.Casilla;
 
 import java.util.ArrayList;
 import java.util.Arrays;

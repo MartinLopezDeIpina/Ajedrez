@@ -1,6 +1,7 @@
 package migrupo.ajedrez.model;
 
 import migrupo.ajedrez.model.Piezas.Pieza;
+import migrupo.ajedrez.model.StateCasilla.Casilla;
 
 public class Movimiento {
     private Casilla origen;

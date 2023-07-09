@@ -1,8 +1,7 @@
 package migrupo.ajedrez.model.Piezas;
 
-import migrupo.ajedrez.model.Casilla;
+import migrupo.ajedrez.model.StateCasilla.Casilla;
 import migrupo.ajedrez.model.Color;
-import migrupo.ajedrez.model.Tablero;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

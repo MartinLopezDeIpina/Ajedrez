@@ -1,6 +1,6 @@
 package migrupo.ajedrez.model.Piezas;
 
-import migrupo.ajedrez.model.Casilla;
+import migrupo.ajedrez.model.StateCasilla.Casilla;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

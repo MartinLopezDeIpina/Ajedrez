@@ -1,12 +1,15 @@
-package migrupo.ajedrez.model;
+package migrupo.ajedrez.model.StateCasilla;
 
 import javafx.beans.property.SimpleObjectProperty;
+import migrupo.ajedrez.model.Color;
 import migrupo.ajedrez.model.Piezas.Pieza;
 import migrupo.ajedrez.model.Piezas.PiezaNula;
 
-public class Casilla {
+public class Casilla implements EstadoCasilla{
     private char letra;
     private int num;
+
+    private EstadoCasilla estadoCasilla;
 
     private SimpleObjectProperty<Pieza> pieza;
 
@@ -14,6 +17,8 @@ public class Casilla {
         this.letra = letra;
         this.num = num;
         this.pieza = new SimpleObjectProperty<>(new PiezaNula());
+
+        this.estadoCasilla = new EstadoCasillaNormal(this);
     }
 
     public int getNumLetra(){
@@ -85,5 +90,20 @@ public class Casilla {
 
     public String toString() {
         return letra + "" + num;
+    }
+
+
+    public void setEstadoCasilla(EstadoCasilla estadoCasilla) {
+        this.estadoCasilla = estadoCasilla;
+    }
+
+    @Override
+    public void seleccionarCasilla() {
+        estadoCasilla.seleccionarCasilla();
+    }
+
+    @Override
+    public void deseleccionarCasilla() {
+        estadoCasilla.deseleccionarCasilla();
     }
 }

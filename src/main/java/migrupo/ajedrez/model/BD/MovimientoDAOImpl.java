@@ -1,7 +1,6 @@
 package migrupo.ajedrez.model.BD;
 
-import javafx.scene.control.skin.SliderSkin;
-import migrupo.ajedrez.model.Casilla;
+import migrupo.ajedrez.model.StateCasilla.Casilla;
 import migrupo.ajedrez.model.Movimiento;
 
 import java.sql.ResultSet;
