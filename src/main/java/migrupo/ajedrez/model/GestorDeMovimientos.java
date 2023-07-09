@@ -15,6 +15,8 @@ public class GestorDeMovimientos {
     private Tablero mTablero;
     private GestorDeTurnos mGestorDeTurnos;
 
+    private Casilla casillaSeleccionada;
+
     private GestorDeMovimientos() {
         mMovimientoDAO = MovimientoDAOImpl.getInstance();
         mTablero = Tablero.getInstance();
@@ -71,5 +73,28 @@ public class GestorDeMovimientos {
         movimiento.actualizarPiezas(mTablero.getPiezas(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino()));
     }
 
+    //todo: test de esto
+    //todo: seguir por aquí
+    public void casillaSeleccionada(Casilla casilla) {
 
+        if(hayCasillaSeleccionada()) {
+            seleccionarCasilla(casilla);
+        }else {
+            seleccionarSegundaCasilla(casilla);
+        }
+    }
+
+    private boolean hayCasillaSeleccionada() {
+        return casillaSeleccionada != null;
+    }
+
+    private void seleccionarCasilla(Casilla casilla) {
+        casillaSeleccionada = casilla;
+        casilla.seleccionarCasilla();
+    }
+    private void seleccionarSegundaCasilla(Casilla casilla) {
+        hacerMovimientoYPasarTurno(new Movimiento(casillaSeleccionada, casilla));
+        casillaSeleccionada.deseleccionarCasilla();
+        casillaSeleccionada = null;
+    }
 }

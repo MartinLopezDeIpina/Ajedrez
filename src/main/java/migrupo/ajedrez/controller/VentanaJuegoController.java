@@ -2,17 +2,19 @@ package migrupo.ajedrez.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import migrupo.ajedrez.model.GestorDeMovimientos;
 import migrupo.ajedrez.model.Tablero;
 import migrupo.ajedrez.view.EfectosDAOImpl;
 import migrupo.ajedrez.view.PiezasDAOImpl;
 import migrupo.ajedrez.view.TipoEfecto;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class VentanaJuegoController implements Initializable {
@@ -21,6 +23,8 @@ public class VentanaJuegoController implements Initializable {
     private static final float TAMANO_PIEZA = 75f;
 
     private PiezasDAOImpl mPiezasDAOImpl = PiezasDAOImpl.getInstance();
+    private EfectosDAOImpl mEfectosDAOImpl = EfectosDAOImpl.getInstance();
+    private GestorDeMovimientos mGestorDeMovimientos = GestorDeMovimientos.getInstance();
     private Tablero mTablero = Tablero.getInstance();
 
     @FXML protected GridPane gridPaneTablero;
@@ -53,6 +57,9 @@ public class VentanaJuegoController implements Initializable {
         actualizarImagenesPiezas(fila, columna, casilla);
 
         gridPaneTablero.add(casilla, fila, columna);
+
+        configurarClickImagen(casilla, fila, columna);
+        configurarClickCasilla(casilla, fila, columna);
     }
 
     private void configurarCasilla(Pane casilla, int fila, int columna) {
@@ -82,25 +89,19 @@ public class VentanaJuegoController implements Initializable {
 
         casilla.getChildren().clear();
 
-        if(nombrePieza.equals("nulo")){
-            return;
-        }
-        
         casilla.getChildren().add(crearImagen(nombrePieza));
     }
-
-
-
     private ImageView crearImagen(String nombrePieza) {
         ImageView imagen = new ImageView();
         
         configurarImagen(imagen);
 
-        imagen.setImage(mPiezasDAOImpl.getImagenPieza(nombrePieza));
+        if(!nombrePieza.equals("nulo")){
+            imagen.setImage(mPiezasDAOImpl.getImagenPieza(nombrePieza));
+        }
 
         return imagen;
     }
-
     private void configurarImagen(ImageView imagen) {
 
         imagen.setFitHeight(TAMANO_PIEZA);
@@ -110,6 +111,22 @@ public class VentanaJuegoController implements Initializable {
         imagen.layoutYProperty().set( (TAMANO_CASILLA - TAMANO_PIEZA) / 2);
 
         imagen.setRotate(90);
+    }
+
+    private void configurarClickImagen(Pane casilla, int fila, int columna) {
+        List<Node> hijos = casilla.getChildren();
+        casilla.getChildren().get(0).setOnMouseClicked(mouseEvent -> {
+            configurarClickCasilla(casilla, fila, columna);
+        });
+    }
+    private void configurarClickCasilla(Pane casilla, int fila, int columna) {
+        casilla.setOnMouseClicked(mouseEvent -> {
+            //casilla.setStyle("-fx-background-color: #00FF00");
+            //casilla.getChildren().get(0).setEffect(mEfectosDAOImpl.getEfecto(TipoEfecto.SELECCIONADO));
+
+            char letra = (char) (fila + 97);
+            mGestorDeMovimientos.casillaSeleccionada(mTablero.getCasilla(letra, fila));
+        });
     }
 
 
