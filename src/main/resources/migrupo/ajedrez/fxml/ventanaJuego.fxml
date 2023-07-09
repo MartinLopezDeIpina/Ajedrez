@@ -2,6 +2,9 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -52,6 +55,16 @@
               </rowConstraints>
             </GridPane>
          </center>
+         <left>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" visible="false" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@../imagenes/piezas/peonB.png" />
+               </image>
+               <effect>
+                  <ColorAdjust brightness="-0.55" contrast="-0.04" hue="0.05" saturation="0.02" />
+               </effect>
+            </ImageView>
+         </left>
       </BorderPane>
    </children>
 </AnchorPane>

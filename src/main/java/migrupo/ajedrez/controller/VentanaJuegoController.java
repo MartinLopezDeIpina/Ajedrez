@@ -3,11 +3,14 @@ package migrupo.ajedrez.controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import migrupo.ajedrez.model.Tablero;
+import migrupo.ajedrez.view.EfectosDAOImpl;
 import migrupo.ajedrez.view.PiezasDAOImpl;
+import migrupo.ajedrez.view.TipoEfecto;
 
 import java.net.URL;
 import java.util.ResourceBundle;
