@@ -7,11 +7,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import migrupo.ajedrez.model.GestorDeMovimientos;
+import migrupo.ajedrez.model.StateCasilla.EstadoCasilla;
 import migrupo.ajedrez.model.StateCasilla.EstadoCasillaNormal;
 import migrupo.ajedrez.model.StateCasilla.EstadoCasillaSeleccionado;
 import migrupo.ajedrez.model.Tablero;
 import migrupo.ajedrez.view.EfectosDAOImpl;
 import migrupo.ajedrez.view.PiezasDAOImpl;
+import migrupo.ajedrez.view.TipoEfecto;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -140,20 +142,24 @@ public class VentanaJuegoController implements Initializable {
         });
     }
 
-    //todo: limpiar esto de alguna manera
     private void configurarSeleccionarCasilla(int fila, int columna, Pane casilla) {
         char letra = (char) (columna + 97);
+
         mTablero.getCasilla(letra, fila).getEstadoCasilla().addListener(((observable, oldValue, newValue) -> {
-            if(newValue instanceof EstadoCasillaNormal){
-                casilla.setStyle(getStyleCasilla(fila, columna));
-            }
-            if(newValue instanceof EstadoCasillaSeleccionado){
-                casilla.setStyle("-fx-background-color: #00FF00");
-            }
+            eliminarFiltrosSiDesseleccionadoCasilla(casilla, newValue);
+            aplicarFiltrosSiSeleccionadoCasilla(casilla, newValue);
         }));
     }
-
-
+    private void eliminarFiltrosSiDesseleccionadoCasilla(Pane casilla, EstadoCasilla newValue) {
+        if(newValue instanceof EstadoCasillaNormal){
+            casilla.setEffect(null);
+        }
+    }
+    private void aplicarFiltrosSiSeleccionadoCasilla(Pane casilla, EstadoCasilla newValue) {
+        if(newValue instanceof EstadoCasillaSeleccionado){
+            casilla.setEffect(mEfectosDAOImpl.getEfecto(TipoEfecto.SELECCIONADO));
+        }
+    }
 
 
 }
