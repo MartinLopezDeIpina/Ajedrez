@@ -16,7 +16,7 @@ public class GestorDeMovimientos {
     private Tablero mTablero;
     private GestorDeTurnos mGestorDeTurnos;
 
-    private SimpleObjectProperty<Casilla> casillaSeleccionada = new SimpleObjectProperty<>();
+    private Casilla casillaSeleccionada;
     private GestorDeMovimientos() {
         mMovimientoDAO = MovimientoDAOImpl.getInstance();
         mTablero = Tablero.getInstance();
@@ -74,7 +74,6 @@ public class GestorDeMovimientos {
         movimiento.actualizarPiezas(mTablero.getPiezas(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino()));
     }
 
-    //todo: test de esto
     public void casillaSeleccionada(Casilla casilla) {
 
         if(!hayCasillaSeleccionada()) {
@@ -85,26 +84,22 @@ public class GestorDeMovimientos {
     }
 
     private boolean hayCasillaSeleccionada() {
-        return casillaSeleccionada.getValue() != null;
+        return casillaSeleccionada != null;
     }
 
     private void seleccionarCasilla(Casilla casilla) {
-        casillaSeleccionada.set(casilla);
+        casillaSeleccionada = casilla;
         casilla.seleccionarCasilla();
     }
     private void seleccionarSegundaCasilla(Casilla casilla) {
-        hacerMovimientoYPasarTurno(new Movimiento(casillaSeleccionada.getValue(), casilla));
+        hacerMovimientoYPasarTurno(new Movimiento(casillaSeleccionada, casilla));
         desseleccionar();
     }
 
     public void desseleccionar(){
         if(hayCasillaSeleccionada()){
-            casillaSeleccionada.getValue().deseleccionarCasilla();
-            casillaSeleccionada.set(null);
+            casillaSeleccionada.deseleccionarCasilla();
+            casillaSeleccionada = null;
         }
-    }
-
-    public SimpleObjectProperty<Casilla> getCasillaSeleccionada() {
-        return casillaSeleccionada;
     }
 }

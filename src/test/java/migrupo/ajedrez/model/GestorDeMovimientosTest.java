@@ -11,11 +11,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertTrue;
 
@@ -31,9 +31,11 @@ class GestorDeMovimientosTest {
     static private Partida mPartida;
 
     static Method getPiezaTablero;
+    static Field casillaSeleccionada;
+
 
     @BeforeAll
-    static void setUp() throws NoSuchMethodException {
+    static void setUp() throws NoSuchMethodException, NoSuchFieldException {
         mConexionBD = ConexionBD.getInstance();
         mGestorDeMovimientos = GestorDeMovimientos.getInstance();
         mTablero = Tablero.getInstance();
@@ -45,7 +47,14 @@ class GestorDeMovimientosTest {
         mConexionBD.establecerConexion();
 
         hacerGetPiezaAccesible();
+        hacerCasillaSeleccionadaAccesible();
     }
+
+    private static void hacerCasillaSeleccionadaAccesible() throws NoSuchFieldException {
+        casillaSeleccionada = mGestorDeMovimientos.getClass().getDeclaredField("casillaSeleccionada");
+        casillaSeleccionada.setAccessible(true);
+    }
+
     @AfterAll
     static void tearDown() {
         mConexionBD.cerrarConexion();
@@ -200,5 +209,25 @@ class GestorDeMovimientosTest {
         mMovimientoDAO.guardarMovimiento(idPartida, new Movimiento(mTablero.getCasilla('b', 6), mTablero.getCasilla('b', 4)));
 
         return idPartida;
+    }
+
+    @Test
+    void casillaSeleccionadaTest() throws IllegalAccessException {
+
+        assertNull(casillaSeleccionada.get(mGestorDeMovimientos));
+
+        mGestorDeMovimientos.casillaSeleccionada(mTablero.getCasilla('a', 1));
+        assertEquals(mTablero.getCasilla('a', 1), casillaSeleccionada.get(mGestorDeMovimientos));
+
+        mGestorDeMovimientos.casillaSeleccionada(mTablero.getCasilla('a', 2));
+        assertNull(casillaSeleccionada.get(mGestorDeMovimientos));
+    }
+
+    @Test
+    void desseleccionarTest() throws IllegalAccessException {
+        mGestorDeMovimientos.casillaSeleccionada(mTablero.getCasilla('a', 1));
+        mGestorDeMovimientos.desseleccionar();
+
+        assertNull(casillaSeleccionada.get(mGestorDeMovimientos));
     }
 }
