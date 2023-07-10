@@ -94,8 +94,14 @@ public class GestorDeMovimientos {
     }
     private void seleccionarSegundaCasilla(Casilla casilla) {
         hacerMovimientoYPasarTurno(new Movimiento(casillaSeleccionada.getValue(), casilla));
-        casillaSeleccionada.getValue().deseleccionarCasilla();
-        casillaSeleccionada.set(null);
+        desseleccionar();
+    }
+
+    public void desseleccionar(){
+        if(hayCasillaSeleccionada()){
+            casillaSeleccionada.getValue().deseleccionarCasilla();
+            casillaSeleccionada.set(null);
+        }
     }
 
     public SimpleObjectProperty<Casilla> getCasillaSeleccionada() {

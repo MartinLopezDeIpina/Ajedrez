@@ -2,22 +2,18 @@ package migrupo.ajedrez.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import migrupo.ajedrez.model.GestorDeMovimientos;
-import migrupo.ajedrez.model.StateCasilla.EstadoCasilla;
 import migrupo.ajedrez.model.StateCasilla.EstadoCasillaNormal;
 import migrupo.ajedrez.model.StateCasilla.EstadoCasillaSeleccionado;
 import migrupo.ajedrez.model.Tablero;
 import migrupo.ajedrez.view.EfectosDAOImpl;
 import migrupo.ajedrez.view.PiezasDAOImpl;
-import migrupo.ajedrez.view.TipoEfecto;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class VentanaJuegoController implements Initializable {
@@ -55,19 +51,20 @@ public class VentanaJuegoController implements Initializable {
     private void ponerCasilla(int fila, int columna) {
         Pane casilla = new Pane();
         
-        configurarCasilla(casilla, fila, columna);
-
-        actualizarImagenesPiezas(fila, columna, casilla);
+        configurarVisualCasilla(casilla, fila, columna);
 
         gridPaneTablero.add(casilla, fila, columna);
 
-        configurarClickImagen(casilla, fila, columna);
-        configurarClickCasilla(casilla, fila, columna);
-
-        configurarSeleccionarCasilla(fila, columna, casilla);
+        configurarFuncionalidadCasilla(casilla, fila, columna);
     }
 
-    private void configurarCasilla(Pane casilla, int fila, int columna) {
+    private void configurarVisualCasilla(Pane casilla, int fila, int columna) {
+        configurarParametrosCasilla(casilla, fila, columna);
+
+        actualizarImagenesPiezas(fila, columna, casilla);
+    }
+
+    private void configurarParametrosCasilla(Pane casilla, int fila, int columna) {
         casilla.setPrefSize(TAMANO_CASILLA, TAMANO_CASILLA);
 
         casilla.setStyle(getStyleCasilla(fila, columna));
@@ -118,17 +115,28 @@ public class VentanaJuegoController implements Initializable {
         imagen.setRotate(90);
     }
 
+    private void configurarFuncionalidadCasilla(Pane casilla, int fila, int columna){
+        configurarClickImagen(casilla, fila, columna);
+        configurarClickCasilla(casilla, fila, columna);
+
+        configurarSeleccionarCasilla(fila, columna, casilla);
+    }
+
     private void configurarClickImagen(Pane casilla, int fila, int columna) {
-        List<Node> hijos = casilla.getChildren();
         casilla.getChildren().get(0).setOnMouseClicked(mouseEvent -> {
             configurarClickCasilla(casilla, fila, columna);
         });
     }
     private void configurarClickCasilla(Pane casilla, int fila, int columna) {
         casilla.setOnMouseClicked(mouseEvent -> {
+            if(mouseEvent.getButton().equals(javafx.scene.input.MouseButton.PRIMARY)){
+                char letra = (char) (columna + 97);
+                mGestorDeMovimientos.casillaSeleccionada(mTablero.getCasilla(letra, fila));
+            }
 
-            char letra = (char) (columna + 97);
-            mGestorDeMovimientos.casillaSeleccionada(mTablero.getCasilla(letra, fila));
+            if (mouseEvent.getButton().equals(javafx.scene.input.MouseButton.SECONDARY)){
+                mGestorDeMovimientos.desseleccionar();
+            }
         });
     }
 
@@ -144,6 +152,7 @@ public class VentanaJuegoController implements Initializable {
             }
         }));
     }
+
 
 
 
