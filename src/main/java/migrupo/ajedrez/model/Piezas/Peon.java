@@ -10,10 +10,10 @@ public abstract class Peon extends Pieza {
 
     @Override
     public boolean puedeMoverseA(Casilla origen, Casilla destino) {
-        return origenEstaAuna(origen, destino) || origenEstaADosDesdeInicio(origen, destino) || origenEstaAUnaDiagonal(origen, destino);
+        return origenEstaAunaSinBloquear(origen, destino) || origenEstaADosDesdeInicio(origen, destino) || origenEstaAUnaDiagonal(origen, destino);
     }
 
-    protected abstract boolean origenEstaAuna(Casilla origen, Casilla destino);
+    protected abstract boolean origenEstaAunaSinBloquear(Casilla origen, Casilla destino);
 
     protected abstract boolean origenEstaADosDesdeInicio(Casilla origen, Casilla destino);
 

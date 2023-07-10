@@ -101,40 +101,40 @@ class TableroTest {
     void casillaVacia() throws NoSuchFieldException, IllegalAccessException {
         iniciarTableroYCasillas();
 
-        assertTrue(mTablero.casillaVacia(new Casilla('c', 4)));
-        assertTrue(mTablero.casillaVacia(new Casilla('f', 5)));
-        assertFalse(mTablero.casillaVacia(new Casilla('b', 1)));
-        assertFalse(mTablero.casillaVacia(new Casilla('h', 8)));
+        assertTrue(mTablero.casillaVacia(new Casilla('c', 3)));
+        assertTrue(mTablero.casillaVacia(new Casilla('f', 4)));
+        assertFalse(mTablero.casillaVacia(new Casilla('b', 0)));
+        assertFalse(mTablero.casillaVacia(new Casilla('h', 7)));
     }
 
     @Test
     void hayPiezasEntreCasillaOrigenYCasillaDestino() throws NoSuchFieldException, IllegalAccessException {
         iniciarTableroYCasillas();
 
-        mTablero.hacerMovimiento(new Casilla('d', 2), new Casilla('d', 4));
+        mTablero.hacerMovimiento(new Casilla('d', 1), new Casilla('d', 3));
 
-        assertTrue(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('a', 1), new Casilla('a', 3)));
-        assertTrue(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('a', 4), new Casilla('h', 4)));
-        assertTrue(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('a', 1), new Casilla('h', 8)));
+        assertTrue(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('a', 0), new Casilla('a', 2)));
+        assertTrue(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('a', 3), new Casilla('h', 3)));
+        assertTrue(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('a', 0), new Casilla('h', 7)));
 
-        assertFalse(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('a', 6), new Casilla('a', 3)));
-        assertFalse(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('a', 6), new Casilla('h', 6)));
-        assertFalse(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('d', 3), new Casilla('g', 6)));
+        assertFalse(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('a', 5), new Casilla('a', 2)));
+        assertFalse(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('a', 5), new Casilla('h', 5)));
+        assertFalse(mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(new Casilla('d', 2), new Casilla('g', 5)));
     }
 
     @Test
     void reyQuedaEnJaque() throws NoSuchFieldException, IllegalAccessException {
         iniciarTableroYCasillas();
 
-        assertFalse(mTablero.reyQuedaEnJaque(new Casilla('e', 2), new Casilla('e', 3)));
+        assertFalse(mTablero.reyQuedaEnJaque(new Casilla('e', 1), new Casilla('e', 2)));
 
-        mTablero.hacerMovimiento(new Casilla('h', 8), new Casilla('e', 2));
+        mTablero.hacerMovimiento(new Casilla('h', 7), new Casilla('e', 1));
+        assertTrue(mTablero.reyQuedaEnJaque(new Casilla('e', 2), new Casilla('e', 3)));
+        assertFalse(mTablero.reyQuedaEnJaque(new Casilla('e', 0), new Casilla('e', 1)));
+
+        mTablero.hacerMovimiento(new Casilla('b', 7), new Casilla('d', 2));
         assertTrue(mTablero.reyQuedaEnJaque(new Casilla('e', 3), new Casilla('e', 4)));
-        assertFalse(mTablero.reyQuedaEnJaque(new Casilla('e', 1), new Casilla('e', 2)));
-
-        mTablero.hacerMovimiento(new Casilla('b', 8), new Casilla('d', 3));
-        assertTrue(mTablero.reyQuedaEnJaque(new Casilla('e', 4), new Casilla('e', 5)));
-        assertFalse(mTablero.reyQuedaEnJaque(new Casilla('e', 1), new Casilla('e', 2)));
+        assertFalse(mTablero.reyQuedaEnJaque(new Casilla('e', 0), new Casilla('e', 1)));
     }
 
     @Test

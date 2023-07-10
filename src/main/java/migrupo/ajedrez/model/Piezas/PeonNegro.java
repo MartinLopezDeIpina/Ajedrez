@@ -9,13 +9,13 @@ public class PeonNegro extends Peon{
     }
 
     @Override
-    protected boolean origenEstaAuna(Casilla origen, Casilla destino) {
-        return origen.estaEnMismaColumna(destino) && origen.getDistanciaVertical(destino) == 1;
+    protected boolean origenEstaAunaSinBloquear(Casilla origen, Casilla destino) {
+        return origen.estaEnMismaColumna(destino) && origen.getDistanciaVertical(destino) == 1 && destino.estaVacia();
     }
 
     @Override
     protected boolean origenEstaADosDesdeInicio(Casilla origen, Casilla destino) {
-        return origen.estaEnMismaColumna(destino) && origen.getNum() == 7 && origen.getDistanciaVertical(destino) == 2;
+        return origen.estaEnMismaColumna(destino) && origen.getNum() == 6 && origen.getDistanciaVertical(destino) == 2;
     }
 
     @Override

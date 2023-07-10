@@ -8,6 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import migrupo.ajedrez.model.GestorDeMovimientos;
+import migrupo.ajedrez.model.StateCasilla.EstadoCasilla;
+import migrupo.ajedrez.model.StateCasilla.EstadoCasillaNormal;
+import migrupo.ajedrez.model.StateCasilla.EstadoCasillaSeleccionado;
 import migrupo.ajedrez.model.Tablero;
 import migrupo.ajedrez.view.EfectosDAOImpl;
 import migrupo.ajedrez.view.PiezasDAOImpl;
@@ -39,7 +42,7 @@ public class VentanaJuegoController implements Initializable {
     private void iniciarTablero() {
         
         ponerCasillas();
-        
+
     }
 
     private void ponerCasillas() {
@@ -60,6 +63,8 @@ public class VentanaJuegoController implements Initializable {
 
         configurarClickImagen(casilla, fila, columna);
         configurarClickCasilla(casilla, fila, columna);
+
+        configurarSeleccionarCasilla(fila, columna, casilla);
     }
 
     private void configurarCasilla(Pane casilla, int fila, int columna) {
@@ -121,13 +126,25 @@ public class VentanaJuegoController implements Initializable {
     }
     private void configurarClickCasilla(Pane casilla, int fila, int columna) {
         casilla.setOnMouseClicked(mouseEvent -> {
-            //casilla.setStyle("-fx-background-color: #00FF00");
-            //casilla.getChildren().get(0).setEffect(mEfectosDAOImpl.getEfecto(TipoEfecto.SELECCIONADO));
 
-            char letra = (char) (fila + 97);
+            char letra = (char) (columna + 97);
             mGestorDeMovimientos.casillaSeleccionada(mTablero.getCasilla(letra, fila));
         });
     }
+
+    //todo: limpiar esto de alguna manera
+    private void configurarSeleccionarCasilla(int fila, int columna, Pane casilla) {
+        char letra = (char) (columna + 97);
+        mTablero.getCasilla(letra, fila).getEstadoCasilla().addListener(((observable, oldValue, newValue) -> {
+            if(newValue instanceof EstadoCasillaNormal){
+                casilla.setStyle(getStyleCasilla(fila, columna));
+            }
+            if(newValue instanceof EstadoCasillaSeleccionado){
+                casilla.setStyle("-fx-background-color: #00FF00");
+            }
+        }));
+    }
+
 
 
 }

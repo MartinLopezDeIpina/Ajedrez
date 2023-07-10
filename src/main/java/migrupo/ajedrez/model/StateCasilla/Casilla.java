@@ -9,7 +9,7 @@ public class Casilla implements EstadoCasilla{
     private char letra;
     private int num;
 
-    private EstadoCasilla estadoCasilla;
+    private SimpleObjectProperty<EstadoCasilla> estadoCasilla;
 
     private SimpleObjectProperty<Pieza> pieza;
 
@@ -18,7 +18,7 @@ public class Casilla implements EstadoCasilla{
         this.num = num;
         this.pieza = new SimpleObjectProperty<>(new PiezaNula());
 
-        this.estadoCasilla = new EstadoCasillaNormal(this);
+        estadoCasilla = new SimpleObjectProperty<>(new EstadoCasillaNormal(this));
     }
 
     public int getNumLetra(){
@@ -94,16 +94,20 @@ public class Casilla implements EstadoCasilla{
 
 
     public void setEstadoCasilla(EstadoCasilla estadoCasilla) {
-        this.estadoCasilla = estadoCasilla;
+        this.estadoCasilla.set(estadoCasilla);
     }
 
     @Override
     public void seleccionarCasilla() {
-        estadoCasilla.seleccionarCasilla();
+        estadoCasilla.getValue().seleccionarCasilla();
     }
 
     @Override
     public void deseleccionarCasilla() {
-        estadoCasilla.deseleccionarCasilla();
+        estadoCasilla.getValue().deseleccionarCasilla();
+    }
+
+    public SimpleObjectProperty<EstadoCasilla> getEstadoCasilla() {
+        return estadoCasilla;
     }
 }

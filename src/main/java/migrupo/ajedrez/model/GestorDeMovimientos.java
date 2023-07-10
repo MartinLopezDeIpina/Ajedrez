@@ -1,5 +1,6 @@
 package migrupo.ajedrez.model;
 
+import javafx.beans.property.SimpleObjectProperty;
 import migrupo.ajedrez.model.BD.MovimientoDAOImpl;
 import migrupo.ajedrez.model.StateCasilla.Casilla;
 
@@ -15,8 +16,7 @@ public class GestorDeMovimientos {
     private Tablero mTablero;
     private GestorDeTurnos mGestorDeTurnos;
 
-    private Casilla casillaSeleccionada;
-
+    private SimpleObjectProperty<Casilla> casillaSeleccionada = new SimpleObjectProperty<>();
     private GestorDeMovimientos() {
         mMovimientoDAO = MovimientoDAOImpl.getInstance();
         mTablero = Tablero.getInstance();
@@ -25,10 +25,11 @@ public class GestorDeMovimientos {
 
     public void hacerMovimientoYPasarTurno(Movimiento movimiento){
         if(movimientoPosible(movimiento)){
-            mTablero.hacerMovimiento(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
-        }
 
-        mGestorDeTurnos.pasarTurno();
+            mTablero.hacerMovimiento(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
+
+            mGestorDeTurnos.pasarTurno();
+        }
     }
     private boolean movimientoPosible(Movimiento movimiento) {
 
@@ -74,10 +75,9 @@ public class GestorDeMovimientos {
     }
 
     //todo: test de esto
-    //todo: seguir por aquí
     public void casillaSeleccionada(Casilla casilla) {
 
-        if(hayCasillaSeleccionada()) {
+        if(!hayCasillaSeleccionada()) {
             seleccionarCasilla(casilla);
         }else {
             seleccionarSegundaCasilla(casilla);
@@ -85,16 +85,20 @@ public class GestorDeMovimientos {
     }
 
     private boolean hayCasillaSeleccionada() {
-        return casillaSeleccionada != null;
+        return casillaSeleccionada.getValue() != null;
     }
 
     private void seleccionarCasilla(Casilla casilla) {
-        casillaSeleccionada = casilla;
+        casillaSeleccionada.set(casilla);
         casilla.seleccionarCasilla();
     }
     private void seleccionarSegundaCasilla(Casilla casilla) {
-        hacerMovimientoYPasarTurno(new Movimiento(casillaSeleccionada, casilla));
-        casillaSeleccionada.deseleccionarCasilla();
-        casillaSeleccionada = null;
+        hacerMovimientoYPasarTurno(new Movimiento(casillaSeleccionada.getValue(), casilla));
+        casillaSeleccionada.getValue().deseleccionarCasilla();
+        casillaSeleccionada.set(null);
+    }
+
+    public SimpleObjectProperty<Casilla> getCasillaSeleccionada() {
+        return casillaSeleccionada;
     }
 }

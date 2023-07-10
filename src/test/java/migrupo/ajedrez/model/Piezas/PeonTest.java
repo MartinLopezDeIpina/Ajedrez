@@ -11,7 +11,7 @@ class PeonTest {
     static PeonBlanco peonB;
     static PeonNegro peonN;
 
-    static Casilla casillaA, casillaB, casillaC, casillaD, casillaE, casillaF, casillaG, casillaH, casillaI, casillaJ, casillaK, casillaL, casillaM, casillaN;
+    static Casilla casillaA, casillaB, casillaC, casillaD, casillaE, casillaF, casillaG, casillaH, casillaI, casillaJ, casillaK, casillaL, casillaM, casillaN, casillaOcupada;
 
     @BeforeAll
     static void setUp(){
@@ -21,27 +21,29 @@ class PeonTest {
     private static void setUpBlanco(){
         peonB = new PeonBlanco();
 
-        casillaA = new Casilla('b', 2);
+        casillaA = new Casilla('b', 1);
 
-        casillaB = new Casilla('b', 3);
-        casillaC = new Casilla('b', 4);
-        casillaE = new Casilla('a', 3);
+        casillaB = new Casilla('b', 2);
+        casillaC = new Casilla('b', 3);
+        casillaE = new Casilla('a', 2);
 
-        casillaD = new Casilla('b', 5);
-        casillaF = new Casilla('c', 4);
-        casillaG = new Casilla('b', 1);
+        casillaD = new Casilla('b', 4);
+        casillaF = new Casilla('c', 3);
+        casillaG = new Casilla('b', 0);
+        casillaOcupada = new Casilla('b', 2);
+        casillaOcupada.setPieza(new PeonBlanco());
     }
     private static void setUpNegro(){
         peonN = new PeonNegro();
 
-        casillaH = new Casilla('b', 7);
-        casillaI = new Casilla('b', 6);
-        casillaJ = new Casilla('b', 5);
-        casillaL = new Casilla('a', 6);
+        casillaH = new Casilla('b', 6);
+        casillaI = new Casilla('b', 5);
+        casillaJ = new Casilla('b', 4);
+        casillaL = new Casilla('a', 5);
 
-        casillaK = new Casilla('b', 4);
-        casillaM = new Casilla('c', 6);
-        casillaN = new Casilla('b', 8);
+        casillaK = new Casilla('b', 3);
+        casillaM = new Casilla('c', 5);
+        casillaN = new Casilla('b', 7);
     }
 
     @Test
@@ -63,6 +65,7 @@ class PeonTest {
         assertFalse(peonB.puedeMoverseA(casillaA, casillaD));
         assertFalse(peonB.puedeMoverseA(casillaA, casillaF));
         assertFalse(peonB.puedeMoverseA(casillaA, casillaG));
+        assertFalse(peonB.puedeMoverseA(casillaA, casillaOcupada));
     }
     private void testBlancoDiagonal() {
         casillaE.setPieza(new PeonNegro());
