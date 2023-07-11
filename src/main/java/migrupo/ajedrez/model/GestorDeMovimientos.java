@@ -57,6 +57,7 @@ public class GestorDeMovimientos {
     private boolean coronarSiPosible(Movimiento movimiento) {
         if(esCoronacion(movimiento)){
             mTablero.coronar(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
+            mGestorDeTurnos.pasarTurno();
             return true;
         }
         return false;

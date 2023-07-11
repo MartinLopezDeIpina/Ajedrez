@@ -6,11 +6,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import migrupo.ajedrez.model.GestorDeMovimientos;
+import migrupo.ajedrez.model.*;
 import migrupo.ajedrez.model.StateCasilla.EstadoCasilla;
 import migrupo.ajedrez.model.StateCasilla.EstadoCasillaNormal;
 import migrupo.ajedrez.model.StateCasilla.EstadoCasillaSeleccionado;
-import migrupo.ajedrez.model.Tablero;
 import migrupo.ajedrez.view.EfectosDAOImpl;
 import migrupo.ajedrez.view.PiezasDAOImpl;
 import migrupo.ajedrez.view.TipoEfecto;
@@ -26,14 +25,19 @@ public class VentanaJuegoController implements Initializable {
     private PiezasDAOImpl mPiezasDAOImpl = PiezasDAOImpl.getInstance();
     private EfectosDAOImpl mEfectosDAOImpl = EfectosDAOImpl.getInstance();
     private GestorDeMovimientos mGestorDeMovimientos = GestorDeMovimientos.getInstance();
+    private GestorDeTurnos mGestorDeTurnos = GestorDeTurnos.getInstance();
     private Tablero mTablero = Tablero.getInstance();
+    private Partida mPartida = Partida.getInstance();
 
     @FXML protected GridPane gridPaneTablero;
-    @FXML protected TextField textFieldNombreA;
+    @FXML protected TextField textFieldNombreA, textFieldNombreB, textFieldNombreUsuarioActual;
+    @FXML protected ImageView imageViewUsuarioActual;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         
         iniciarTablero();
+
+        iniciarInformacionJugadores();
         
     }
 
@@ -159,6 +163,35 @@ public class VentanaJuegoController implements Initializable {
         if(newValue instanceof EstadoCasillaSeleccionado){
             casilla.setEffect(mEfectosDAOImpl.getEfecto(TipoEfecto.SELECCIONADO));
         }
+    }
+
+    private void iniciarInformacionJugadores() {
+        iniciarJugadores();
+
+        iniciarUsuarioActual();
+    }
+
+    private void iniciarJugadores() {
+        textFieldNombreA.setText(mGestorDeTurnos.getNombreUsuarioNegro().getValue());
+        mGestorDeTurnos.getNombreUsuarioNegro().addListener(((observable, oldValue, newValue) -> {
+            textFieldNombreA.setText(newValue);
+        }));
+
+        textFieldNombreB.setText(mGestorDeTurnos.getNomberUsuarioBlanco().getValue());
+        mGestorDeTurnos.getNomberUsuarioBlanco().addListener(((observable, oldValue, newValue) -> {
+            textFieldNombreB.setText(newValue);
+        }));
+    }
+    private void iniciarUsuarioActual() {
+        textFieldNombreUsuarioActual.setText(mGestorDeTurnos.getUsuarioActual().getValue().getNombreValue());
+        mGestorDeTurnos.getUsuarioActual().addListener(((observable, oldValue, newValue) -> {
+            textFieldNombreUsuarioActual.setText(newValue.getNombreValue());
+        }));
+
+        imageViewUsuarioActual.setImage(mGestorDeTurnos.getUsuarioActual().getValue().getColor().equals(Color.BLANCO) ? mPiezasDAOImpl.getImagenPieza("reyB") : mPiezasDAOImpl.getImagenPieza("reyN"));
+        mGestorDeTurnos.getUsuarioActual().addListener(((observable, oldValue, newValue) -> {
+            imageViewUsuarioActual.setImage(newValue.getColor().equals(Color.BLANCO) ? mPiezasDAOImpl.getImagenPieza("reyB") : mPiezasDAOImpl.getImagenPieza("reyN"));
+        }));
     }
 
 

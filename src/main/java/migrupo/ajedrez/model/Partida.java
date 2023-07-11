@@ -8,7 +8,6 @@ public class Partida {
 
     private int identificador;
 
-    //todo: cuando se inicie la partida que se decida que usuario es negro y blanco
     private Usuario usuarioB;
     private Usuario usuarioN;
 
@@ -31,7 +30,6 @@ public class Partida {
             this.usuarioB = usuarioA;
             this.usuarioN = usuarioB;
 
-
         } else {
 
             this.usuarioB = usuarioB;
@@ -41,6 +39,4 @@ public class Partida {
         this.usuarioN.setColor(Color.NEGRO);
         this.usuarioB.setColor(Color.BLANCO);
     }
-
-
 }

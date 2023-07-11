@@ -2,8 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.ColorAdjust?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -15,7 +13,7 @@
    <children>
       <BorderPane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1200.0">
          <top>
-            <TextField fx:id="textFieldNombreA" scaleX="2.0" scaleY="2.0" BorderPane.alignment="CENTER">
+            <TextField fx:id="textFieldNombreA" alignment="CENTER" editable="false" focusTraversable="false" promptText="hola" scaleX="2.0" scaleY="2.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets top="25.0" />
                </BorderPane.margin>
@@ -25,7 +23,7 @@
             <Insets left="500.0" right="500.0" />
          </padding>
          <bottom>
-            <TextField scaleX="2.0" scaleY="2.0" BorderPane.alignment="CENTER">
+            <TextField fx:id="textFieldNombreB" alignment="CENTER" editable="false" focusTraversable="false" scaleX="2.0" scaleY="2.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets bottom="25.0" />
                </BorderPane.margin>
@@ -53,17 +51,30 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
+               <BorderPane.margin>
+                  <Insets right="-500.0" />
+               </BorderPane.margin>
             </GridPane>
          </center>
          <left>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" visible="false" BorderPane.alignment="CENTER">
-               <image>
-                  <Image url="@../imagenes/piezas/peonB.png" />
-               </image>
-               <effect>
-                  <ColorAdjust brightness="-0.55" contrast="-0.04" hue="0.05" saturation="0.02" />
-               </effect>
-            </ImageView>
+            <BorderPane prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER_LEFT">
+               <BorderPane.margin>
+                  <Insets bottom="350.0" left="-450.0" top="350.0" />
+               </BorderPane.margin>
+               <top>
+                  <TextField fx:id="textFieldNombreUsuarioActual" alignment="CENTER" focusTraversable="false" scaleX="2.0" scaleY="2.0" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets left="35.0" right="35.0" />
+                     </BorderPane.margin>
+                  </TextField>
+               </top>
+               <center>
+                  <ImageView fx:id="imageViewUsuarioActual" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets top="25.0" />
+                     </BorderPane.margin></ImageView>
+               </center>
+            </BorderPane>
          </left>
       </BorderPane>
    </children>
