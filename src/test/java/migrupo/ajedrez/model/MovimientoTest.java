@@ -33,4 +33,10 @@ class MovimientoTest {
         assertFalse(movimientoC.piezaPuedeMoverseACasillaDestino());
         assertFalse(movimientoD.piezaPuedeMoverseACasillaDestino());
     }
+
+    @Test
+    void getNumDestinoTest(){
+        assertEquals(7, movimientoA.getNumDestino());
+        assertEquals(3, movimientoB.getNumDestino());
+    }
 }

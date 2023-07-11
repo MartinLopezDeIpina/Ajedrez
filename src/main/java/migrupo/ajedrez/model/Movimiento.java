@@ -27,5 +27,9 @@ public class Movimiento {
         origen.setPieza(piezas[0]);
         destino.setPieza(piezas[1]);
     }
+
+    public int getNumDestino() {
+    	return destino.getNum();
+    }
 }
 

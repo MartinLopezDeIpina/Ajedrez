@@ -1,6 +1,7 @@
 package migrupo.ajedrez.model;
 
 import migrupo.ajedrez.model.Piezas.PeonBlanco;
+import migrupo.ajedrez.model.Piezas.Reina;
 import migrupo.ajedrez.model.Piezas.Torre;
 import migrupo.ajedrez.model.StateCasilla.Casilla;
 import org.junit.jupiter.api.BeforeAll;
@@ -149,5 +150,18 @@ class TableroTest {
 
 
         Arrays.stream(casillas).forEach(fila -> Arrays.stream(fila).forEach(casilla -> assertTrue(casilla.estaVacia())));
+    }
+
+    @Test
+    void coronarTest(){
+        mTablero.reiniciarTablero();
+
+        mTablero.hacerMovimiento(mTablero.getCasilla('a', 1), mTablero.getCasilla('a', 6));
+        mTablero.hacerMovimiento(mTablero.getCasilla('b', 6), mTablero.getCasilla('b', 1));
+        mTablero.coronar(mTablero.getCasilla('a', 6), mTablero.getCasilla('a', 7));
+        mTablero.coronar(mTablero.getCasilla('b', 1), mTablero.getCasilla('c', 0));
+
+        assertInstanceOf(Reina.class, mTablero.getCasilla('c', 0).getPiezaValue());
+        assertInstanceOf(Reina.class, mTablero.getCasilla('a', 7).getPiezaValue());
     }
 }

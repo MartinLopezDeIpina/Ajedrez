@@ -32,6 +32,7 @@ class GestorDeMovimientosTest {
 
     static Method getPiezaTablero;
     static Field casillaSeleccionada;
+    static Method coronarSiPosible;
 
 
     @BeforeAll
@@ -48,8 +49,17 @@ class GestorDeMovimientosTest {
 
         hacerGetPiezaAccesible();
         hacerCasillaSeleccionadaAccesible();
+        hacerCoronarSiPosibleAccesible();
     }
 
+    private static void hacerCoronarSiPosibleAccesible() throws NoSuchMethodException {
+        coronarSiPosible = mGestorDeMovimientos.getClass().getDeclaredMethod("coronarSiPosible", Movimiento.class);
+        coronarSiPosible.setAccessible(true);
+    }
+    private static void hacerGetPiezaAccesible() throws NoSuchMethodException {
+        getPiezaTablero = mTablero.getClass().getDeclaredMethod("getPiezaEnCasilla", Casilla.class);
+        getPiezaTablero.setAccessible(true);
+    }
     private static void hacerCasillaSeleccionadaAccesible() throws NoSuchFieldException {
         casillaSeleccionada = mGestorDeMovimientos.getClass().getDeclaredField("casillaSeleccionada");
         casillaSeleccionada.setAccessible(true);
@@ -63,10 +73,6 @@ class GestorDeMovimientosTest {
     @BeforeEach
     void setUpEach() {
         reiniciarTablero();
-    }
-    private static void hacerGetPiezaAccesible() throws NoSuchMethodException {
-        getPiezaTablero = mTablero.getClass().getDeclaredMethod("getPiezaEnCasilla", Casilla.class);
-        getPiezaTablero.setAccessible(true);
     }
 
     private static void reiniciarTablero() {
@@ -229,5 +235,15 @@ class GestorDeMovimientosTest {
         mGestorDeMovimientos.desseleccionar();
 
         assertNull(casillaSeleccionada.get(mGestorDeMovimientos));
+    }
+
+    @Test
+    void coronarSiPosibleTest() throws InvocationTargetException, IllegalAccessException {
+        mTablero.hacerMovimiento(mTablero.getCasilla('a', 1), mTablero.getCasilla('a', 6));
+        mTablero.hacerMovimiento(mTablero.getCasilla('c', 6), mTablero.getCasilla('c', 1));
+
+        assertTrue((Boolean) coronarSiPosible.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('a', 6), mTablero.getCasilla('a', 7))));
+        assertTrue((Boolean) coronarSiPosible.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('c', 1), mTablero.getCasilla('b', 0))));
+        assertFalse((Boolean) coronarSiPosible.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('b', 1), mTablero.getCasilla('b', 2))));
     }
 }

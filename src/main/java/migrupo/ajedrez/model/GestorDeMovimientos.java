@@ -2,6 +2,9 @@ package migrupo.ajedrez.model;
 
 import javafx.beans.property.SimpleObjectProperty;
 import migrupo.ajedrez.model.BD.MovimientoDAOImpl;
+import migrupo.ajedrez.model.Piezas.Peon;
+import migrupo.ajedrez.model.Piezas.PeonBlanco;
+import migrupo.ajedrez.model.Piezas.PeonNegro;
 import migrupo.ajedrez.model.StateCasilla.Casilla;
 
 import java.util.List;
@@ -24,13 +27,14 @@ public class GestorDeMovimientos {
     }
 
     public void hacerMovimientoYPasarTurno(Movimiento movimiento){
-        if(movimientoPosible(movimiento)){
+        if(movimientoPosible(movimiento) && !coronarSiPosible(movimiento)){
 
             mTablero.hacerMovimiento(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
 
             mGestorDeTurnos.pasarTurno();
         }
     }
+
     private boolean movimientoPosible(Movimiento movimiento) {
 
         return casillaOrigenNoEstaVacia(movimiento.getCasillaOrigen()) &&
@@ -48,6 +52,18 @@ public class GestorDeMovimientos {
         return !mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());}
     private boolean reyNoQuedaEnJaque(Movimiento movimiento) {
         return !mTablero.reyQuedaEnJaque(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
+    }
+
+    private boolean coronarSiPosible(Movimiento movimiento) {
+        if(esCoronacion(movimiento)){
+            mTablero.coronar(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
+            return true;
+        }
+        return false;
+    }
+    private boolean esCoronacion(Movimiento movimiento) {
+        return (movimiento.getCasillaOrigen().getPiezaValue() instanceof PeonBlanco && movimiento.getNumDestino() == 7)
+                || (movimiento.getCasillaOrigen().getPiezaValue() instanceof PeonNegro  && movimiento.getNumDestino() == 0);
     }
 
     public void setPartida(int identificador, Usuario usuarioB, Usuario usuarioN) {

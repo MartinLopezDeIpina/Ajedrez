@@ -164,19 +164,19 @@ public class Tablero {
     public boolean reyQuedaEnJaque(Casilla casillaOrigen, Casilla casillaDestino) {
 
         Pieza piezaDestino = getPiezaEnCasilla(casillaDestino);
-
+        Pieza piezaOrigen = getPiezaEnCasilla(casillaOrigen);
         Color colorRey = casillaOrigen.getColorPiezaCasilla();
 
         hacerMovimiento(casillaOrigen, casillaDestino);
 
         boolean reyQuedaEnJaque = algunaPiezaAmenazaAlRey(colorRey);
 
-        deshacerMovimiento(casillaOrigen, casillaDestino, piezaDestino);
+        deshacerMovimiento(casillaOrigen, casillaDestino, piezaOrigen, piezaDestino);
 
         return reyQuedaEnJaque;
     }
-    private void deshacerMovimiento(Casilla casillaOrigen, Casilla casillaDestino, Pieza piezaDestino) {
-        setPiezaEnCasilla(casillaOrigen, getPiezaEnCasilla(casillaDestino));
+    private void deshacerMovimiento(Casilla casillaOrigen, Casilla casillaDestino, Pieza piezaOrigen, Pieza piezaDestino) {
+        setPiezaEnCasilla(casillaOrigen, piezaOrigen);
         setPiezaEnCasilla(casillaDestino, piezaDestino);
     }
     private boolean algunaPiezaAmenazaAlRey(Color colorRey) {
@@ -219,5 +219,10 @@ public class Tablero {
             piezas[1] = getPiezaEnCasilla(casillaDestino);
 
             return piezas;
+    }
+
+    public void coronar(Casilla casillaOrigen, Casilla casillaDestino) {
+        setPiezaEnCasilla(casillaDestino, new Reina(casillaOrigen.getColorPiezaCasilla()));
+        setPiezaEnCasilla(casillaOrigen, new PiezaNula());
     }
 }
