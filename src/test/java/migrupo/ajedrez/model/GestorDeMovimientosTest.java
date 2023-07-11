@@ -180,7 +180,7 @@ class GestorDeMovimientosTest {
         mTablero.hacerMovimiento(mTablero.getCasilla('g', 2), mTablero.getCasilla('d', 7));
         mTablero.hacerMovimiento(mTablero.getCasilla('b', 7), mTablero.getCasilla('f', 2));
 
-        assertFalse((boolean) reyNoQuedaEnJaque.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('a', 1), mTablero.getCasilla('a', 2))));
+        assertFalse((boolean) reyNoQuedaEnJaque.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('h', 1), mTablero.getCasilla('h', 2))));
         assertTrue((boolean) reyNoQuedaEnJaque.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('e', 1), mTablero.getCasilla('f', 2))));
     }
 

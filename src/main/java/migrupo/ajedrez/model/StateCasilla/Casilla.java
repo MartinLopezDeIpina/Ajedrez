@@ -84,8 +84,8 @@ public class Casilla implements EstadoCasilla{
         return Math.abs(getDistanciaHorizontal(destino));
     }
 
-    public Color getColorRival() {
-        return pieza.getValue().getColorRival();
+    public Color getColorPiezaCasilla() {
+        return pieza.getValue().getColor();
     }
 
     public String toString() {

@@ -165,9 +165,11 @@ public class Tablero {
 
         Pieza piezaDestino = getPiezaEnCasilla(casillaDestino);
 
+        Color colorRey = casillaOrigen.getColorPiezaCasilla();
+
         hacerMovimiento(casillaOrigen, casillaDestino);
 
-        boolean reyQuedaEnJaque = algunaPiezaAmenazaAlRey(casillaOrigen.getColorRival());
+        boolean reyQuedaEnJaque = algunaPiezaAmenazaAlRey(colorRey);
 
         deshacerMovimiento(casillaOrigen, casillaDestino, piezaDestino);
 

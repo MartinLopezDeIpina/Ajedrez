@@ -126,15 +126,17 @@ class TableroTest {
     void reyQuedaEnJaque() throws NoSuchFieldException, IllegalAccessException {
         iniciarTableroYCasillas();
 
-        assertFalse(mTablero.reyQuedaEnJaque(new Casilla('e', 1), new Casilla('e', 2)));
+        assertFalse(mTablero.reyQuedaEnJaque(mTablero.getCasilla('e', 1), mTablero.getCasilla('e', 2)));
+        mTablero.hacerMovimiento(mTablero.getCasilla('e', 1), mTablero.getCasilla('e', 2));
 
-        mTablero.hacerMovimiento(new Casilla('h', 7), new Casilla('e', 1));
-        assertTrue(mTablero.reyQuedaEnJaque(new Casilla('e', 2), new Casilla('e', 3)));
-        assertFalse(mTablero.reyQuedaEnJaque(new Casilla('e', 0), new Casilla('e', 1)));
+        mTablero.hacerMovimiento(mTablero.getCasilla('h', 7), mTablero.getCasilla('e', 1));
+        assertTrue(mTablero.reyQuedaEnJaque(mTablero.getCasilla('e', 2), mTablero.getCasilla('e', 3)));
+        assertFalse(mTablero.reyQuedaEnJaque(mTablero.getCasilla('e', 0), mTablero.getCasilla('e', 1)));
+        mTablero.hacerMovimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('e', 1));
 
-        mTablero.hacerMovimiento(new Casilla('b', 7), new Casilla('d', 2));
-        assertTrue(mTablero.reyQuedaEnJaque(new Casilla('e', 3), new Casilla('e', 4)));
-        assertFalse(mTablero.reyQuedaEnJaque(new Casilla('e', 0), new Casilla('e', 1)));
+        mTablero.hacerMovimiento(mTablero.getCasilla('a', 7), mTablero.getCasilla('e', 2));
+        assertTrue(mTablero.reyQuedaEnJaque(mTablero.getCasilla('a', 1), mTablero.getCasilla('a', 2)));
+        assertFalse(mTablero.reyQuedaEnJaque(mTablero.getCasilla('f', 0), mTablero.getCasilla('e', 2)));
     }
 
     @Test
