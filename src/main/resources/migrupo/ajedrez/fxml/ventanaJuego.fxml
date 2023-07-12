@@ -11,6 +11,18 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="migrupo.ajedrez.controller.VentanaJuegoController">
    <children>
+      <AnchorPane fx:id="paneAcabado" layoutX="450.0" layoutY="400.0" prefHeight="200.0" prefWidth="200.0" visible="false">
+         <children>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <center>
+                  <TextField text="Acabado" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
+         </children>
+         <padding>
+            <Insets bottom="-300.0" top="-300.0" />
+         </padding>
+      </AnchorPane>
       <BorderPane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1200.0">
          <top>
             <TextField fx:id="textFieldNombreA" alignment="CENTER" editable="false" focusTraversable="false" promptText="hola" scaleX="2.0" scaleY="2.0" BorderPane.alignment="CENTER">
@@ -77,6 +89,5 @@
             </BorderPane>
          </left>
       </BorderPane>
-      <BorderPane fx:id="paneAcabado" prefHeight="200.0" prefWidth="200.0" scaleX="2.0" scaleY="2.0" visible="false" />
    </children>
 </AnchorPane>

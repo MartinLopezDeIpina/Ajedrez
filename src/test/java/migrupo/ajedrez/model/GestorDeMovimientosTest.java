@@ -32,7 +32,7 @@ class GestorDeMovimientosTest {
 
     static Method getPiezaTablero;
     static Field casillaSeleccionada;
-    static Method coronarSiPosible;
+    static Method coronarSiPosible, esJackeMate;
 
 
     @BeforeAll
@@ -50,6 +50,7 @@ class GestorDeMovimientosTest {
         hacerGetPiezaAccesible();
         hacerCasillaSeleccionadaAccesible();
         hacerCoronarSiPosibleAccesible();
+        hacerEsJackeMateAccesible();
     }
 
     private static void hacerCoronarSiPosibleAccesible() throws NoSuchMethodException {
@@ -63,6 +64,10 @@ class GestorDeMovimientosTest {
     private static void hacerCasillaSeleccionadaAccesible() throws NoSuchFieldException {
         casillaSeleccionada = mGestorDeMovimientos.getClass().getDeclaredField("casillaSeleccionada");
         casillaSeleccionada.setAccessible(true);
+    }
+    private static void hacerEsJackeMateAccesible() throws NoSuchMethodException {
+        esJackeMate = mGestorDeMovimientos.getClass().getDeclaredMethod("esJackeMate");
+        esJackeMate.setAccessible(true);
     }
 
     @AfterAll
@@ -120,19 +125,17 @@ class GestorDeMovimientosTest {
     }
     private void casillaDestinoNoTienePiezaDelMismoColor() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
-        Method casillaDestinoNoTienePiezaDelMismoColor = getMetodo("casillaDestinoNoTienePiezaDelMismoColor", Casilla.class);
+        Method casillaDestinoNoTienePiezaDelMismoColor = getMetodo("casillaDestinoNoTienePiezaDelMismoColor", Movimiento.class);
 
-        assertTrue((boolean) casillaDestinoNoTienePiezaDelMismoColor.invoke(mGestorDeMovimientos, mTablero.getCasilla('a', 2)));
-        assertTrue((boolean) casillaDestinoNoTienePiezaDelMismoColor.invoke(mGestorDeMovimientos, mTablero.getCasilla('a', 6)));
-        assertFalse((boolean) casillaDestinoNoTienePiezaDelMismoColor.invoke(mGestorDeMovimientos, mTablero.getCasilla('a', 1)));
+        assertTrue((boolean) casillaDestinoNoTienePiezaDelMismoColor.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('a', 1), mTablero.getCasilla('a', 2))));
+        assertTrue((boolean) casillaDestinoNoTienePiezaDelMismoColor.invoke(mGestorDeMovimientos,new Movimiento(mTablero.getCasilla('a', 1), mTablero.getCasilla('a', 5))));
+        assertFalse((boolean) casillaDestinoNoTienePiezaDelMismoColor.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('a', 1), mTablero.getCasilla('b', 1))));
 
-        mGestorDeTurnos.pasarTurno();
 
-        assertTrue((boolean) casillaDestinoNoTienePiezaDelMismoColor.invoke(mGestorDeMovimientos, mTablero.getCasilla('a', 1)));
-        assertTrue((boolean) casillaDestinoNoTienePiezaDelMismoColor.invoke(mGestorDeMovimientos, mTablero.getCasilla('a', 5)));
-        assertFalse((boolean) casillaDestinoNoTienePiezaDelMismoColor.invoke(mGestorDeMovimientos, mTablero.getCasilla('a', 6)));
+        assertTrue((boolean) casillaDestinoNoTienePiezaDelMismoColor.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('a', 6), mTablero.getCasilla('a', 5))));
+        assertTrue((boolean) casillaDestinoNoTienePiezaDelMismoColor.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('a', 6), mTablero.getCasilla('a', 2))));
+        assertFalse((boolean) casillaDestinoNoTienePiezaDelMismoColor.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('a', 6), mTablero.getCasilla('b', 6))));
 
-        mGestorDeTurnos.pasarTurno();
     }
     private void piezaPuedeMoverseACasillaDestino() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
@@ -245,5 +248,51 @@ class GestorDeMovimientosTest {
         assertTrue((Boolean) coronarSiPosible.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('a', 6), mTablero.getCasilla('a', 7))));
         assertTrue((Boolean) coronarSiPosible.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('c', 1), mTablero.getCasilla('b', 0))));
         assertFalse((Boolean) coronarSiPosible.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('b', 1), mTablero.getCasilla('b', 2))));
+    }
+
+    @Test
+    void esJackeMateTest() throws InvocationTargetException, IllegalAccessException {
+        reiniciarTablero();
+
+        probarMatePastor();
+
+        reiniciarTablero();
+
+        probarJackesSinMate();
+
+
+        
+
+    }
+
+    private void probarMatePastor() throws InvocationTargetException, IllegalAccessException {
+        int identificador = mPartidaDAO.registrarPartida(new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
+        mPartida.setPartida(identificador, new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
+
+        mTablero.hacerMovimiento(mTablero.getCasilla('e', 1), mTablero.getCasilla('e', 3));
+        mTablero.hacerMovimiento(mTablero.getCasilla('e', 6), mTablero.getCasilla('e', 4));
+        mTablero.hacerMovimiento(mTablero.getCasilla('d', 0), mTablero.getCasilla('h', 4));
+        mTablero.hacerMovimiento(mTablero.getCasilla('a', 6), mTablero.getCasilla('a', 5));
+        mTablero.hacerMovimiento(mTablero.getCasilla('f', 0), mTablero.getCasilla('c', 3));
+        mTablero.hacerMovimiento(mTablero.getCasilla('a', 5), mTablero.getCasilla('a', 4));
+        mTablero.hacerMovimiento(mTablero.getCasilla('h', 4), mTablero.getCasilla('f', 6));
+
+        assertTrue((Boolean) esJackeMate.invoke(mGestorDeMovimientos));
+    }
+
+    private void probarJackesSinMate() throws InvocationTargetException, IllegalAccessException {
+
+        mTablero.hacerMovimiento(mTablero.getCasilla('e', 1), mTablero.getCasilla('e', 3));
+        mTablero.hacerMovimiento(mTablero.getCasilla('e', 6), mTablero.getCasilla('e', 4));
+        mTablero.hacerMovimiento(mTablero.getCasilla('d', 0), mTablero.getCasilla('h', 4));
+        mTablero.hacerMovimiento(mTablero.getCasilla('a', 6), mTablero.getCasilla('a', 5));
+        mTablero.hacerMovimiento(mTablero.getCasilla('h', 4), mTablero.getCasilla('f', 6));
+
+        assertFalse((Boolean) esJackeMate.invoke(mGestorDeMovimientos));
+
+        mTablero.hacerMovimiento(mTablero.getCasilla('e', 7), mTablero.getCasilla('f', 6));
+        mTablero.hacerMovimiento(mTablero.getCasilla('f', 0), mTablero.getCasilla('c', 3));
+
+        assertFalse((Boolean) esJackeMate.invoke(mGestorDeMovimientos));
     }
 }

@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import migrupo.ajedrez.model.*;
@@ -32,7 +33,7 @@ public class VentanaJuegoController implements Initializable {
     @FXML protected GridPane gridPaneTablero;
     @FXML protected TextField textFieldNombreA, textFieldNombreB, textFieldNombreUsuarioActual;
     @FXML protected ImageView imageViewUsuarioActual;
-    @FXML protected Pane paneAcabado;
+    @FXML protected AnchorPane paneAcabado;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         

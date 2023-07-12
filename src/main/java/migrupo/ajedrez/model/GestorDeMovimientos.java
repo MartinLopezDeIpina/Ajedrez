@@ -29,24 +29,29 @@ public class GestorDeMovimientos {
 
             mTablero.hacerMovimiento(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
 
-            comprobarJackeMate(movimiento);
+            comprobarJackeMate();
 
             mGestorDeTurnos.pasarTurno();
         }
     }
 
-    private boolean movimientoPosible(Movimiento movimiento) {
-
+    private boolean movimientoPosibleIndependientementeDelTurno(Movimiento movimiento) {
         return casillaOrigenNoEstaVacia(movimiento.getCasillaOrigen()) &&
-                leTocaJugarAlJugadorCorrecto(movimiento.getCasillaOrigen()) &&
-                casillaDestinoNoTienePiezaDelMismoColor(movimiento.getCasillaDestino()) &&
+                casillaDestinoNoTienePiezaDelMismoColor(movimiento) &&
                 piezaPuedeMoverseACasillaDestino(movimiento) &&
                 noHayPiezasEntreCasillaOrigenYCasillaDestino(movimiento) &&
                 reyNoQuedaEnJaque(movimiento);
     }
+
+    private boolean movimientoPosible(Movimiento movimiento) {
+
+        return movimientoPosibleIndependientementeDelTurno(movimiento) &&
+                leTocaJugarAlJugadorCorrecto(movimiento.getCasillaOrigen());
+
+    }
     private boolean casillaOrigenNoEstaVacia(Casilla casilla) {return !mTablero.casillaVacia(casilla);}
     private boolean leTocaJugarAlJugadorCorrecto(Casilla casilla) {return mTablero.getColorPiezaEnCasilla(casilla) == mGestorDeTurnos.getColorTurno();}
-    private boolean casillaDestinoNoTienePiezaDelMismoColor(Casilla casilla) {return mTablero.getColorPiezaEnCasilla(casilla) != mGestorDeTurnos.getColorTurno();}
+    private boolean casillaDestinoNoTienePiezaDelMismoColor(Movimiento movimiento) {return mTablero.getColorPiezaEnCasilla(movimiento.getCasillaOrigen()) != mTablero.getColorPiezaEnCasilla(movimiento.getCasillaDestino());}
     private boolean piezaPuedeMoverseACasillaDestino(Movimiento movimiento) {return movimiento.piezaPuedeMoverseACasillaDestino();}
     private boolean noHayPiezasEntreCasillaOrigenYCasillaDestino(Movimiento movimiento) {
         return !mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());}
@@ -68,13 +73,13 @@ public class GestorDeMovimientos {
     }
 
     // todo: test de esto
-    private void comprobarJackeMate(Movimiento movimiento){
+    private void comprobarJackeMate(){
         if(esJackeMate()){
             mGestorDeTurnos.setJackeMate();
         }
     }
     private boolean esJackeMate() {
-        Color colorPosibleMate = mGestorDeTurnos.getColorTurno() == Color.BLANCO ? Color.NEGRO : Color.BLANCO;
+        Color colorPosibleMate = mGestorDeTurnos.getColorTurno() == Color.NEGRO ? Color.BLANCO : Color.NEGRO;
 
         if(mTablero.algunaPiezaAmenazaAlRey(colorPosibleMate)){
 
@@ -90,9 +95,11 @@ public class GestorDeMovimientos {
     private List<Movimiento> getMovimientosPosibles(Color colorRival) {
         return mTablero.getMovimientosPosibles(colorRival).stream()
                 .map(movimiento -> new Movimiento(movimiento[0], movimiento[1]))
-                .filter(movimiento -> movimientoPosible(movimiento))
+                .filter(movimiento -> movimientoPosibleIndependientementeDelTurno(movimiento))
                 .toList();
     }
+
+
 
     private boolean algunMovimientoProtegeAlRey(List<Movimiento> movimientosPosibles) {
         return movimientosPosibles.stream().anyMatch(
