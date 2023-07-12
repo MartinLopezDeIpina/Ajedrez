@@ -209,6 +209,7 @@ public class VentanaJuegoController implements Initializable {
 
     private void mostrarMensajeFinPartida() {
         paneAcabado.setVisible(true);
+        paneAcabado.setDisable(false);
     }
 
 
