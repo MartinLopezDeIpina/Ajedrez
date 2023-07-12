@@ -14,6 +14,7 @@ public abstract class Pieza {
 
     public abstract boolean puedeMoverseA(Casilla origen, Casilla destino);
 
+
     public boolean esColor(Color color) {
         return this.color == color;
     }

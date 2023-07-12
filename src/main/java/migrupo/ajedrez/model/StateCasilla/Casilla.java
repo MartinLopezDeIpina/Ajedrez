@@ -110,4 +110,13 @@ public class Casilla implements EstadoCasilla{
     public SimpleObjectProperty<EstadoCasilla> getEstadoCasilla() {
         return estadoCasilla;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Casilla){
+            Casilla casilla = (Casilla) obj;
+            return casilla.getNum() == getNum() && casilla.getNumLetra() == getNumLetra();
+        }
+        return false;
+    }
 }

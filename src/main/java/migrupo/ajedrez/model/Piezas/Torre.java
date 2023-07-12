@@ -10,7 +10,7 @@ public class Torre extends Pieza{
 
     @Override
     public boolean puedeMoverseA(Casilla origen, Casilla destino) {
-        return origen.estaEnMismaColumna(destino) || origen.estaEnMismaFila(destino);
+        return (origen.estaEnMismaColumna(destino) || origen.estaEnMismaFila(destino)) && !origen.equals(destino);
     }
 
     @Override

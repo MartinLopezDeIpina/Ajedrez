@@ -1,8 +1,6 @@
 package migrupo.ajedrez.model;
 
-import javafx.beans.property.SimpleObjectProperty;
 import migrupo.ajedrez.model.BD.MovimientoDAOImpl;
-import migrupo.ajedrez.model.Piezas.Peon;
 import migrupo.ajedrez.model.Piezas.PeonBlanco;
 import migrupo.ajedrez.model.Piezas.PeonNegro;
 import migrupo.ajedrez.model.StateCasilla.Casilla;
@@ -30,6 +28,8 @@ public class GestorDeMovimientos {
         if(movimientoPosible(movimiento) && !coronarSiPosible(movimiento)){
 
             mTablero.hacerMovimiento(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
+
+            comprobarJackeMate(movimiento);
 
             mGestorDeTurnos.pasarTurno();
         }
@@ -66,6 +66,39 @@ public class GestorDeMovimientos {
         return (movimiento.getCasillaOrigen().getPiezaValue() instanceof PeonBlanco && movimiento.getNumDestino() == 7)
                 || (movimiento.getCasillaOrigen().getPiezaValue() instanceof PeonNegro  && movimiento.getNumDestino() == 0);
     }
+
+    // todo: test de esto
+    private void comprobarJackeMate(Movimiento movimiento){
+        if(esJackeMate()){
+            mGestorDeTurnos.setJackeMate();
+        }
+    }
+    private boolean esJackeMate() {
+        Color colorPosibleMate = mGestorDeTurnos.getColorTurno() == Color.BLANCO ? Color.NEGRO : Color.BLANCO;
+
+        if(mTablero.algunaPiezaAmenazaAlRey(colorPosibleMate)){
+
+            List<Movimiento> movimientosPosibles = getMovimientosPosibles(colorPosibleMate);
+
+            // todo: no da lo esperado, hacer los tests y comprobar que es lo que falla
+            return movimientosPosibles.size() == 0;
+            //return algunMovimientoProtegeAlRey(movimientosPosibles);
+        }
+        return false;
+    }
+
+    private List<Movimiento> getMovimientosPosibles(Color colorRival) {
+        return mTablero.getMovimientosPosibles(colorRival).stream()
+                .map(movimiento -> new Movimiento(movimiento[0], movimiento[1]))
+                .filter(movimiento -> movimientoPosible(movimiento))
+                .toList();
+    }
+
+    private boolean algunMovimientoProtegeAlRey(List<Movimiento> movimientosPosibles) {
+        return movimientosPosibles.stream().anyMatch(
+                movimientoPosible -> !mTablero.reyQuedaEnJaque(movimientoPosible.getCasillaOrigen(), movimientoPosible.getCasillaDestino()));
+    }
+
 
     public void setPartida(int identificador, Usuario usuarioB, Usuario usuarioN) {
         ponerPosicionesIniciales();
@@ -119,4 +152,5 @@ public class GestorDeMovimientos {
             casillaSeleccionada = null;
         }
     }
+
 }

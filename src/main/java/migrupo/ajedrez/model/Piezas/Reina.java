@@ -10,7 +10,7 @@ public class Reina extends Pieza{
 
     @Override
     public boolean puedeMoverseA(Casilla origen, Casilla destino) {
-        return origen.estaEnMismaColumna(destino) || origen.estaEnMismaFila(destino) || origen.estaEnMismaDiagonal(destino);
+        return (origen.estaEnMismaColumna(destino) || origen.estaEnMismaFila(destino) || origen.estaEnMismaDiagonal(destino)) && !origen.equals(destino);
     }
 
     @Override

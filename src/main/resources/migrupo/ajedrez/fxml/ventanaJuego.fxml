@@ -77,5 +77,6 @@
             </BorderPane>
          </left>
       </BorderPane>
+      <BorderPane fx:id="paneAcabado" prefHeight="200.0" prefWidth="200.0" scaleX="2.0" scaleY="2.0" visible="false" />
    </children>
 </AnchorPane>

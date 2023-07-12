@@ -1,8 +1,10 @@
 package migrupo.ajedrez.model;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.ChoiceBox;
+import migrupo.ajedrez.model.Piezas.Pieza;
 
 public class GestorDeTurnos {
     private final static GestorDeTurnos instance = new GestorDeTurnos();
@@ -10,16 +12,22 @@ public class GestorDeTurnos {
         return instance;
     }
 
+    private GestorDeMovimientos mGestorDeMovimientos;
+
     private SimpleObjectProperty<Usuario> usuarioA;
     private SimpleObjectProperty<Usuario> usuarioB;
     private SimpleObjectProperty<Usuario> usuarioActual;
 
+    private SimpleBooleanProperty acabado;
+
     private GestorDeTurnos() {
+        mGestorDeMovimientos = GestorDeMovimientos.getInstance();
     }
 
     public void iniciarPartida(Usuario usuarioA, Usuario usuarioB) {
         asignarUsuarios(usuarioA, usuarioB);
 
+        quitarAcabado();
 
         iniciarTurno();
     }
@@ -28,9 +36,11 @@ public class GestorDeTurnos {
         this.usuarioB = new SimpleObjectProperty<>(usuarioB);
         this.usuarioActual = new SimpleObjectProperty<>();
     }
-
     private void iniciarTurno(){
         usuarioActual.set(usuarioA.getValue().getColor().equals(Color.BLANCO) ? usuarioA.getValue() : usuarioB.getValue());
+    }
+    private void quitarAcabado() {
+        acabado = new SimpleBooleanProperty(false);
     }
 
     public Color getColorTurno() {
@@ -38,7 +48,9 @@ public class GestorDeTurnos {
     }
 
     public void pasarTurno(){
-        usuarioActual.set(usuarioActual.getValue().equals(usuarioA.getValue()) ? usuarioB.getValue() : usuarioA.getValue());
+        if(!acabado.getValue()){
+            usuarioActual.set(usuarioActual.getValue().getColor().equals(Color.BLANCO) ? usuarioB.getValue() : usuarioA.getValue());
+        }
     }
 
     public SimpleStringProperty getNomberUsuarioBlanco(){
@@ -51,7 +63,18 @@ public class GestorDeTurnos {
     public SimpleObjectProperty <Usuario> getUsuarioActual() {
         return usuarioActual;
     }
+    public Usuario getUsuarioActualValue() {
+        return usuarioActual.getValue();
+    }
     public SimpleStringProperty getNombreUsuarioActual() {
         return usuarioActual.getValue().getNombre();
+    }
+
+    public void setJackeMate() {
+        acabado.set(true);
+    }
+
+    public SimpleBooleanProperty getAcabado() {
+        return acabado;
     }
 }

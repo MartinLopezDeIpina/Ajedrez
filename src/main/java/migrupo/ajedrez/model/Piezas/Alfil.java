@@ -10,7 +10,7 @@ public class Alfil extends Pieza{
 
     @Override
     public boolean puedeMoverseA(Casilla origen, Casilla destino) {
-        return origen.estaEnMismaDiagonal(destino);
+        return origen.estaEnMismaDiagonal(destino) && !origen.equals(destino);
     }
 
     @Override

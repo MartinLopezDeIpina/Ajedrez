@@ -31,5 +31,14 @@ public class Movimiento {
     public int getNumDestino() {
     	return destino.getNum();
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Movimiento){
+            Movimiento movimiento = (Movimiento) obj;
+            return movimiento.getCasillaOrigen().equals(origen) && movimiento.getCasillaDestino().equals(destino);
+        }
+        return false;
+    }
 }
 

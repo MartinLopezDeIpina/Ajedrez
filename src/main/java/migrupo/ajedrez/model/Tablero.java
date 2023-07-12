@@ -179,7 +179,7 @@ public class Tablero {
         setPiezaEnCasilla(casillaOrigen, piezaOrigen);
         setPiezaEnCasilla(casillaDestino, piezaDestino);
     }
-    private boolean algunaPiezaAmenazaAlRey(Color colorRey) {
+    public boolean algunaPiezaAmenazaAlRey(Color colorRey) {
         Casilla casillaRey = getCasillaRey(colorRey);
 
         return Arrays.stream(casillas).flatMap(Arrays::stream)
@@ -224,5 +224,17 @@ public class Tablero {
     public void coronar(Casilla casillaOrigen, Casilla casillaDestino) {
         setPiezaEnCasilla(casillaDestino, new Reina(casillaOrigen.getColorPiezaCasilla()));
         setPiezaEnCasilla(casillaOrigen, new PiezaNula());
+    }
+
+    public List<Casilla[]> getMovimientosPosibles(Color color) {
+        return Arrays.stream(casillas)
+                .flatMap(Arrays::stream)
+                .filter(casilla -> casilla.getColorPiezaCasilla() == color)
+                .flatMap(casilla -> Arrays.stream(casillas)
+                        .flatMap(Arrays::stream)
+                        .filter(casillaDestino -> casilla.getPiezaValue().puedeMoverseA(casilla, casillaDestino))
+                        .map(casillaDestino -> new Casilla[]{casilla, casillaDestino})
+                )
+                .toList();
     }
 }

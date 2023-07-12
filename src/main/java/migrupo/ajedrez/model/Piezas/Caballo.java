@@ -10,7 +10,7 @@ public class Caballo extends Pieza{
 
     @Override
     public boolean puedeMoverseA(Casilla origen, Casilla destino) {
-        return origen.estaEnL(destino);
+        return origen.estaEnL(destino) && !origen.equals(destino);
     }
 
     @Override

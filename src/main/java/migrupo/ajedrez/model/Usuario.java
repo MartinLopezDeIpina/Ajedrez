@@ -19,4 +19,7 @@ public abstract class Usuario {
     public SimpleStringProperty getNombre(){return nombre;}
     public void setColor(Color color){this.color = color;}
     public Color getColor(){return color;}
+    public Color getColorRival() {
+        return (color == Color.BLANCO) ? Color.NEGRO : Color.BLANCO;
+    }
 }

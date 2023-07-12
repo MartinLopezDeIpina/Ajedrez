@@ -39,4 +39,5 @@ public class Partida {
         this.usuarioN.setColor(Color.NEGRO);
         this.usuarioB.setColor(Color.BLANCO);
     }
+
 }

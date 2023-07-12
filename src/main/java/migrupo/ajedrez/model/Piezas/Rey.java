@@ -10,7 +10,7 @@ public class Rey extends Pieza{
 
     @Override
     public boolean puedeMoverseA(Casilla origen, Casilla destino) {
-        return seMueveLaterlamente(origen, destino) || seMueveDiagonalmente(origen, destino);
+        return (seMueveLaterlamente(origen, destino) || seMueveDiagonalmente(origen, destino)) && !origen.equals(destino);
     }
     private boolean seMueveLaterlamente(Casilla origen, Casilla destino) {
         return seMueveHorizontalmente(origen, destino) || seMueveVerticalmente(origen, destino);

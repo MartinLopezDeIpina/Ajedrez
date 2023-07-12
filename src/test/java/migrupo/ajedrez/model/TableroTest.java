@@ -1,6 +1,7 @@
 package migrupo.ajedrez.model;
 
 import migrupo.ajedrez.model.Piezas.PeonBlanco;
+import migrupo.ajedrez.model.Piezas.PiezaNula;
 import migrupo.ajedrez.model.Piezas.Reina;
 import migrupo.ajedrez.model.Piezas.Torre;
 import migrupo.ajedrez.model.StateCasilla.Casilla;
@@ -11,6 +12,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -163,5 +165,42 @@ class TableroTest {
 
         assertInstanceOf(Reina.class, mTablero.getCasilla('c', 0).getPiezaValue());
         assertInstanceOf(Reina.class, mTablero.getCasilla('a', 7).getPiezaValue());
+    }
+
+    @Test
+    void getMovimientosPosiblesTest() throws NoSuchFieldException, IllegalAccessException {
+        iniciarTableroYCasillas();
+        vaciarCasillas();
+
+
+        mTablero.getCasilla('a', 1).setPieza(new PeonBlanco());
+        mTablero.getCasilla('h', 0).setPieza(new Torre(Color.BLANCO));
+
+        List<Casilla[]> movimientosEsperados = Arrays.asList(
+                new Casilla[]{mTablero.getCasilla('a', 1), mTablero.getCasilla('a', 2)},
+                new Casilla[]{mTablero.getCasilla('a', 1), mTablero.getCasilla('a', 3)},
+                new Casilla[]{mTablero.getCasilla('h', 0), mTablero.getCasilla('h', 1)},
+                new Casilla[]{mTablero.getCasilla('h', 0), mTablero.getCasilla('h', 2)},
+                new Casilla[]{mTablero.getCasilla('h', 0), mTablero.getCasilla('h', 3)},
+                new Casilla[]{mTablero.getCasilla('h', 0), mTablero.getCasilla('h', 4)},
+                new Casilla[]{mTablero.getCasilla('h', 0), mTablero.getCasilla('h', 5)},
+                new Casilla[]{mTablero.getCasilla('h', 0), mTablero.getCasilla('h', 6)},
+                new Casilla[]{mTablero.getCasilla('h', 0), mTablero.getCasilla('h', 7)},
+                new Casilla[]{mTablero.getCasilla('h', 0), mTablero.getCasilla('g', 0)},
+                new Casilla[]{mTablero.getCasilla('h', 0), mTablero.getCasilla('f', 0)},
+                new Casilla[]{mTablero.getCasilla('h', 0), mTablero.getCasilla('e', 0)},
+                new Casilla[]{mTablero.getCasilla('h', 0), mTablero.getCasilla('d', 0)},
+                new Casilla[]{mTablero.getCasilla('h', 0), mTablero.getCasilla('c', 0)},
+                new Casilla[]{mTablero.getCasilla('h', 0), mTablero.getCasilla('b', 0)},
+                new Casilla[]{mTablero.getCasilla('h', 0), mTablero.getCasilla('a', 0)}
+        );
+
+        List<Casilla[]> movimientosPosibles = mTablero.getMovimientosPosibles(Color.BLANCO);
+
+        assertEquals(movimientosEsperados.size(), movimientosPosibles.size());
+    }
+
+    private void vaciarCasillas() {
+        Arrays.stream(casillas).flatMap(Arrays::stream).forEach(casilla -> casilla.setPieza(new PiezaNula()));
     }
 }

@@ -32,12 +32,15 @@ public class VentanaJuegoController implements Initializable {
     @FXML protected GridPane gridPaneTablero;
     @FXML protected TextField textFieldNombreA, textFieldNombreB, textFieldNombreUsuarioActual;
     @FXML protected ImageView imageViewUsuarioActual;
+    @FXML protected Pane paneAcabado;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         
         iniciarTablero();
 
         iniciarInformacionJugadores();
+
+        iniciarFinalizarPartida();
         
     }
 
@@ -192,6 +195,19 @@ public class VentanaJuegoController implements Initializable {
         mGestorDeTurnos.getUsuarioActual().addListener(((observable, oldValue, newValue) -> {
             imageViewUsuarioActual.setImage(newValue.getColor().equals(Color.BLANCO) ? mPiezasDAOImpl.getImagenPieza("reyB") : mPiezasDAOImpl.getImagenPieza("reyN"));
         }));
+    }
+
+    private void iniciarFinalizarPartida(){
+        mGestorDeTurnos.getAcabado().addListener(((observable, oldValue, newValue) -> {
+            if(newValue){
+                // todo: que salga el ganador
+                mostrarMensajeFinPartida();
+            }
+        }));
+    }
+
+    private void mostrarMensajeFinPartida() {
+        paneAcabado.setVisible(true);
     }
 
 
