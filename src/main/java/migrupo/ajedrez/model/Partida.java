@@ -5,14 +5,19 @@ public class Partida {
     public static Partida getInstance(){return mPartida;}
 
     GestorDeMovimientos mGestorDeMovimientos;
+    GestorDeTurnos mGestorDeTurnos;
 
     private int identificador;
 
     private Usuario usuarioB;
     private Usuario usuarioN;
+    private Usuario ganador;
+
+    private RazonVictoria razonVictoria;
 
     private Partida(){
         mGestorDeMovimientos = GestorDeMovimientos.getInstance();
+        mGestorDeTurnos = GestorDeTurnos.getInstance();
     }
 
     public void setPartida(int identificador, Usuario usuarioA, Usuario usuarioB){
@@ -38,6 +43,19 @@ public class Partida {
         }
         this.usuarioN.setColor(Color.NEGRO);
         this.usuarioB.setColor(Color.BLANCO);
+    }
+
+    public void partidaFinalizada(RazonVictoria razon, Usuario ganador){
+        razonVictoria = razon;
+
+        this.ganador = ganador;
+    }
+
+    public Usuario getGanador(){
+        return ganador;
+    }
+    public String getRazonVictoria(){
+        return razonVictoria.toString();
     }
 
 }

@@ -10,7 +10,7 @@ public class GestorDeTurnos {
         return instance;
     }
 
-    private GestorDeMovimientos mGestorDeMovimientos;
+    private Partida mPartida;
 
     private SimpleObjectProperty<Usuario> usuarioA;
     private SimpleObjectProperty<Usuario> usuarioB;
@@ -18,13 +18,14 @@ public class GestorDeTurnos {
 
     private SimpleBooleanProperty acabado;
 
-    private Usuario ganador;
 
     private GestorDeTurnos() {
-        mGestorDeMovimientos = GestorDeMovimientos.getInstance();
+
     }
 
     public void iniciarPartida(Usuario usuarioA, Usuario usuarioB) {
+        mPartida = Partida.getInstance();
+
         asignarUsuarios(usuarioA, usuarioB);
 
         quitarAcabado();
@@ -71,12 +72,9 @@ public class GestorDeTurnos {
     }
 
     public void setJackeMateYGanador() {
-        ponerGanador();
+        mPartida.partidaFinalizada(RazonVictoria.JACKE_MATE, usuarioActual.getValue());
 
         finalizarPartida();
-    }
-    private void ponerGanador() {
-        ganador = usuarioActual.getValue();
     }
     private void finalizarPartida() {
         acabado.set(true);
@@ -86,7 +84,4 @@ public class GestorDeTurnos {
         return acabado;
     }
 
-    public Usuario getGanador() {
-        return ganador;
-    }
 }

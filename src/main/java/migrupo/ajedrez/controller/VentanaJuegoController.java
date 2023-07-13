@@ -32,7 +32,7 @@ public class VentanaJuegoController implements Initializable {
     private Partida mPartida = Partida.getInstance();
 
     @FXML protected GridPane gridPaneTablero;
-    @FXML protected TextField textFieldNombreA, textFieldNombreB, textFieldNombreUsuarioActual, textFieldGanador;
+    @FXML protected TextField textFieldNombreA, textFieldNombreB, textFieldNombreUsuarioActual, textFieldGanador, textFieldRazonVictoria;
     @FXML protected ImageView imageViewUsuarioActual, imageViewGanador;
     @FXML protected AnchorPane paneAcabado;
     @Override
@@ -226,13 +226,16 @@ public class VentanaJuegoController implements Initializable {
     private void ponerGanador() {
         setImagenGanador();
         setNombreGanador();
+        setRazonVictoria();
     }
-
     private void setImagenGanador() {
-        imageViewGanador.setImage(mGestorDeTurnos.getGanador().getColor().equals(Color.BLANCO) ? mPiezasDAOImpl.getImagenPieza("reyB") : mPiezasDAOImpl.getImagenPieza("reyN"));
+        imageViewGanador.setImage(mPartida.getGanador().getColor().equals(Color.BLANCO) ? mPiezasDAOImpl.getImagenPieza("reyB") : mPiezasDAOImpl.getImagenPieza("reyN"));
     }
     private void setNombreGanador() {
-        textFieldGanador.setText(String.format("Ganador: %s", mGestorDeTurnos.getGanador().getNombreValue()));
+        textFieldGanador.setText(String.format("Ganador: %s", mPartida.getGanador().getNombreValue()));
+    }
+    private void setRazonVictoria() {
+        textFieldRazonVictoria.setText(mPartida.getRazonVictoria());
     }
 
     @FXML protected void onButtonAceptarClicked() {

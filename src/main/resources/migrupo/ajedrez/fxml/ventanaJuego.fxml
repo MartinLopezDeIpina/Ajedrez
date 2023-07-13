@@ -83,7 +83,7 @@
          <children>
             <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #334d39;">
                <top>
-                  <TextField alignment="CENTER" editable="false" focusTraversable="false" text="Jacke Mate" BorderPane.alignment="CENTER">
+                  <TextField fx:id="textFieldRazonVictoria" alignment="CENTER" editable="false" focusTraversable="false" text="Jacke Mate" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets left="25.0" right="25.0" top="25.0" />
                      </BorderPane.margin></TextField>
