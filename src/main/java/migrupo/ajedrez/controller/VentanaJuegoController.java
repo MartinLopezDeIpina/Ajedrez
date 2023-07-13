@@ -14,6 +14,7 @@ import migrupo.ajedrez.model.StateCasilla.EstadoCasillaSeleccionado;
 import migrupo.ajedrez.view.EfectosDAOImpl;
 import migrupo.ajedrez.view.PiezasDAOImpl;
 import migrupo.ajedrez.view.TipoEfecto;
+import migrupo.ajedrez.view.ViewFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,11 +32,13 @@ public class VentanaJuegoController implements Initializable {
     private Partida mPartida = Partida.getInstance();
 
     @FXML protected GridPane gridPaneTablero;
-    @FXML protected TextField textFieldNombreA, textFieldNombreB, textFieldNombreUsuarioActual;
-    @FXML protected ImageView imageViewUsuarioActual;
+    @FXML protected TextField textFieldNombreA, textFieldNombreB, textFieldNombreUsuarioActual, textFieldGanador;
+    @FXML protected ImageView imageViewUsuarioActual, imageViewGanador;
     @FXML protected AnchorPane paneAcabado;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        ocultarPaneAcabado();
         
         iniciarTablero();
 
@@ -43,6 +46,11 @@ public class VentanaJuegoController implements Initializable {
 
         iniciarFinalizarPartida();
         
+    }
+
+    private void ocultarPaneAcabado() {
+        paneAcabado.setVisible(false);
+        paneAcabado.setDisable(true);
     }
 
     private void iniciarTablero() {
@@ -208,9 +216,35 @@ public class VentanaJuegoController implements Initializable {
     }
 
     private void mostrarMensajeFinPartida() {
+        mostrarPaneAcabado();
+        ponerGanador();
+    }
+    private void mostrarPaneAcabado() {
         paneAcabado.setVisible(true);
         paneAcabado.setDisable(false);
     }
+    private void ponerGanador() {
+        setImagenGanador();
+        setNombreGanador();
+    }
 
+    private void setImagenGanador() {
+        imageViewGanador.setImage(mGestorDeTurnos.getGanador().getColor().equals(Color.BLANCO) ? mPiezasDAOImpl.getImagenPieza("reyB") : mPiezasDAOImpl.getImagenPieza("reyN"));
+    }
+    private void setNombreGanador() {
+        textFieldGanador.setText(String.format("Ganador: %s", mGestorDeTurnos.getGanador().getNombreValue()));
+    }
 
+    @FXML protected void onButtonAceptarClicked() {
+        ocultarVentanaJuego();
+        mostrarVentanaMenu();
+    }
+
+    private void ocultarVentanaJuego() {
+        gridPaneTablero.getScene().getWindow().hide();
+    }
+
+    private void mostrarVentanaMenu() {
+        ViewFactory.mostrarVentanaMenuPrincipal();
+    }
 }

@@ -3,8 +3,6 @@ package migrupo.ajedrez.model;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.control.ChoiceBox;
-import migrupo.ajedrez.model.Piezas.Pieza;
 
 public class GestorDeTurnos {
     private final static GestorDeTurnos instance = new GestorDeTurnos();
@@ -19,6 +17,8 @@ public class GestorDeTurnos {
     private SimpleObjectProperty<Usuario> usuarioActual;
 
     private SimpleBooleanProperty acabado;
+
+    private Usuario ganador;
 
     private GestorDeTurnos() {
         mGestorDeMovimientos = GestorDeMovimientos.getInstance();
@@ -70,11 +70,23 @@ public class GestorDeTurnos {
         return usuarioActual.getValue().getNombre();
     }
 
-    public void setJackeMate() {
+    public void setJackeMateYGanador() {
+        ponerGanador();
+
+        finalizarPartida();
+    }
+    private void ponerGanador() {
+        ganador = usuarioActual.getValue();
+    }
+    private void finalizarPartida() {
         acabado.set(true);
     }
 
     public SimpleBooleanProperty getAcabado() {
         return acabado;
+    }
+
+    public Usuario getGanador() {
+        return ganador;
     }
 }

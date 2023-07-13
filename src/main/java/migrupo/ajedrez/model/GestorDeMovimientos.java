@@ -75,7 +75,7 @@ public class GestorDeMovimientos {
     // todo: test de esto
     private void comprobarJackeMate(){
         if(esJackeMate()){
-            mGestorDeTurnos.setJackeMate();
+            mGestorDeTurnos.setJackeMateYGanador();
         }
     }
     private boolean esJackeMate() {
