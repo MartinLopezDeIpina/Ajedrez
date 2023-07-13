@@ -29,7 +29,7 @@ public class GestorDeMovimientos {
 
             mTablero.hacerMovimiento(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
 
-            comprobarJackeMate();
+            comprobarFinPartida();
 
             mGestorDeTurnos.pasarTurno();
         }
@@ -72,34 +72,27 @@ public class GestorDeMovimientos {
                 || (movimiento.getCasillaOrigen().getPiezaValue() instanceof PeonNegro  && movimiento.getNumDestino() == 0);
     }
 
-    // todo: test de esto
-    private void comprobarJackeMate(){
-        if(esJackeMate()){
-            mGestorDeTurnos.setJackeMateYGanador();
-        }
-    }
-    private boolean esJackeMate() {
+    private void comprobarFinPartida() {
         Color colorPosibleMate = mGestorDeTurnos.getColorTurno() == Color.NEGRO ? Color.BLANCO : Color.NEGRO;
 
-        if(mTablero.algunaPiezaAmenazaAlRey(colorPosibleMate)){
-
-            List<Movimiento> movimientosPosibles = getMovimientosPosibles(colorPosibleMate);
-
-            // todo: no da lo esperado, hacer los tests y comprobar que es lo que falla
-            return movimientosPosibles.size() == 0;
-            //return algunMovimientoProtegeAlRey(movimientosPosibles);
+        List<Movimiento> movimientosPosibles = getMovimientosPosibles(colorPosibleMate);
+        boolean sinMovimientos = movimientosPosibles.size() == 0;
+        
+        if(sinMovimientos){
+           noHayMovimientosPosibles(colorPosibleMate);
         }
-        return false;
     }
-
     private List<Movimiento> getMovimientosPosibles(Color colorRival) {
         return mTablero.getMovimientosPosibles(colorRival).stream()
                 .map(movimiento -> new Movimiento(movimiento[0], movimiento[1]))
                 .filter(movimiento -> movimientoPosibleIndependientementeDelTurno(movimiento))
                 .toList();
     }
+    private void noHayMovimientosPosibles(Color colorPosibleMate) {
+        if(mTablero.algunaPiezaAmenazaAlRey(colorPosibleMate)) mGestorDeTurnos.setFinalizarPartida(RazonVictoria.JACKE_MATE);
 
-
+        else mGestorDeTurnos.setFinalizarPartida(RazonVictoria.REY_AHOGADO);
+    }
 
     private boolean algunMovimientoProtegeAlRey(List<Movimiento> movimientosPosibles) {
         return movimientosPosibles.stream().anyMatch(

@@ -209,7 +209,6 @@ public class VentanaJuegoController implements Initializable {
     private void iniciarFinalizarPartida(){
         mGestorDeTurnos.getAcabado().addListener(((observable, oldValue, newValue) -> {
             if(newValue){
-                // todo: que salga el ganador
                 mostrarMensajeFinPartida();
             }
         }));
@@ -232,7 +231,11 @@ public class VentanaJuegoController implements Initializable {
         imageViewGanador.setImage(mPartida.getGanador().getColor().equals(Color.BLANCO) ? mPiezasDAOImpl.getImagenPieza("reyB") : mPiezasDAOImpl.getImagenPieza("reyN"));
     }
     private void setNombreGanador() {
-        textFieldGanador.setText(String.format("Ganador: %s", mPartida.getGanador().getNombreValue()));
+        if(mPartida.getRazonVictoria().equals(RazonVictoria.JACKE_MATE.toString())){
+            textFieldGanador.setText(String.format("Ganador: %s", mPartida.getGanador().getNombreValue()));
+        }else {
+            textFieldGanador.setText(String.format("Empate!!"));
+        }
     }
     private void setRazonVictoria() {
         textFieldRazonVictoria.setText(mPartida.getRazonVictoria());

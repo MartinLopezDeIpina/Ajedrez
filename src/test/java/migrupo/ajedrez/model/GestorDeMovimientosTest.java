@@ -5,6 +5,8 @@ import migrupo.ajedrez.model.BD.MovimientoDAOImpl;
 import migrupo.ajedrez.model.BD.PartidaDAOImpl;
 import migrupo.ajedrez.model.Piezas.PeonBlanco;
 import migrupo.ajedrez.model.Piezas.PeonNegro;
+import migrupo.ajedrez.model.Piezas.Reina;
+import migrupo.ajedrez.model.Piezas.Rey;
 import migrupo.ajedrez.model.StateCasilla.Casilla;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -31,8 +33,8 @@ class GestorDeMovimientosTest {
     static private Partida mPartida;
 
     static Method getPiezaTablero;
-    static Field casillaSeleccionada;
-    static Method coronarSiPosible, esJackeMate;
+    static Field casillaSeleccionada, razonVictoria;
+    static Method coronarSiPosible, comprobarFinPartida;
 
 
     @BeforeAll
@@ -50,9 +52,14 @@ class GestorDeMovimientosTest {
         hacerGetPiezaAccesible();
         hacerCasillaSeleccionadaAccesible();
         hacerCoronarSiPosibleAccesible();
-        hacerEsJackeMateAccesible();
+        hacerComprobarFinPartidaAccesible();
+        hacerRazonVictoriaAccesible();
     }
 
+    private static void hacerRazonVictoriaAccesible() throws NoSuchFieldException {
+        razonVictoria = mPartida.getClass().getDeclaredField("razonVictoria");
+        razonVictoria.setAccessible(true);
+    }
     private static void hacerCoronarSiPosibleAccesible() throws NoSuchMethodException {
         coronarSiPosible = mGestorDeMovimientos.getClass().getDeclaredMethod("coronarSiPosible", Movimiento.class);
         coronarSiPosible.setAccessible(true);
@@ -65,9 +72,9 @@ class GestorDeMovimientosTest {
         casillaSeleccionada = mGestorDeMovimientos.getClass().getDeclaredField("casillaSeleccionada");
         casillaSeleccionada.setAccessible(true);
     }
-    private static void hacerEsJackeMateAccesible() throws NoSuchMethodException {
-        esJackeMate = mGestorDeMovimientos.getClass().getDeclaredMethod("esJackeMate");
-        esJackeMate.setAccessible(true);
+    private static void hacerComprobarFinPartidaAccesible() throws NoSuchMethodException {
+        comprobarFinPartida = mGestorDeMovimientos.getClass().getDeclaredMethod("comprobarFinPartida");
+        comprobarFinPartida.setAccessible(true);
     }
 
     @AfterAll
@@ -251,7 +258,7 @@ class GestorDeMovimientosTest {
     }
 
     @Test
-    void esJackeMateTest() throws InvocationTargetException, IllegalAccessException {
+    void comprobarFinPartidaTest() throws InvocationTargetException, IllegalAccessException {
         reiniciarTablero();
 
         probarMatePastor();
@@ -260,8 +267,9 @@ class GestorDeMovimientosTest {
 
         probarJackesSinMate();
 
+        mTablero.vaciarTablero();
 
-        
+        probarReyAhogado();
 
     }
 
@@ -277,7 +285,10 @@ class GestorDeMovimientosTest {
         mTablero.hacerMovimiento(mTablero.getCasilla('a', 5), mTablero.getCasilla('a', 4));
         mTablero.hacerMovimiento(mTablero.getCasilla('h', 4), mTablero.getCasilla('f', 6));
 
-        assertTrue((Boolean) esJackeMate.invoke(mGestorDeMovimientos));
+        razonVictoria = null;
+        comprobarFinPartida.invoke(mGestorDeMovimientos);
+
+        assertEquals(RazonVictoria.JACKE_MATE.toString(), mPartida.getRazonVictoria().toString());
     }
 
     private void probarJackesSinMate() throws InvocationTargetException, IllegalAccessException {
@@ -288,11 +299,24 @@ class GestorDeMovimientosTest {
         mTablero.hacerMovimiento(mTablero.getCasilla('a', 6), mTablero.getCasilla('a', 5));
         mTablero.hacerMovimiento(mTablero.getCasilla('h', 4), mTablero.getCasilla('f', 6));
 
-        assertFalse((Boolean) esJackeMate.invoke(mGestorDeMovimientos));
+        razonVictoria = null;
+        comprobarFinPartida.invoke(mGestorDeMovimientos);
+        assertNull(razonVictoria);
 
         mTablero.hacerMovimiento(mTablero.getCasilla('e', 7), mTablero.getCasilla('f', 6));
         mTablero.hacerMovimiento(mTablero.getCasilla('f', 0), mTablero.getCasilla('c', 3));
 
-        assertFalse((Boolean) esJackeMate.invoke(mGestorDeMovimientos));
+        razonVictoria = null;
+        comprobarFinPartida.invoke(mGestorDeMovimientos);
+        assertNull(razonVictoria);
+    }
+
+    private void probarReyAhogado() throws InvocationTargetException, IllegalAccessException {
+        mTablero.getCasilla('a', 0).setPieza(new Rey(Color.NEGRO));
+        mTablero.getCasilla('c', 1).setPieza(new Reina(Color.BLANCO));
+
+        razonVictoria = null;
+        comprobarFinPartida.invoke(mGestorDeMovimientos);
+        assertEquals(RazonVictoria.REY_AHOGADO.toString(), mPartida.getRazonVictoria().toString());
     }
 }

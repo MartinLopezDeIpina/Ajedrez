@@ -71,8 +71,8 @@ public class GestorDeTurnos {
         return usuarioActual.getValue().getNombre();
     }
 
-    public void setJackeMateYGanador() {
-        mPartida.partidaFinalizada(RazonVictoria.JACKE_MATE, usuarioActual.getValue());
+    public void setFinalizarPartida(RazonVictoria razonVictoria) {
+        mPartida.partidaFinalizada(razonVictoria, usuarioActual.getValue());
 
         finalizarPartida();
     }
