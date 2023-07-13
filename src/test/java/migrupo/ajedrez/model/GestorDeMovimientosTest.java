@@ -271,6 +271,8 @@ class GestorDeMovimientosTest {
 
         probarReyAhogado();
 
+        probarMaterialInsuficiente();
+
     }
 
     private void probarMatePastor() throws InvocationTargetException, IllegalAccessException {
@@ -318,5 +320,16 @@ class GestorDeMovimientosTest {
         razonVictoria = null;
         comprobarFinPartida.invoke(mGestorDeMovimientos);
         assertEquals(RazonVictoria.REY_AHOGADO.toString(), mPartida.getRazonVictoria().toString());
+    }
+
+    private void probarMaterialInsuficiente() throws InvocationTargetException, IllegalAccessException {
+        mTablero.vaciarTablero();
+
+        mTablero.getCasilla('a', 0).setPieza(new Rey(Color.BLANCO));
+        mTablero.getCasilla('a', 7).setPieza(new Rey(Color.NEGRO));
+
+        razonVictoria = null;
+        comprobarFinPartida.invoke(mGestorDeMovimientos);
+        assertEquals(RazonVictoria.MATERIAL_INSUFICIENTE.toString(), mPartida.getRazonVictoria().toString());
     }
 }

@@ -237,4 +237,39 @@ public class Tablero {
                 )
                 .toList();
     }
+
+    public boolean materialInsuficiente() {
+        return materialInsuficiente(Color.BLANCO) && materialInsuficiente(Color.NEGRO);
+    }
+
+    private boolean materialInsuficiente(Color color) {
+        List<Pieza> piezas = getPiezasEquipoSinRey(color);
+
+        boolean piezaBuena = equipoTienePiezaBuena(piezas);
+        boolean hayUnMinimoDePiezas = hayUnMinimoDePiezas(piezas);
+        boolean dosCaballos = sonDosCaballos(piezas);
+
+        return !(equipoTienePiezaBuena(piezas) || hayUnMinimoDePiezas(piezas)) || sonDosCaballos(piezas);
+    }
+    private List<Pieza> getPiezasEquipoSinRey(Color color){
+        return Arrays.stream(casillas).flatMap(Arrays::stream)
+                .map(Casilla::getPiezaValue)
+                .filter(pieza -> !(pieza instanceof Rey || pieza instanceof PiezaNula))
+                .filter(pieza -> pieza.getColor() == color)
+                .toList();
+    }
+    private boolean equipoTienePiezaBuena(List<Pieza> piezas){
+        return piezas.parallelStream().anyMatch(
+                pieza -> pieza instanceof PeonBlanco ||
+                         pieza instanceof PeonNegro ||
+                         pieza instanceof Torre ||
+                         pieza instanceof Reina
+        );
+    }
+    private boolean hayUnMinimoDePiezas(List<Pieza> piezas){
+        return piezas.size() >= 2;
+    }
+    private boolean sonDosCaballos(List<Pieza> piezas){
+        return piezas.stream().filter(pieza -> pieza instanceof Caballo).count() == 2 && piezas.size() == 2;
+    }
 }

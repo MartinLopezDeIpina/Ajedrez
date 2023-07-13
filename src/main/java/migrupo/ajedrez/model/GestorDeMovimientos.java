@@ -81,7 +81,10 @@ public class GestorDeMovimientos {
         if(sinMovimientos){
            noHayMovimientosPosibles(colorPosibleMate);
         }
+
+        comprobarMaterialInsuficiente();
     }
+
     private List<Movimiento> getMovimientosPosibles(Color colorRival) {
         return mTablero.getMovimientosPosibles(colorRival).stream()
                 .map(movimiento -> new Movimiento(movimiento[0], movimiento[1]))
@@ -92,6 +95,10 @@ public class GestorDeMovimientos {
         if(mTablero.algunaPiezaAmenazaAlRey(colorPosibleMate)) mGestorDeTurnos.setFinalizarPartida(RazonVictoria.JACKE_MATE);
 
         else mGestorDeTurnos.setFinalizarPartida(RazonVictoria.REY_AHOGADO);
+    }
+
+    private void comprobarMaterialInsuficiente() {
+        if(mTablero.materialInsuficiente()) mGestorDeTurnos.setFinalizarPartida(RazonVictoria.MATERIAL_INSUFICIENTE);
     }
 
     private boolean algunMovimientoProtegeAlRey(List<Movimiento> movimientosPosibles) {

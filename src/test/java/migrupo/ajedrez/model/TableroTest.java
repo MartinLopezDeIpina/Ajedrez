@@ -1,9 +1,6 @@
 package migrupo.ajedrez.model;
 
-import migrupo.ajedrez.model.Piezas.PeonBlanco;
-import migrupo.ajedrez.model.Piezas.PiezaNula;
-import migrupo.ajedrez.model.Piezas.Reina;
-import migrupo.ajedrez.model.Piezas.Torre;
+import migrupo.ajedrez.model.Piezas.*;
 import migrupo.ajedrez.model.StateCasilla.Casilla;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -203,4 +200,72 @@ class TableroTest {
     private void vaciarCasillas() {
         Arrays.stream(casillas).flatMap(Arrays::stream).forEach(casilla -> casilla.setPieza(new PiezaNula()));
     }
+
+    @Test
+    void materialInsuficienteTest(){
+        dejarSoloReyes();
+
+        probarSoloReyes();
+        probarUnPeon();
+
+        dejarSoloReyes();
+        probarUnCaballo();
+
+        dejarSoloReyes();
+        probarUnAlfil();
+
+        dejarSoloReyes();
+        probarUnCaballoYAlfil();
+
+        dejarSoloReyes();
+        probarDosCaballos();
+
+        dejarSoloReyes();
+        probarDosAlfiles();
+
+    }
+    private void dejarSoloReyes() {
+        mTablero.vaciarTablero();
+
+        mTablero.getCasilla('a', 0).setPieza(new Rey(Color.BLANCO));
+        mTablero.getCasilla('a', 7).setPieza(new Rey(Color.NEGRO));
+    }
+    private void probarUnPeon() {
+        mTablero.getCasilla('b', 0).setPieza(new PeonBlanco());
+
+        assertFalse(mTablero.materialInsuficiente());
+    }
+    private void probarSoloReyes() {
+        assertTrue(mTablero.materialInsuficiente());
+    }
+    private void probarDosAlfiles() {
+        mTablero.getCasilla('b', 0).setPieza(new Alfil(Color.BLANCO));
+        mTablero.getCasilla('g', 0).setPieza(new Alfil(Color.BLANCO));
+
+        assertFalse(mTablero.materialInsuficiente());
+    }
+    private void probarDosCaballos() {
+        mTablero.getCasilla('b', 0).setPieza(new Caballo(Color.BLANCO));
+        mTablero.getCasilla('g', 0).setPieza(new Caballo(Color.BLANCO));
+
+        assertTrue(mTablero.materialInsuficiente());
+    }
+    private void probarUnCaballoYAlfil() {
+        mTablero.getCasilla('b', 0).setPieza(new Caballo(Color.BLANCO));
+        mTablero.getCasilla('c', 0).setPieza(new Alfil(Color.BLANCO));
+
+        assertFalse(mTablero.materialInsuficiente());
+    }
+    private void probarUnAlfil() {
+        mTablero.getCasilla('b', 0).setPieza(new Alfil(Color.BLANCO));
+
+        assertTrue(mTablero.materialInsuficiente());
+    }
+    private void probarUnCaballo() {
+        mTablero.getCasilla('b', 0).setPieza(new Caballo(Color.BLANCO));
+
+        assertTrue(mTablero.materialInsuficiente());
+    }
+
+
 }
