@@ -84,4 +84,7 @@ public class GestorDeTurnos {
         return acabado;
     }
 
+    public int getIdentificadorPartida() {
+        return mPartida.getIdentificador();
+    }
 }

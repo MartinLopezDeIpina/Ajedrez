@@ -58,4 +58,7 @@ public class Partida {
         return razonVictoria.toString();
     }
 
+    public int getIdentificador() {
+        return identificador;
+    }
 }

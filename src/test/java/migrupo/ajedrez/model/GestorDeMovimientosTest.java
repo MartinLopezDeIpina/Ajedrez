@@ -31,7 +31,7 @@ class GestorDeMovimientosTest {
 
     static Method getPiezaTablero;
     static Field casillaSeleccionada, razonVictoria;
-    static Method coronarSiPosible, comprobarFinPartida;
+    static Method coronar, comprobarFinPartida;
 
 
     @BeforeAll
@@ -48,7 +48,7 @@ class GestorDeMovimientosTest {
 
         hacerGetPiezaAccesible();
         hacerCasillaSeleccionadaAccesible();
-        hacerCoronarSiPosibleAccesible();
+        hacerCoronarAccesible();
         hacerComprobarFinPartidaAccesible();
         hacerRazonVictoriaAccesible();
     }
@@ -57,9 +57,9 @@ class GestorDeMovimientosTest {
         razonVictoria = mPartida.getClass().getDeclaredField("razonVictoria");
         razonVictoria.setAccessible(true);
     }
-    private static void hacerCoronarSiPosibleAccesible() throws NoSuchMethodException {
-        coronarSiPosible = mGestorDeMovimientos.getClass().getDeclaredMethod("coronarSiPosible", Movimiento.class);
-        coronarSiPosible.setAccessible(true);
+    private static void hacerCoronarAccesible() throws NoSuchMethodException {
+        coronar = mGestorDeMovimientos.getClass().getDeclaredMethod("coronar", Movimiento.class);
+        coronar.setAccessible(true);
     }
     private static void hacerGetPiezaAccesible() throws NoSuchMethodException {
         getPiezaTablero = mTablero.getClass().getDeclaredMethod("getPiezaEnCasillaValue", Casilla.class);
@@ -249,9 +249,11 @@ class GestorDeMovimientosTest {
         mTablero.hacerMovimiento(mTablero.getCasilla('a', 1), mTablero.getCasilla('a', 6));
         mTablero.hacerMovimiento(mTablero.getCasilla('c', 6), mTablero.getCasilla('c', 1));
 
-        assertTrue((Boolean) coronarSiPosible.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('a', 6), mTablero.getCasilla('a', 7))));
-        assertTrue((Boolean) coronarSiPosible.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('c', 1), mTablero.getCasilla('b', 0))));
-        assertFalse((Boolean) coronarSiPosible.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('b', 1), mTablero.getCasilla('b', 2))));
+        coronar.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('a', 6), mTablero.getCasilla('a', 7)));
+        assertInstanceOf(Reina.class, mTablero.getCasilla('a', 7).getPiezaValue());
+        coronar.invoke(mGestorDeMovimientos, new Movimiento(mTablero.getCasilla('c', 1), mTablero.getCasilla('b', 0)));
+        assertInstanceOf(Reina.class, mTablero.getCasilla('b', 0).getPiezaValue());
+
     }
 
     @Test
@@ -348,21 +350,27 @@ class GestorDeMovimientosTest {
         testEnroqueCortaNegras();
     }
     private void testEnroqueLargaBlancas() throws InvocationTargetException, IllegalAccessException {
-        mTablero.getCasilla('e', 0).setPieza(new Rey(Color.BLANCO));
+        ponerReyes();
         mTablero.getCasilla('a', 0).setPieza(new Torre(Color.BLANCO));
 
-        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
 
         assertInstanceOf(Rey.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('c', 0)));
         assertInstanceOf(Torre.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('d', 0)));
 
         mTablero.vaciarTablero();
     }
-    private void testEnroqueLargaNegras() throws InvocationTargetException, IllegalAccessException {
+
+    private void ponerReyes() {
+        mTablero.getCasilla('e', 0).setPieza(new Rey(Color.BLANCO));
         mTablero.getCasilla('e', 7).setPieza(new Rey(Color.NEGRO));
+    }
+
+    private void testEnroqueLargaNegras() throws InvocationTargetException, IllegalAccessException {
+        ponerReyes();
         mTablero.getCasilla('a', 7).setPieza(new Torre(Color.NEGRO));
 
-        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 7), mTablero.getCasilla('a', 7)));
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('e', 7), mTablero.getCasilla('a', 7)));
 
         assertInstanceOf(Rey.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('c', 7)));
         assertInstanceOf(Torre.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('d', 7)));
@@ -370,10 +378,10 @@ class GestorDeMovimientosTest {
         mTablero.vaciarTablero();
     }
     private void testEnroqueCortaBlancas() throws InvocationTargetException, IllegalAccessException {
-        mTablero.getCasilla('e', 0).setPieza(new Rey(Color.BLANCO));
+        ponerReyes();
         mTablero.getCasilla('h', 0).setPieza(new Torre(Color.BLANCO));
 
-        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('h', 0)));
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('h', 0)));
 
         assertInstanceOf(Rey.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('g', 0)));
         assertInstanceOf(Torre.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('f', 0)));
@@ -381,10 +389,10 @@ class GestorDeMovimientosTest {
         mTablero.vaciarTablero();
     }
     private void testEnroqueCortaNegras() throws InvocationTargetException, IllegalAccessException {
-        mTablero.getCasilla('e', 7).setPieza(new Rey(Color.NEGRO));
+        ponerReyes();
         mTablero.getCasilla('h', 7).setPieza(new Torre(Color.NEGRO));
 
-        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 7), mTablero.getCasilla('h', 7)));
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('e', 7), mTablero.getCasilla('h', 7)));
 
         assertInstanceOf(Rey.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('g', 7)));
         assertInstanceOf(Torre.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('f', 7)));
@@ -392,33 +400,33 @@ class GestorDeMovimientosTest {
         mTablero.vaciarTablero();
     }
     private void testEnroquePiezaEnMedio() throws InvocationTargetException, IllegalAccessException {
-        mTablero.getCasilla('e', 0).setPieza(new Rey(Color.BLANCO));
+        ponerReyes();
         mTablero.getCasilla('a', 0).setPieza(new Torre(Color.BLANCO));
         mTablero.getCasilla('b', 0).setPieza(new Caballo(Color.BLANCO));
 
-        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
 
         assertInstanceOf(PiezaNula.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('c', 0)));
 
         mTablero.vaciarTablero();
     }
     private void testEnroqueBajoJaque() throws InvocationTargetException, IllegalAccessException {
-        mTablero.getCasilla('e', 0).setPieza(new Rey(Color.BLANCO));
+        ponerReyes();
         mTablero.getCasilla('a', 0).setPieza(new Torre(Color.BLANCO));
         mTablero.getCasilla('e', 7).setPieza(new Reina(Color.NEGRO));
 
-        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
 
         assertInstanceOf(PiezaNula.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('c', 0)));
 
         mTablero.vaciarTablero();
     }
     private void testEnroqueQuedaEnJaque() throws InvocationTargetException, IllegalAccessException {
-        mTablero.getCasilla('e', 0).setPieza(new Rey(Color.BLANCO));
+        ponerReyes();
         mTablero.getCasilla('a', 0).setPieza(new Torre(Color.BLANCO));
         mTablero.getCasilla('e', 7).setPieza(new Reina(Color.NEGRO));
 
-        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
 
         assertInstanceOf(PiezaNula.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('c', 0)));
 
@@ -434,9 +442,9 @@ class GestorDeMovimientosTest {
         mTablero.getCasilla('e', 7).setPieza(new PeonNegro());
         mTablero.getCasilla('e', 6).setPieza(new Rey(Color.NEGRO));
 
-        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('f', 0), mTablero.getCasilla('e', 0)));
-        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 7), mTablero.getCasilla('e', 6)));
-        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('f', 0), mTablero.getCasilla('e', 0)));
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('e', 7), mTablero.getCasilla('e', 6)));
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
 
         assertInstanceOf(PiezaNula.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('c', 0)));
 
@@ -448,9 +456,9 @@ class GestorDeMovimientosTest {
         mTablero.getCasilla('e', 7).setPieza(new PeonNegro());
         mTablero.getCasilla('e', 6).setPieza(new Rey(Color.NEGRO));
 
-        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('b', 0), mTablero.getCasilla('a', 0)));
-        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 7), mTablero.getCasilla('e', 6)));
-        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('b', 0), mTablero.getCasilla('a', 0)));
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('e', 7), mTablero.getCasilla('e', 6)));
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
 
         assertInstanceOf(PiezaNula.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('c', 0)));
     }

@@ -24,19 +24,44 @@ public class GestorDeMovimientos {
         mGestorDeTurnos = GestorDeTurnos.getInstance();
     }
 
-    public void hacerMovimientoYPasarTurno(Movimiento movimiento){
-        if(movimientoPosibleYNoEsEnroqueNiCoronacion(movimiento)){
+    public void hacerMovimientoPasarTurnoYGuardarMovimiento(Movimiento movimiento){
+
+        boolean movimientoCorrecto = false;
+
+        if(esEnroqueValido(movimiento)) {
+
+            enrocar(movimiento);
+            movimientoCorrecto = true;
+
+        }else if(esCoronacion(movimiento) && movimientoPosible(movimiento)) {
+
+            coronar(movimiento);
+            movimientoCorrecto = true;
+
+        }else if(movimientoPosible(movimiento)){
 
             mTablero.hacerMovimiento(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
+            movimientoCorrecto = true;
 
-            comprobarFinPartida();
-
-            mGestorDeTurnos.pasarTurno();
         }
+
+        if(movimientoCorrecto){
+            guardarMovimientoYPasarDeTurno(movimiento);
+        }
+
     }
-    private boolean movimientoPosibleYNoEsEnroqueNiCoronacion(Movimiento movimiento) {
-        return !enrocarSiPosible(movimiento) && movimientoPosible(movimiento) && !coronarSiPosible(movimiento);
+    private void guardarMovimientoYPasarDeTurno(Movimiento movimiento){
+        comprobarFinPartida();
+
+        guardarMovimiento(movimiento);
+
+        mGestorDeTurnos.pasarTurno();
     }
+
+    private void guardarMovimiento(Movimiento movimiento) {
+        mMovimientoDAO.guardarMovimiento(mGestorDeTurnos.getIdentificadorPartida(), movimiento);
+    }
+
 
     private boolean movimientoPosibleIndependientementeDelTurno(Movimiento movimiento) {
         return casillaOrigenNoEstaVacia(movimiento.getCasillaOrigen()) &&
@@ -73,26 +98,16 @@ public class GestorDeMovimientos {
         return !mTablero.reyQuedaEnJaqueAlEnrocar(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
     }
 
-    private boolean coronarSiPosible(Movimiento movimiento) {
-        if(esCoronacion(movimiento)){
-            mTablero.coronar(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
-            mGestorDeTurnos.pasarTurno();
-            return true;
-        }
-        return false;
+    private void coronar(Movimiento movimiento) {
+        mTablero.coronar(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
     }
     private boolean esCoronacion(Movimiento movimiento) {
         return (movimiento.getCasillaOrigen().getPiezaValue() instanceof PeonBlanco && movimiento.getNumDestino() == 7)
                 || (movimiento.getCasillaOrigen().getPiezaValue() instanceof PeonNegro  && movimiento.getNumDestino() == 0);
     }
 
-    private boolean enrocarSiPosible(Movimiento movimiento) {
-        if(esEnroqueValido(movimiento)){
-            mTablero.enrocar(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
-            mGestorDeTurnos.pasarTurno();
-            return true;
-        }
-        return false;
+    private void enrocar(Movimiento movimiento) {
+        mTablero.enrocar(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
     }
 
     private boolean esEnroqueValido(Movimiento movimiento) {
@@ -128,11 +143,6 @@ public class GestorDeMovimientos {
         if(mTablero.materialInsuficiente()) mGestorDeTurnos.setFinalizarPartida(RazonVictoria.MATERIAL_INSUFICIENTE);
     }
 
-    private boolean algunMovimientoProtegeAlRey(List<Movimiento> movimientosPosibles) {
-        return movimientosPosibles.stream().anyMatch(
-                movimientoPosible -> !mTablero.reyQuedaEnJaque(movimientoPosible.getCasillaOrigen(), movimientoPosible.getCasillaDestino()));
-    }
-
 
     public void setPartida(int identificador, Usuario usuarioB, Usuario usuarioN) {
         ponerPosicionesIniciales();
@@ -151,7 +161,7 @@ public class GestorDeMovimientos {
 
         movimientos.stream().forEach(movimiento -> cargarPiezasEnMovimiento(movimiento));
 
-        movimientos.stream().forEach(movimiento -> hacerMovimientoYPasarTurno(movimiento));
+        movimientos.stream().forEach(movimiento -> hacerMovimientoPasarTurnoYGuardarMovimiento(movimiento));
     }
 
     private void cargarPiezasEnMovimiento(Movimiento movimiento) {
@@ -176,7 +186,7 @@ public class GestorDeMovimientos {
         casilla.seleccionarCasilla();
     }
     private void seleccionarSegundaCasilla(Casilla casilla) {
-        hacerMovimientoYPasarTurno(new Movimiento(casillaSeleccionada, casilla));
+        hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(casillaSeleccionada, casilla));
         desseleccionar();
     }
 
