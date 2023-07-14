@@ -214,7 +214,7 @@ class GestorDeMovimientosTest {
 
     private int crearPartidaPrueba(){
 
-        int idPartida = mPartidaDAO.registrarPartida(new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
+        int idPartida = mPartida.iniciarPartidaNueva(new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
 
         mMovimientoDAO.guardarMovimiento(idPartida, new Movimiento(mTablero.getCasilla('a', 1), mTablero.getCasilla('a', 3)));
         mMovimientoDAO.guardarMovimiento(idPartida, new Movimiento(mTablero.getCasilla('a', 6), mTablero.getCasilla('a', 4)));
@@ -334,7 +334,7 @@ class GestorDeMovimientosTest {
 
     @Test
     void enrocarTest() throws InvocationTargetException, IllegalAccessException {
-        setPartida();
+        crearPartidaPrueba();
         mTablero.vaciarTablero();
 
         testearEnroquesNormales();

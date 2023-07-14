@@ -1,11 +1,14 @@
 package migrupo.ajedrez.model;
 
+import migrupo.ajedrez.model.BD.PartidaDAOImpl;
+
 public class Partida {
     private final static Partida mPartida = new Partida();
     public static Partida getInstance(){return mPartida;}
 
     GestorDeMovimientos mGestorDeMovimientos;
     GestorDeTurnos mGestorDeTurnos;
+    PartidaDAOImpl mPartidaDAO;
 
     private int identificador;
 
@@ -18,6 +21,18 @@ public class Partida {
     private Partida(){
         mGestorDeMovimientos = GestorDeMovimientos.getInstance();
         mGestorDeTurnos = GestorDeTurnos.getInstance();
+        mPartidaDAO = PartidaDAOImpl.getInstance();
+    }
+
+    public int iniciarPartidaNueva(Usuario usuarioA, Usuario usuarioB){
+        //todo: hacer esto bonito
+        mPartidaDAO = PartidaDAOImpl.getInstance();
+
+        int identificador = mPartidaDAO.registrarPartida(usuarioA, usuarioB);
+
+        setPartida(identificador, usuarioA, usuarioB);
+
+        return identificador;
     }
 
     public void setPartida(int identificador, Usuario usuarioA, Usuario usuarioB){
