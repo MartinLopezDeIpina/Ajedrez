@@ -27,6 +27,9 @@ public class Casilla implements EstadoCasilla{
     public static int getNumLetra(char letra){
         return letra - 'a';
     }
+    public static char getLetra(int numLetra){
+        return (char) (numLetra + 'a');
+    }
     public int getNum(){
         return num;
     }

@@ -130,4 +130,13 @@ class CasillaTest {
          assertEquals(7, casillas[7][7].getDistanciaDiagonalAbs(casillas[0][0]));
          assertEquals(7, casillas[0][7].getDistanciaDiagonalAbs(casillas[7][0]));
     }
+
+    @Test
+    void getLetraTest(){
+       assertEquals('a', Casilla.getLetra(0));
+       assertEquals('b', Casilla.getLetra(1));
+       assertEquals('c', Casilla.getLetra(2));
+       assertEquals('d', Casilla.getLetra(3));
+       assertEquals('e', Casilla.getLetra(4));
+    }
 }

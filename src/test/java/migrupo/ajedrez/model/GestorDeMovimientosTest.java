@@ -3,10 +3,7 @@ package migrupo.ajedrez.model;
 import migrupo.ajedrez.model.BD.ConexionBD;
 import migrupo.ajedrez.model.BD.MovimientoDAOImpl;
 import migrupo.ajedrez.model.BD.PartidaDAOImpl;
-import migrupo.ajedrez.model.Piezas.PeonBlanco;
-import migrupo.ajedrez.model.Piezas.PeonNegro;
-import migrupo.ajedrez.model.Piezas.Reina;
-import migrupo.ajedrez.model.Piezas.Rey;
+import migrupo.ajedrez.model.Piezas.*;
 import migrupo.ajedrez.model.StateCasilla.Casilla;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -65,7 +62,7 @@ class GestorDeMovimientosTest {
         coronarSiPosible.setAccessible(true);
     }
     private static void hacerGetPiezaAccesible() throws NoSuchMethodException {
-        getPiezaTablero = mTablero.getClass().getDeclaredMethod("getPiezaEnCasilla", Casilla.class);
+        getPiezaTablero = mTablero.getClass().getDeclaredMethod("getPiezaEnCasillaValue", Casilla.class);
         getPiezaTablero.setAccessible(true);
     }
     private static void hacerCasillaSeleccionadaAccesible() throws NoSuchFieldException {
@@ -331,5 +328,130 @@ class GestorDeMovimientosTest {
         razonVictoria = null;
         comprobarFinPartida.invoke(mGestorDeMovimientos);
         assertEquals(RazonVictoria.MATERIAL_INSUFICIENTE.toString(), mPartida.getRazonVictoria().toString());
+    }
+
+    @Test
+    void enrocarTest() throws InvocationTargetException, IllegalAccessException {
+        setPartida();
+        mTablero.vaciarTablero();
+
+        testearEnroquesNormales();
+        testEnroquePiezaEnMedio();
+        testEnroqueBajoJaque();
+        testEnroqueQuedaEnJaque();
+        testearEnroquesMovidos();
+    }
+    private void testearEnroquesNormales() throws InvocationTargetException, IllegalAccessException {
+        testEnroqueLargaBlancas();
+        testEnroqueLargaNegras();
+        testEnroqueCortaBlancas();
+        testEnroqueCortaNegras();
+    }
+    private void testEnroqueLargaBlancas() throws InvocationTargetException, IllegalAccessException {
+        mTablero.getCasilla('e', 0).setPieza(new Rey(Color.BLANCO));
+        mTablero.getCasilla('a', 0).setPieza(new Torre(Color.BLANCO));
+
+        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
+
+        assertInstanceOf(Rey.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('c', 0)));
+        assertInstanceOf(Torre.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('d', 0)));
+
+        mTablero.vaciarTablero();
+    }
+    private void testEnroqueLargaNegras() throws InvocationTargetException, IllegalAccessException {
+        mTablero.getCasilla('e', 7).setPieza(new Rey(Color.NEGRO));
+        mTablero.getCasilla('a', 7).setPieza(new Torre(Color.NEGRO));
+
+        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 7), mTablero.getCasilla('a', 7)));
+
+        assertInstanceOf(Rey.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('c', 7)));
+        assertInstanceOf(Torre.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('d', 7)));
+
+        mTablero.vaciarTablero();
+    }
+    private void testEnroqueCortaBlancas() throws InvocationTargetException, IllegalAccessException {
+        mTablero.getCasilla('e', 0).setPieza(new Rey(Color.BLANCO));
+        mTablero.getCasilla('h', 0).setPieza(new Torre(Color.BLANCO));
+
+        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('h', 0)));
+
+        assertInstanceOf(Rey.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('g', 0)));
+        assertInstanceOf(Torre.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('f', 0)));
+
+        mTablero.vaciarTablero();
+    }
+    private void testEnroqueCortaNegras() throws InvocationTargetException, IllegalAccessException {
+        mTablero.getCasilla('e', 7).setPieza(new Rey(Color.NEGRO));
+        mTablero.getCasilla('h', 7).setPieza(new Torre(Color.NEGRO));
+
+        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 7), mTablero.getCasilla('h', 7)));
+
+        assertInstanceOf(Rey.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('g', 7)));
+        assertInstanceOf(Torre.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('f', 7)));
+
+        mTablero.vaciarTablero();
+    }
+    private void testEnroquePiezaEnMedio() throws InvocationTargetException, IllegalAccessException {
+        mTablero.getCasilla('e', 0).setPieza(new Rey(Color.BLANCO));
+        mTablero.getCasilla('a', 0).setPieza(new Torre(Color.BLANCO));
+        mTablero.getCasilla('b', 0).setPieza(new Caballo(Color.BLANCO));
+
+        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
+
+        assertInstanceOf(PiezaNula.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('c', 0)));
+
+        mTablero.vaciarTablero();
+    }
+    private void testEnroqueBajoJaque() throws InvocationTargetException, IllegalAccessException {
+        mTablero.getCasilla('e', 0).setPieza(new Rey(Color.BLANCO));
+        mTablero.getCasilla('a', 0).setPieza(new Torre(Color.BLANCO));
+        mTablero.getCasilla('e', 7).setPieza(new Reina(Color.NEGRO));
+
+        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
+
+        assertInstanceOf(PiezaNula.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('c', 0)));
+
+        mTablero.vaciarTablero();
+    }
+    private void testEnroqueQuedaEnJaque() throws InvocationTargetException, IllegalAccessException {
+        mTablero.getCasilla('e', 0).setPieza(new Rey(Color.BLANCO));
+        mTablero.getCasilla('a', 0).setPieza(new Torre(Color.BLANCO));
+        mTablero.getCasilla('e', 7).setPieza(new Reina(Color.NEGRO));
+
+        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
+
+        assertInstanceOf(PiezaNula.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('c', 0)));
+
+        mTablero.vaciarTablero();
+    }
+    private void testearEnroquesMovidos() throws InvocationTargetException, IllegalAccessException {
+        testEnroqueReyMovido();
+        testEnroqueTorreMovida();
+    }
+    private void testEnroqueReyMovido() throws InvocationTargetException, IllegalAccessException {
+        mTablero.getCasilla('f', 0).setPieza(new Rey(Color.BLANCO));
+        mTablero.getCasilla('a', 0).setPieza(new Torre(Color.BLANCO));
+        mTablero.getCasilla('e', 7).setPieza(new PeonNegro());
+        mTablero.getCasilla('e', 6).setPieza(new Rey(Color.NEGRO));
+
+        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('f', 0), mTablero.getCasilla('e', 0)));
+        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 7), mTablero.getCasilla('e', 6)));
+        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
+
+        assertInstanceOf(PiezaNula.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('c', 0)));
+
+        mTablero.vaciarTablero();
+    }
+    private void testEnroqueTorreMovida() throws InvocationTargetException, IllegalAccessException {
+        mTablero.getCasilla('e', 0).setPieza(new Rey(Color.BLANCO));
+        mTablero.getCasilla('b', 0).setPieza(new Torre(Color.BLANCO));
+        mTablero.getCasilla('e', 7).setPieza(new PeonNegro());
+        mTablero.getCasilla('e', 6).setPieza(new Rey(Color.NEGRO));
+
+        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('b', 0), mTablero.getCasilla('a', 0)));
+        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 7), mTablero.getCasilla('e', 6)));
+        mGestorDeMovimientos.hacerMovimientoYPasarTurno(new Movimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0)));
+
+        assertInstanceOf(PiezaNula.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('c', 0)));
     }
 }

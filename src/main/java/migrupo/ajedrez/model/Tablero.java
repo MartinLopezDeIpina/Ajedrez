@@ -68,23 +68,39 @@ public class Tablero {
     }
 
     public void hacerMovimiento(Casilla origen, Casilla destino){
-        setPiezaEnCasilla(destino, getPiezaEnCasilla(origen));
+        Pieza piezaOrigen = getPiezaEnCasillaValue(origen);
+
+        cancelarEnroques(piezaOrigen);
+
+        setPiezaEnCasilla(destino, piezaOrigen);
         setPiezaEnCasilla(origen, new PiezaNula());
     }
 
-    private Pieza getPiezaEnCasilla(Casilla casilla){
+    private void cancelarEnroques(Pieza piezaOrigen) {
+        if(piezaOrigen instanceof Rey){
+            ((Rey) piezaOrigen).seHaMovido();
+        }
+        if(piezaOrigen instanceof Torre){
+            ((Torre) piezaOrigen).seHaMovido();
+        }
+    }
+
+    private Pieza getPiezaEnCasillaValue(Casilla casilla){
         return casillas[casilla.getNum()][casilla.getNumLetra()].getPiezaValue();
+    }
+    public SimpleObjectProperty<Pieza> getPiezaEnCasilla(int fila, int columna) {
+        return casillas[fila][columna].getPieza();
     }
     private void setPiezaEnCasilla(Casilla casilla, Pieza pieza){
         casillas[casilla.getNum()][casilla.getNumLetra()].setPieza(pieza);
     }
 
     public Color getColorPiezaEnCasilla(Casilla casilla) {
-        return getPiezaEnCasilla(casilla).getColor();
+        return getPiezaEnCasillaValue(casilla).getColor();
     }
 
     public boolean casillaVacia(Casilla casilla){
-        return getPiezaEnCasilla(casilla) instanceof PiezaNula;
+        return getPiezaEnCasillaValue(casilla) instanceof PiezaNula;
     }
 
     public boolean hayPiezasEntreCasillaOrigenYCasillaDestino(Casilla casillaOrigen, Casilla casillaDestino) {
@@ -163,9 +179,11 @@ public class Tablero {
 
     public boolean reyQuedaEnJaque(Casilla casillaOrigen, Casilla casillaDestino) {
 
-        Pieza piezaDestino = getPiezaEnCasilla(casillaDestino);
-        Pieza piezaOrigen = getPiezaEnCasilla(casillaOrigen);
+        Pieza piezaDestino = getPiezaEnCasillaValue(casillaDestino);
+        Pieza piezaOrigen = getPiezaEnCasillaValue(casillaOrigen);
         Color colorRey = casillaOrigen.getColorPiezaCasilla();
+
+        boolean puedeEnrocar = guardarPuedeEnrocar(piezaOrigen);
 
         hacerMovimiento(casillaOrigen, casillaDestino);
 
@@ -173,12 +191,33 @@ public class Tablero {
 
         deshacerMovimiento(casillaOrigen, casillaDestino, piezaOrigen, piezaDestino);
 
+        setPuedeEnrocarDeVuelta(piezaOrigen, puedeEnrocar);
+
         return reyQuedaEnJaque;
     }
     private void deshacerMovimiento(Casilla casillaOrigen, Casilla casillaDestino, Pieza piezaOrigen, Pieza piezaDestino) {
         setPiezaEnCasilla(casillaOrigen, piezaOrigen);
         setPiezaEnCasilla(casillaDestino, piezaDestino);
     }
+    private boolean guardarPuedeEnrocar(Pieza piezaOrigen) {
+        boolean puedeEnrocar = false;
+        if (piezaOrigen instanceof Rey) {
+            puedeEnrocar = ((Rey) piezaOrigen).puedeEnrocar();
+        }
+        if(piezaOrigen instanceof Torre){
+            puedeEnrocar = ((Torre) piezaOrigen).puedeEnrocar();
+        }
+        return puedeEnrocar;
+    }
+    private void setPuedeEnrocarDeVuelta(Pieza piezaOrigen, boolean puedeEnrocar) {
+        if(piezaOrigen instanceof Rey){
+            ((Rey) piezaOrigen).setPuedeEnrocar(puedeEnrocar);
+        }
+        if(piezaOrigen instanceof Torre){
+            ((Torre) piezaOrigen).setPuedeEnrocar(puedeEnrocar);
+        }
+    }
+
     public boolean algunaPiezaAmenazaAlRey(Color colorRey) {
         Casilla casillaRey = getCasillaRey(colorRey);
 
@@ -190,7 +229,7 @@ public class Tablero {
     private Casilla getCasillaRey(Color colorRey) {
 
         return Arrays.stream(casillas).flatMap(Arrays::stream)
-                .filter(casilla -> getPiezaEnCasilla(casilla) instanceof Rey && getPiezaEnCasilla(casilla).getColor() == colorRey).findFirst().get();
+                .filter(casilla -> getPiezaEnCasillaValue(casilla) instanceof Rey && getPiezaEnCasillaValue(casilla).getColor() == colorRey).findFirst().get();
 
     }
 
@@ -207,16 +246,13 @@ public class Tablero {
         return casillas[num][Casilla.getNumLetra(letra)];
     }
 
-    public SimpleObjectProperty<Pieza> getPiezaEnCasilla(int fila, int columna) {
-        return casillas[fila][columna].getPieza();
-    }
 
     public Pieza[] getPiezas(Casilla casillaOrigen, Casilla casillaDestino) {
 
             Pieza[] piezas = new Pieza[2];
 
-            piezas[0] = getPiezaEnCasilla(casillaOrigen);
-            piezas[1] = getPiezaEnCasilla(casillaDestino);
+            piezas[0] = getPiezaEnCasillaValue(casillaOrigen);
+            piezas[1] = getPiezaEnCasillaValue(casillaDestino);
 
             return piezas;
     }
@@ -225,6 +261,7 @@ public class Tablero {
         setPiezaEnCasilla(casillaDestino, new Reina(casillaOrigen.getColorPiezaCasilla()));
         setPiezaEnCasilla(casillaOrigen, new PiezaNula());
     }
+
 
     public List<Casilla[]> getMovimientosPosibles(Color color) {
         return Arrays.stream(casillas)
@@ -237,6 +274,8 @@ public class Tablero {
                 )
                 .toList();
     }
+
+
 
     public boolean materialInsuficiente() {
         return materialInsuficiente(Color.BLANCO) && materialInsuficiente(Color.NEGRO);
@@ -271,5 +310,61 @@ public class Tablero {
     }
     private boolean sonDosCaballos(List<Pieza> piezas){
         return piezas.stream().filter(pieza -> pieza instanceof Caballo).count() == 2 && piezas.size() == 2;
+    }
+
+
+    public boolean esEnroqueValido(Casilla casillaOrigen, Casilla casillaDestino) {
+        Pieza piezaOrigen = getPiezaEnCasillaValue(casillaOrigen);
+        Pieza piezaDestino = getPiezaEnCasillaValue(casillaDestino);
+
+        if(piezaOrigen instanceof Rey && piezaDestino instanceof Torre){
+            return ((Rey) piezaOrigen).puedeEnrocar() && ((Torre) piezaDestino).puedeEnrocar();
+        }
+        return false;
+    }
+    public void enrocar(Casilla casillaOrigen, Casilla casillaDestino) {
+        Pieza piezaOrigen = getPiezaEnCasillaValue(casillaOrigen);
+        Pieza piezaDestino = getPiezaEnCasillaValue(casillaDestino);
+
+        if(esEnroqueLargo(casillaOrigen, casillaDestino)){
+
+            enrocarLargo(casillaOrigen, casillaDestino, piezaOrigen, piezaDestino);
+
+        }else{
+
+            enrocarCorto(casillaOrigen, casillaDestino, piezaOrigen, piezaDestino);
+
+        }
+    }
+    private boolean esEnroqueLargo(Casilla casillaOrigen, Casilla casillaDestino) {
+        return casillaOrigen.getNumLetra() - casillaDestino.getNumLetra() > 0;
+    }
+    private void enrocarLargo(Casilla casillaOrigen, Casilla casillaDestino, Pieza piezaOrigen, Pieza piezaDestino) {
+        setPiezaEnCasilla(casillaOrigen, new PiezaNula());
+        setPiezaEnCasilla(casillaDestino, new PiezaNula());
+        setPiezaEnCasilla(getCasilla(Casilla.getLetra(casillaOrigen.getNumLetra() - 2), casillaOrigen.getNum()), piezaOrigen);
+        setPiezaEnCasilla(getCasilla(Casilla.getLetra(casillaDestino.getNumLetra() + 3), casillaDestino.getNum()), piezaDestino);
+    }
+    private void enrocarCorto(Casilla casillaOrigen, Casilla casillaDestino, Pieza piezaOrigen, Pieza piezaDestino) {
+        setPiezaEnCasilla(casillaOrigen, new PiezaNula());
+        setPiezaEnCasilla(casillaDestino, new PiezaNula());
+
+        setPiezaEnCasilla(getCasilla(Casilla.getLetra(casillaOrigen.getNumLetra() + 2), casillaOrigen.getNum()), piezaOrigen);
+        setPiezaEnCasilla(getCasilla(Casilla.getLetra(casillaDestino.getNumLetra() - 2), casillaDestino.getNum()), piezaDestino);
+    }
+    public boolean reyQuedaEnJaqueAlEnrocar(Casilla casillaOrigen, Casilla casillaDestino) {
+
+        if(esEnroqueLargo(casillaOrigen, casillaDestino))
+            return reyQuedaEnJaqueAlEnrocarLargo(casillaOrigen);
+        else
+            return reyQuedaEnJaqueAlEnrocarCorto(casillaOrigen);
+    }
+
+    private boolean reyQuedaEnJaqueAlEnrocarCorto(Casilla casillaOrigen) {
+        return reyQuedaEnJaque(casillaOrigen, new Casilla(Casilla.getLetra(casillaOrigen.getNumLetra() + 2), casillaOrigen.getNum()));
+    }
+
+    private boolean reyQuedaEnJaqueAlEnrocarLargo(Casilla casillaOrigen) {
+        return reyQuedaEnJaque(casillaOrigen, new Casilla(Casilla.getLetra(casillaOrigen.getNumLetra() - 2), casillaOrigen.getNum()));
     }
 }

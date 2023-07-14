@@ -25,7 +25,7 @@ public class GestorDeMovimientos {
     }
 
     public void hacerMovimientoYPasarTurno(Movimiento movimiento){
-        if(movimientoPosible(movimiento) && !coronarSiPosible(movimiento)){
+        if(movimientoPosibleYNoEsEnroqueNiCoronacion(movimiento)){
 
             mTablero.hacerMovimiento(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
 
@@ -33,6 +33,9 @@ public class GestorDeMovimientos {
 
             mGestorDeTurnos.pasarTurno();
         }
+    }
+    private boolean movimientoPosibleYNoEsEnroqueNiCoronacion(Movimiento movimiento) {
+        return !enrocarSiPosible(movimiento) && movimientoPosible(movimiento) && !coronarSiPosible(movimiento);
     }
 
     private boolean movimientoPosibleIndependientementeDelTurno(Movimiento movimiento) {
@@ -49,6 +52,14 @@ public class GestorDeMovimientos {
                 leTocaJugarAlJugadorCorrecto(movimiento.getCasillaOrigen());
 
     }
+
+    private boolean movimientoPosibleParaEnrocar(Movimiento movimiento){
+        return casillaOrigenNoEstaVacia(movimiento.getCasillaOrigen()) &&
+                leTocaJugarAlJugadorCorrecto(movimiento.getCasillaOrigen()) &&
+                noHayPiezasEntreCasillaOrigenYCasillaDestino(movimiento) &&
+                reyNoQuedaEnJaqueAlEnrocar(movimiento) &&
+                !mTablero.algunaPiezaAmenazaAlRey(mGestorDeTurnos.getColorTurno());
+    }
     private boolean casillaOrigenNoEstaVacia(Casilla casilla) {return !mTablero.casillaVacia(casilla);}
     private boolean leTocaJugarAlJugadorCorrecto(Casilla casilla) {return mTablero.getColorPiezaEnCasilla(casilla) == mGestorDeTurnos.getColorTurno();}
     private boolean casillaDestinoNoTienePiezaDelMismoColor(Movimiento movimiento) {return mTablero.getColorPiezaEnCasilla(movimiento.getCasillaOrigen()) != mTablero.getColorPiezaEnCasilla(movimiento.getCasillaDestino());}
@@ -57,6 +68,9 @@ public class GestorDeMovimientos {
         return !mTablero.hayPiezasEntreCasillaOrigenYCasillaDestino(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());}
     private boolean reyNoQuedaEnJaque(Movimiento movimiento) {
         return !mTablero.reyQuedaEnJaque(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
+    }
+    private boolean reyNoQuedaEnJaqueAlEnrocar(Movimiento movimiento) {
+        return !mTablero.reyQuedaEnJaqueAlEnrocar(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
     }
 
     private boolean coronarSiPosible(Movimiento movimiento) {
@@ -70,6 +84,19 @@ public class GestorDeMovimientos {
     private boolean esCoronacion(Movimiento movimiento) {
         return (movimiento.getCasillaOrigen().getPiezaValue() instanceof PeonBlanco && movimiento.getNumDestino() == 7)
                 || (movimiento.getCasillaOrigen().getPiezaValue() instanceof PeonNegro  && movimiento.getNumDestino() == 0);
+    }
+
+    private boolean enrocarSiPosible(Movimiento movimiento) {
+        if(esEnroqueValido(movimiento)){
+            mTablero.enrocar(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino());
+            mGestorDeTurnos.pasarTurno();
+            return true;
+        }
+        return false;
+    }
+
+    private boolean esEnroqueValido(Movimiento movimiento) {
+        return mTablero.esEnroqueValido(movimiento.getCasillaOrigen(), movimiento.getCasillaDestino()) && movimientoPosibleParaEnrocar(movimiento);
     }
 
     private void comprobarFinPartida() {
