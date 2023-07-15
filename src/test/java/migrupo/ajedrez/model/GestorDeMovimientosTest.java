@@ -465,4 +465,6 @@ class GestorDeMovimientosTest {
 
         assertInstanceOf(PiezaNula.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('c', 0)));
     }
+
+
 }
