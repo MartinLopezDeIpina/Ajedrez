@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.testng.AssertJUnit.assertEquals;
@@ -466,5 +468,25 @@ class GestorDeMovimientosTest {
         assertInstanceOf(PiezaNula.class, getPiezaTablero.invoke(mTablero, mTablero.getCasilla('c', 0)));
     }
 
+    @Test
+    void guardarMovimientosTest() throws SQLException {
+        int idPartida = mPartida.iniciarPartidaNueva(new Jugador("pepe", "123"), new Jugador("pepe", "123"));
+
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('e', 1), new Casilla('e', 3)));
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('e', 6), new Casilla('e', 4)));
+
+        ResultSet resultSet = mConexionBD.executeQuery("select * from movimientoPartida where idPartida = ?", new Object[]{idPartida});
+        resultSet.next();
+
+        assertEquals("e1", resultSet.getString("casillaOrigen"));
+        assertEquals("e3", resultSet.getString("casillaDestino"));
+
+        resultSet.next();
+
+        assertEquals("e6", resultSet.getString("casillaOrigen"));
+        assertEquals("e4", resultSet.getString("casillaDestino"));
+
+        mPartidaDAO.eliminarPartida(idPartida);
+    }
 
 }
