@@ -1,11 +1,11 @@
 package migrupo.ajedrez.model.BD;
 
-import migrupo.ajedrez.model.Movimiento;
-import migrupo.ajedrez.model.Partida;
+import migrupo.ajedrez.model.Jugador;
 import migrupo.ajedrez.model.Usuario;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PartidaDAOImpl implements PartidaDAO{
@@ -76,5 +76,51 @@ public class PartidaDAOImpl implements PartidaDAO{
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    // todo: hacer tests de esto
+    public List<String[]> getPartidasSinAcabar(String nombreValue) {
+        return getPartidas(nombreValue, 0);
+    }
+    public List<String[]> getPartidasAcabadas(String nombreValue) {
+        return getPartidas(nombreValue, 1);
+    }
+    private List<String[]> getPartidas(String nombreValue, int acabadas) {
+        String queryGetPartidas = "select * from partida where (nombreJugadorA like ? or nombreJugadorB like ?) and acabado = ?";
+        ResultSet rs = mConexionBD.executeQuery(queryGetPartidas, new Object[]{nombreValue, nombreValue, acabadas});
+
+        return getPartidasFromResultSet(rs, nombreValue);
+    }
+
+    private List<String[]> getPartidasFromResultSet(ResultSet rs, String nombreValue) {
+        List<String[]> partidas = new ArrayList<>();
+
+        try {
+
+            while (rs.next()) {
+
+                partidas.add(getSiguientePartida(rs, nombreValue));
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return partidas;
+    }
+
+    private String[] getSiguientePartida(ResultSet rs, String nombreValue) throws SQLException {
+
+        String[] partida = new String[2];
+
+        partida[0] = rs.getString("identificador");
+
+        String nombreJugadorA = rs.getString("nombreJugadorA");
+        String nombreJugadorB = rs.getString("nombreJugadorB");
+
+        partida[1] = nombreJugadorA.equals(nombreValue) ? nombreJugadorB : nombreJugadorA;
+
+        return partida;
     }
 }
