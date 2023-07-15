@@ -25,8 +25,6 @@ public class Partida {
     }
 
     public int iniciarPartidaNueva(Usuario usuarioA, Usuario usuarioB){
-        //todo: hacer esto bonito
-        mPartidaDAO = PartidaDAOImpl.getInstance();
 
         int identificador = mPartidaDAO.registrarPartida(usuarioA, usuarioB);
 

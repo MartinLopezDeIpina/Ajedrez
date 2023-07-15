@@ -15,10 +15,8 @@ public class PartidaDAOImpl implements PartidaDAO{
     }
 
     ConexionBD mConexionBD;
-    Partida mPartida;
 
     private PartidaDAOImpl(){
-        mPartida = Partida.getInstance();
         mConexionBD = ConexionBD.getInstance();
     }
 

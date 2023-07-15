@@ -258,6 +258,8 @@ class GestorDeMovimientosTest {
 
     @Test
     void comprobarFinPartidaTest() throws InvocationTargetException, IllegalAccessException {
+        int idPartida = mPartida.iniciarPartidaNueva(new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
+
         reiniciarTablero();
 
         probarMatePastor();
@@ -272,11 +274,10 @@ class GestorDeMovimientosTest {
 
         probarMaterialInsuficiente();
 
+        mPartidaDAO.eliminarPartida(idPartida);
     }
 
     private void probarMatePastor() throws InvocationTargetException, IllegalAccessException {
-        int identificador = mPartidaDAO.registrarPartida(new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
-        mPartida.setPartida(identificador, new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
 
         mTablero.hacerMovimiento(mTablero.getCasilla('e', 1), mTablero.getCasilla('e', 3));
         mTablero.hacerMovimiento(mTablero.getCasilla('e', 6), mTablero.getCasilla('e', 4));
@@ -334,7 +335,7 @@ class GestorDeMovimientosTest {
 
     @Test
     void enrocarTest() throws InvocationTargetException, IllegalAccessException {
-        crearPartidaPrueba();
+        int idePartida = crearPartidaPrueba();
         mTablero.vaciarTablero();
 
         testearEnroquesNormales();
@@ -342,6 +343,8 @@ class GestorDeMovimientosTest {
         testEnroqueBajoJaque();
         testEnroqueQuedaEnJaque();
         testearEnroquesMovidos();
+
+        mPartidaDAO.eliminarPartida(idePartida);
     }
     private void testearEnroquesNormales() throws InvocationTargetException, IllegalAccessException {
         testEnroqueLargaBlancas();
