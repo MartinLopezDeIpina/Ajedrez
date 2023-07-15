@@ -45,8 +45,8 @@ public class PartidaDAOImpl implements PartidaDAO{
         return rs.getInt("max(identificador)") + 1;
     }
     private void registrarPartida(int identificador, Usuario dueno, Usuario contrinctante) throws SQLException{
-        String queryRegistrarPartida = "insert into partida values (?, ?, ?)";
-        mConexionBD.executeUpdate(queryRegistrarPartida, new Object[]{identificador, dueno.getNombre().get(), contrinctante.getNombre().get()});
+        String queryRegistrarPartida = "insert into partida values (?, ?, ?, ?)";
+        mConexionBD.executeUpdate(queryRegistrarPartida, new Object[]{identificador, dueno.getNombre().get(), contrinctante.getNombre().get(), 0});
     }
 
     @Override
@@ -60,4 +60,21 @@ public class PartidaDAOImpl implements PartidaDAO{
 
     }
 
+    public void finalizarPartida(int identificador) {
+        String queryFinalizarPartida = "update partida set acabado = 1 where identificador = ?";
+        mConexionBD.executeUpdate(queryFinalizarPartida, new Object[]{identificador});
+    }
+
+    public int getEstadoPartida(int idPartida) {
+        String queryGetEstadoPartida = "select acabado from partida where identificador = ?";
+        ResultSet rs = mConexionBD.executeQuery(queryGetEstadoPartida, new Object[]{idPartida});
+
+        try {
+            rs.next();
+            return rs.getInt("acabado");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
 }

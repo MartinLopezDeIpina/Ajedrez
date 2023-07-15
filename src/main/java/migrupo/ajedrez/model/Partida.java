@@ -62,6 +62,8 @@ public class Partida {
         razonVictoria = razon;
 
         this.ganador = ganador;
+
+        mPartidaDAO.finalizarPartida(identificador);
     }
 
     public Usuario getGanador(){

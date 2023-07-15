@@ -62,4 +62,30 @@ class PartidaDAOImplTest {
 
         assertEquals(idPartida-1, getMaximoIdentificador());
     }
+
+    @Test
+    void finalizarPartidaTest(){
+        int idPartida = mPartidaDAO.registrarPartida(new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
+
+        assertEquals(0, mPartidaDAO.getEstadoPartida(idPartida));
+
+        mPartidaDAO.finalizarPartida(idPartida);
+
+        assertEquals(1, mPartidaDAO.getEstadoPartida(idPartida));
+
+        mPartidaDAO.eliminarPartida(idPartida);
+    }
+
+    @Test
+    void getEstadoPartidaTest(){
+        int idPartida = mPartidaDAO.registrarPartida(new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
+
+        assertEquals(0, mPartidaDAO.getEstadoPartida(idPartida));
+
+        mPartidaDAO.finalizarPartida(idPartida);
+
+        assertEquals(1, mPartidaDAO.getEstadoPartida(idPartida));
+
+        mPartidaDAO.eliminarPartida(idPartida);
+    }
 }
