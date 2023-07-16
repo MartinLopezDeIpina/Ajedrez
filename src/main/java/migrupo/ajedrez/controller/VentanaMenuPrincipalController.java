@@ -177,9 +177,7 @@ public class VentanaMenuPrincipalController implements Initializable {
 
             int idPartida = getIdPartida(partidaElegida);
 
-            String nombreContrincante = getNombreContrincante(partidaElegida);
-
-            ponerPartida(idPartida, nombreContrincante);
+            ponerPartida(idPartida);
 
             pasarAJuego();
         }
@@ -191,13 +189,18 @@ public class VentanaMenuPrincipalController implements Initializable {
         return comboBoxElegirPartida.getSelectionModel().getSelectedItem().toString().split(",");
     }
     private int getIdPartida(String[] partidaElegida) {
-        return Integer.parseInt(Character.toString(partidaElegida[0].charAt(0)));
+        return Integer.parseInt((partidaElegida[0].substring(0, partidaElegida[0].length() - 1)));
     }
     private String getNombreContrincante(String[] partidaElegida) {
         return partidaElegida[1].substring(15, partidaElegida[1].length() - 1);
     }
-    private void ponerPartida(int idPartida, String nombreContrincante) {
-        mPartida.setPartida(idPartida, mSesion.getJugador(), new Jugador(nombreContrincante, mUsuarioDAOImpl.getContrasena(nombreContrincante)));
+    private void ponerPartida(int idPartida) {
+        String[] usuariosPartida = mPartidaDAOImpl.getUsuariosPartida(idPartida);
+
+        Jugador usuario1 = new Jugador(usuariosPartida[0], mUsuarioDAOImpl.getContrasena(usuariosPartida[0]));
+        Jugador usuario2 = new Jugador(usuariosPartida[1], mUsuarioDAOImpl.getContrasena(usuariosPartida[1]));
+
+        mPartida.setPartida(idPartida, usuario1, usuario2);
     }
 
 

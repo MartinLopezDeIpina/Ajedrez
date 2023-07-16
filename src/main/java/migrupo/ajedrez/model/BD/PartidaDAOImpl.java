@@ -79,6 +79,7 @@ public class PartidaDAOImpl implements PartidaDAO{
     }
 
     // todo: hacer tests de esto
+    // todo: hay bug de que algunos movimientos al final nose cargan
     public List<String[]> getPartidasSinAcabar(String nombreValue) {
         return getPartidas(nombreValue, 0);
     }
@@ -122,5 +123,24 @@ public class PartidaDAOImpl implements PartidaDAO{
         partida[1] = nombreJugadorA.equals(nombreValue) ? nombreJugadorB : nombreJugadorA;
 
         return partida;
+    }
+
+    public String[] getUsuariosPartida(int idPartida) {
+
+        String queryGetUsuariosPartida = "select nombreJugadorA, nombreJugadorB from partida where identificador = ?";
+        ResultSet rs = mConexionBD.executeQuery(queryGetUsuariosPartida, new Object[]{idPartida});
+
+        try {
+            rs.next();
+
+            String nombreJugadorA = rs.getString("nombreJugadorA");
+            String nombreJugadorB = rs.getString("nombreJugadorB");
+
+            return new String[]{nombreJugadorA, nombreJugadorB};
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 }

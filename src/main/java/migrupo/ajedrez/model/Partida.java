@@ -26,22 +26,16 @@ public class Partida {
 
     public int iniciarPartidaNueva(Usuario usuarioA, Usuario usuarioB){
 
-        int identificador = mPartidaDAO.registrarPartida(usuarioA, usuarioB);
+        ponerColoresRandom(usuarioA, usuarioB);
 
-        setPartida(identificador, usuarioA, usuarioB);
+        int identificador = mPartidaDAO.registrarPartida(this.usuarioB, this.usuarioN);
+
+        setPartida(identificador, this.usuarioB, this.usuarioN);
 
         return identificador;
     }
 
-    public void setPartida(int identificador, Usuario usuarioA, Usuario usuarioB){
-        this.identificador = identificador;
-
-        ponerColores(usuarioA, usuarioB);
-
-        mGestorDeMovimientos.setPartida(identificador, this.usuarioB, this.usuarioN);
-    }
-
-    private void ponerColores(Usuario usuarioA, Usuario usuarioB) {
+    private void ponerColoresRandom(Usuario usuarioA, Usuario usuarioB) {
 
         if (Math.random() < 0.5) {
 
@@ -57,6 +51,24 @@ public class Partida {
         this.usuarioN.setColor(Color.NEGRO);
         this.usuarioB.setColor(Color.BLANCO);
     }
+
+
+    public void setPartida(int identificador, Usuario usuarioA, Usuario usuarioB){
+        this.identificador = identificador;
+
+        actualizarColoresJugadores(usuarioA, usuarioB);
+
+        mGestorDeMovimientos.setPartida(identificador, this.usuarioB, this.usuarioN);
+    }
+
+    private void actualizarColoresJugadores(Usuario usuarioA, Usuario usuarioB) {
+        this.usuarioB = usuarioA;
+        this.usuarioN = usuarioB;
+
+        this.usuarioB.setColor(Color.BLANCO);
+        this.usuarioN.setColor(Color.NEGRO);
+    }
+
 
     public void partidaFinalizada(RazonVictoria razon, Usuario ganador){
         razonVictoria = razon;

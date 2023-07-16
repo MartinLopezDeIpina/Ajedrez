@@ -159,9 +159,10 @@ public class GestorDeMovimientos {
 
         List<Movimiento> movimientos = mMovimientoDAO.getMovimientosPartida(identificador);
 
-        movimientos.stream().forEach(movimiento -> cargarPiezasEnMovimiento(movimiento));
-
-        movimientos.stream().forEach(movimiento -> hacerMovimientoPasarTurnoYGuardarMovimiento(movimiento));
+        movimientos.stream().forEach(movimiento -> {
+            cargarPiezasEnMovimiento(movimiento);
+            hacerMovimientoPasarTurnoYGuardarMovimiento(movimiento);
+        });
     }
 
     private void cargarPiezasEnMovimiento(Movimiento movimiento) {
