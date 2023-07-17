@@ -78,8 +78,6 @@ public class PartidaDAOImpl implements PartidaDAO{
         }
     }
 
-    // todo: hacer tests de esto
-    // todo: hay bug de que algunos movimientos al final nose cargan
     public List<String[]> getPartidasSinAcabar(String nombreValue) {
         return getPartidas(nombreValue, 0);
     }

@@ -25,6 +25,15 @@ public class GestorDeMovimientos {
     }
 
     public void hacerMovimientoPasarTurnoYGuardarMovimiento(Movimiento movimiento){
+        boolean movimientoCorredto = hacerMovimiento(movimiento);
+
+        if(movimientoCorredto){
+            guardarMovimientoYPasarDeTurno(movimiento);
+        }
+
+    }
+
+    public boolean hacerMovimiento(Movimiento movimiento){
 
         boolean movimientoCorrecto = false;
 
@@ -44,12 +53,9 @@ public class GestorDeMovimientos {
             movimientoCorrecto = true;
 
         }
-
-        if(movimientoCorrecto){
-            guardarMovimientoYPasarDeTurno(movimiento);
-        }
-
+        return movimientoCorrecto;
     }
+
     private void guardarMovimientoYPasarDeTurno(Movimiento movimiento){
         comprobarFinPartida();
 
@@ -60,6 +66,16 @@ public class GestorDeMovimientos {
 
     private void guardarMovimiento(Movimiento movimiento) {
         mMovimientoDAO.guardarMovimiento(mGestorDeTurnos.getIdentificadorPartida(), movimiento);
+    }
+
+    public void hacerMovimientoYPasarTurnoSinGuardar(Movimiento movimiento){
+        boolean movimientoCorredto = hacerMovimiento(movimiento);
+
+        if(movimientoCorredto){
+            comprobarFinPartida();
+
+            mGestorDeTurnos.pasarTurno();
+        }
     }
 
 
@@ -161,7 +177,7 @@ public class GestorDeMovimientos {
 
         movimientos.stream().forEach(movimiento -> {
             cargarPiezasEnMovimiento(movimiento);
-            hacerMovimientoPasarTurnoYGuardarMovimiento(movimiento);
+            hacerMovimientoYPasarTurnoSinGuardar(movimiento);
         });
     }
 
