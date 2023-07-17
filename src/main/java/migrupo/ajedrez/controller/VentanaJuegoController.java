@@ -285,5 +285,13 @@ public class VentanaJuegoController implements Initializable {
         mostrarVentanaMenu();
     }
 
+    @FXML protected void onButtonFlechaAlanteClicked(){
+        mGestorDeMovimientos.movimientoParaAlante();
+    }
+
+    @FXML protected void onButtonFlechaAtrasClicked(){
+        mGestorDeMovimientos.movimientoParaAtras();
+    }
+
 
 }

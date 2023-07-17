@@ -91,12 +91,12 @@
                               <Insets left="50.0" top="50.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="buttonFlechaAtras" mnemonicParsing="false" scaleX="2.0" scaleY="2.0" text="&lt;">
+                        <Button fx:id="buttonFlechaAtras" mnemonicParsing="false" onAction="#onButtonFlechaAtrasClicked" scaleX="2.0" scaleY="2.0" text="&lt;">
                            <HBox.margin>
                               <Insets left="100.0" top="50.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="buttonFlechaAlante" mnemonicParsing="false" scaleX="2.0" scaleY="2.0" text="&gt;">
+                        <Button fx:id="buttonFlechaAlante" mnemonicParsing="false" onAction="#onButtonFlechaAlanteClicked" scaleX="2.0" scaleY="2.0" text="&gt;">
                            <HBox.margin>
                               <Insets left="50.0" top="50.0" />
                            </HBox.margin>

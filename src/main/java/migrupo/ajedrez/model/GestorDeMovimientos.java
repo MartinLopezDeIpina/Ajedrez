@@ -19,6 +19,7 @@ public class GestorDeMovimientos {
 
 
     private Movimiento[] movimientosParaVerPartida;
+    private int indexMovimientosPartidaParaVer;
 
     private Casilla casillaSeleccionada;
     private GestorDeMovimientos() {
@@ -173,6 +174,18 @@ public class GestorDeMovimientos {
         ponerPosicionesIniciales();
 
         mGestorDeTurnos.iniciarPartida(usuarioB, usuarioN);
+
+        cargarMovimientosGuardados(identificador);
+    }
+
+    private void cargarMovimientosGuardados(int identificador) {
+        List<Movimiento> movimientos = mMovimientoDAO.getMovimientosPartida(identificador);
+
+        movimientosParaVerPartida = new Movimiento[movimientos.size()];
+
+        movimientos.toArray(movimientosParaVerPartida);
+
+        indexMovimientosPartidaParaVer = 0;
     }
 
     private void ponerPosicionesIniciales() {
@@ -223,4 +236,16 @@ public class GestorDeMovimientos {
     }
 
 
+    public void movimientoParaAlante(){
+        Movimiento movimientoSiguiente = movimientosParaVerPartida[indexMovimientosPartidaParaVer];
+
+        cargarPiezasEnMovimiento(movimientoSiguiente);
+
+        hacerMovimientoYPasarTurnoSinGuardar(movimientoSiguiente);
+
+        indexMovimientosPartidaParaVer++;
+    }
+    public void movimientoParaAtras(){
+
+    }
 }
