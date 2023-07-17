@@ -1,14 +1,18 @@
 package migrupo.ajedrez.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import migrupo.ajedrez.AjedrezApplication;
 import migrupo.ajedrez.model.*;
 import migrupo.ajedrez.model.BD.PartidaDAOImpl;
 import migrupo.ajedrez.model.BD.UsuarioDAOImpl;
 import migrupo.ajedrez.view.ViewFactory;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -28,7 +32,7 @@ public class VentanaMenuPrincipalController implements Initializable {
     Partida mPartida;
 
     private boolean seguirPartida = false;
-    private boolean verPartida = false;
+    private static boolean verPartida = false;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -69,6 +73,7 @@ public class VentanaMenuPrincipalController implements Initializable {
     }
 
     @FXML protected void onButtonPartidaNuevaClicked(){
+        setVerPartida(false);
         paneMenu.setVisible(false);
         paneContrincante.setVisible(true);
     }
@@ -79,6 +84,7 @@ public class VentanaMenuPrincipalController implements Initializable {
     }
     @FXML protected void onButtonCrearPartidaClicked(){
         if(existeContrincante()){
+            setVerPartida(false);
             crearPartida();
             pasarAJuego();
         }else{
@@ -191,9 +197,6 @@ public class VentanaMenuPrincipalController implements Initializable {
     private int getIdPartida(String[] partidaElegida) {
         return Integer.parseInt((partidaElegida[0].substring(0, partidaElegida[0].length() - 1)));
     }
-    private String getNombreContrincante(String[] partidaElegida) {
-        return partidaElegida[1].substring(15, partidaElegida[1].length() - 1);
-    }
     private void ponerPartida(int idPartida) {
         String[] usuariosPartida = mPartidaDAOImpl.getUsuariosPartida(idPartida);
 
@@ -206,7 +209,16 @@ public class VentanaMenuPrincipalController implements Initializable {
 
 
     private void verPartida() {
+        setVerPartida(true);
+        seguirPartida();
+    }
 
+    private void setVerPartida(boolean verPartida){
+        this.verPartida = verPartida;
+    }
+
+    public static boolean getEnVerPartida(){
+        return verPartida;
     }
 
 

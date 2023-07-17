@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
@@ -76,10 +77,37 @@
                         <Insets top="25.0" />
                      </BorderPane.margin></ImageView>
                </center>
+               <bottom>
+                  <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <BorderPane.margin>
+                        <Insets bottom="-400.0" left="-55.0" right="-105.0" />
+                     </BorderPane.margin>
+                     <children>
+                        <Button fx:id="buttonAtras" mnemonicParsing="false" scaleX="2.0" scaleY="2.0" text="Atras">
+                           <HBox.margin>
+                              <Insets left="50.0" top="50.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="buttonFlechaAtras" mnemonicParsing="false" scaleX="2.0" scaleY="2.0" text="&lt;">
+                           <HBox.margin>
+                              <Insets left="100.0" top="50.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="buttonFlechaAlante" mnemonicParsing="false" scaleX="2.0" scaleY="2.0" text="&gt;">
+                           <HBox.margin>
+                              <Insets left="50.0" top="50.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </bottom>
             </BorderPane>
          </left>
       </BorderPane>
-      <AnchorPane fx:id="paneAcabado" layoutX="450.0" layoutY="300.0" prefHeight="200.0" prefWidth="200.0" scaleX="2.0" scaleY="2.0">
+      <AnchorPane fx:id="paneAcabado" layoutX="450.0" layoutY="300.0" prefHeight="200.0" prefWidth="200.0" scaleX="2.0" scaleY="2.0" visible="false">
          <children>
             <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #334d39;">
                <top>

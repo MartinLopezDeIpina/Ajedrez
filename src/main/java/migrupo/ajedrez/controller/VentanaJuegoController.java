@@ -2,6 +2,7 @@ package migrupo.ajedrez.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -31,14 +32,19 @@ public class VentanaJuegoController implements Initializable {
     private Tablero mTablero = Tablero.getInstance();
     private Partida mPartida = Partida.getInstance();
 
+    private static boolean enVerPartida = false;
+
     @FXML protected GridPane gridPaneTablero;
     @FXML protected TextField textFieldNombreA, textFieldNombreB, textFieldNombreUsuarioActual, textFieldGanador, textFieldRazonVictoria;
     @FXML protected ImageView imageViewUsuarioActual, imageViewGanador;
     @FXML protected AnchorPane paneAcabado;
+    @FXML protected Button buttonAtras, buttonFlechaAtras, buttonFlechaAlante;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        ocultarPaneAcabado();
+        setEnVerPartida();
+
+        ocultarNecesario();
         
         iniciarTablero();
 
@@ -46,6 +52,22 @@ public class VentanaJuegoController implements Initializable {
 
         iniciarFinalizarPartida();
         
+    }
+
+    private void ocultarNecesario() {
+        ocultarPaneAcabado();
+
+        ocultarFlechasVerPartida();
+    }
+
+    private void ocultarFlechasVerPartida() {
+        if(enVerPartida){
+            buttonFlechaAlante.setVisible(true);
+            buttonFlechaAtras.setVisible(true);
+        }else{
+            buttonFlechaAlante.setVisible(false);
+            buttonFlechaAtras.setVisible(false);
+        }
     }
 
     private void ocultarPaneAcabado() {
@@ -147,12 +169,12 @@ public class VentanaJuegoController implements Initializable {
     }
     private void configurarClickCasilla(Pane casilla, int fila, int columna) {
         casilla.setOnMouseClicked(mouseEvent -> {
-            if(mouseEvent.getButton().equals(javafx.scene.input.MouseButton.PRIMARY)){
+            if(mouseEvent.getButton().equals(javafx.scene.input.MouseButton.PRIMARY) && !enVerPartida){
                 char letra = (char) (columna + 97);
                 mGestorDeMovimientos.casillaSeleccionada(mTablero.getCasilla(letra, fila));
             }
 
-            if (mouseEvent.getButton().equals(javafx.scene.input.MouseButton.SECONDARY)){
+            if (mouseEvent.getButton().equals(javafx.scene.input.MouseButton.SECONDARY) && !enVerPartida) {
                 mGestorDeMovimientos.desseleccionar();
             }
         });
@@ -253,4 +275,11 @@ public class VentanaJuegoController implements Initializable {
     private void mostrarVentanaMenu() {
         ViewFactory.mostrarVentanaMenuPrincipal();
     }
+
+    private void setEnVerPartida() {
+
+        this.enVerPartida = VentanaMenuPrincipalController.getEnVerPartida();;
+    }
+
+
 }
