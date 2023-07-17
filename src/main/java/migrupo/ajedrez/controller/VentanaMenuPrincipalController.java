@@ -1,18 +1,14 @@
 package migrupo.ajedrez.controller;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import migrupo.ajedrez.AjedrezApplication;
 import migrupo.ajedrez.model.*;
 import migrupo.ajedrez.model.BD.PartidaDAOImpl;
 import migrupo.ajedrez.model.BD.UsuarioDAOImpl;
 import migrupo.ajedrez.view.ViewFactory;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -203,7 +199,11 @@ public class VentanaMenuPrincipalController implements Initializable {
         Jugador usuario1 = new Jugador(usuariosPartida[0], mUsuarioDAOImpl.getContrasena(usuariosPartida[0]));
         Jugador usuario2 = new Jugador(usuariosPartida[1], mUsuarioDAOImpl.getContrasena(usuariosPartida[1]));
 
-        mPartida.setPartida(idPartida, usuario1, usuario2);
+        if(verPartida){
+            mPartida.setPartidaParaVer(idPartida, usuario1, usuario2);
+        }else{
+            mPartida.setPartidaParaJugar(idPartida, usuario1, usuario2);
+        }
     }
 
 

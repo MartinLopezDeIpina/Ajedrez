@@ -204,7 +204,7 @@ class GestorDeMovimientosTest {
 
         int idPartida = crearPartidaPrueba();
 
-        mPartida.setPartida(idPartida, new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
+        mPartida.setPartidaParaJugar(idPartida, new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
 
         assertInstanceOf(PeonBlanco.class, mTablero.getCasilla('a', 3).getPiezaValue());
         assertInstanceOf(PeonNegro.class, mTablero.getCasilla('a', 4).getPiezaValue());

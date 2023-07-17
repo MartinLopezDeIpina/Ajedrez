@@ -17,6 +17,9 @@ public class GestorDeMovimientos {
     private Tablero mTablero;
     private GestorDeTurnos mGestorDeTurnos;
 
+
+    private Movimiento[] movimientosParaVerPartida;
+
     private Casilla casillaSeleccionada;
     private GestorDeMovimientos() {
         mMovimientoDAO = MovimientoDAOImpl.getInstance();
@@ -160,13 +163,18 @@ public class GestorDeMovimientos {
     }
 
 
-    public void setPartida(int identificador, Usuario usuarioB, Usuario usuarioN) {
-        ponerPosicionesIniciales();
-
-        mGestorDeTurnos.iniciarPartida(usuarioB, usuarioN);
+    public void setPartidaParaJugar(int identificador, Usuario usuarioB, Usuario usuarioN) {
+        setPartidaParaVer(identificador, usuarioB, usuarioN);
 
         ejecutarMovimientosGuardados(identificador);
     }
+
+    public void setPartidaParaVer(int identificador, Usuario usuarioB, Usuario usuarioN){
+        ponerPosicionesIniciales();
+
+        mGestorDeTurnos.iniciarPartida(usuarioB, usuarioN);
+    }
+
     private void ponerPosicionesIniciales() {
         mTablero.reiniciarTablero();
     }
@@ -213,5 +221,6 @@ public class GestorDeMovimientos {
             casillaSeleccionada = null;
         }
     }
+
 
 }

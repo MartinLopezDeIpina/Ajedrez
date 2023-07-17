@@ -277,8 +277,12 @@ public class VentanaJuegoController implements Initializable {
     }
 
     private void setEnVerPartida() {
-
         this.enVerPartida = VentanaMenuPrincipalController.getEnVerPartida();;
+    }
+
+    @FXML protected void onButtonAtrasClicked(){
+        ocultarVentanaJuego();
+        mostrarVentanaMenu();
     }
 
 

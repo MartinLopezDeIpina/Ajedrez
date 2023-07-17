@@ -30,7 +30,7 @@ public class Partida {
 
         int identificador = mPartidaDAO.registrarPartida(this.usuarioB, this.usuarioN);
 
-        setPartida(identificador, this.usuarioB, this.usuarioN);
+        setPartidaParaJugar(identificador, this.usuarioB, this.usuarioN);
 
         return identificador;
     }
@@ -53,12 +53,22 @@ public class Partida {
     }
 
 
-    public void setPartida(int identificador, Usuario usuarioA, Usuario usuarioB){
+    public void setPartidaParaJugar(int identificador, Usuario usuarioA, Usuario usuarioB){
+        setPartida(identificador, usuarioA, usuarioB);
+
+        mGestorDeMovimientos.setPartidaParaJugar(identificador, this.usuarioB, this.usuarioN);
+    }
+
+    public void setPartidaParaVer(int identificador, Usuario usuarioA, Usuario usuarioB){
+        setPartida(identificador, usuarioA, usuarioB);
+
+        mGestorDeMovimientos.setPartidaParaVer(identificador, this.usuarioB, this.usuarioN);
+    }
+
+    private void setPartida(int identificador, Usuario usuarioA, Usuario usuarioB){
         this.identificador = identificador;
 
         actualizarColoresJugadores(usuarioA, usuarioB);
-
-        mGestorDeMovimientos.setPartida(identificador, this.usuarioB, this.usuarioN);
     }
 
     private void actualizarColoresJugadores(Usuario usuarioA, Usuario usuarioB) {
