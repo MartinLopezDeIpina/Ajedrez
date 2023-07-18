@@ -489,4 +489,44 @@ class GestorDeMovimientosTest {
         mPartidaDAO.eliminarPartida(idPartida);
     }
 
+    @Test
+    void setPartidaParaVerTest(){
+        int idPartida = crearPartidaParaVer();
+
+        mPartida.setPartidaParaVer(idPartida, new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
+
+        assertInstanceOf(PeonBlanco.class, mTablero.getCasilla('e', 1).getPiezaValue());
+
+        mPartidaDAO.eliminarPartida(idPartida);
+    }
+
+    private int crearPartidaParaVer() {
+        int idPartida = mPartida.iniciarPartidaNueva(new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
+
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('e', 1), new Casilla('e', 3)));
+        mGestorDeMovimientos.hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(mTablero.getCasilla('e', 6), new Casilla('e', 4)));
+
+        mPartida.partidaFinalizada(RazonVictoria.JACKE_MATE, new Jugador("pepe", "123"));
+
+        return idPartida;
+    }
+
+    @Test
+    void movimientoParaAlanteYParaAtrasTest(){
+        int idPartida = crearPartidaParaVer();
+
+        mPartida.setPartidaParaVer(idPartida, new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
+
+        mGestorDeMovimientos.movimientoParaAlante();
+
+        assertInstanceOf(PeonBlanco.class, mTablero.getCasilla('e', 3).getPiezaValue());
+
+        mGestorDeMovimientos.movimientoParaAtras();
+
+        assertInstanceOf(PeonBlanco.class, mTablero.getCasilla('e', 1).getPiezaValue());
+        assertInstanceOf(PiezaNula.class, mTablero.getCasilla('e', 3).getPiezaValue());
+
+        mPartidaDAO.eliminarPartida(idPartida);
+    }
+
 }

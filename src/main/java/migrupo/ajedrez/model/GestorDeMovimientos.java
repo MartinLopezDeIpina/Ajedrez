@@ -170,7 +170,6 @@ public class GestorDeMovimientos {
         ejecutarMovimientosGuardados(identificador);
     }
 
-    // todo: test de esto
     public void setPartidaParaVer(int identificador, Usuario usuarioB, Usuario usuarioN){
         ponerPosicionesIniciales();
 
@@ -236,8 +235,6 @@ public class GestorDeMovimientos {
         }
     }
 
-
-    //todo: test de esto
     public void movimientoParaAlante(){
         if (indexMovimientosPartidaParaVer == movimientosParaVerPartida.length) return;
 
