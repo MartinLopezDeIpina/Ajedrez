@@ -392,7 +392,6 @@ public class Tablero {
         return reyQuedaEnJaque(casillaOrigen, new Casilla(Casilla.getLetra(casillaOrigen.getNumLetra() - 2), casillaOrigen.getNum()));
     }
 
-    // todo: test de esto
     public void deshacerEnroque(Casilla casillaOrigen, Casilla casillaDestino) {
 
         if(esEnroqueLargo(casillaOrigen, casillaDestino)){

@@ -3,6 +3,7 @@ package migrupo.ajedrez.model;
 import migrupo.ajedrez.model.Piezas.*;
 import migrupo.ajedrez.model.StateCasilla.Casilla;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
@@ -26,12 +27,18 @@ class TableroTest {
 
     }
 
+    @BeforeEach
+    void before() throws NoSuchFieldException, IllegalAccessException {
+        iniciarTableroYCasillas();
+    }
+
+    private void iniciarTableroYCasillas() throws NoSuchFieldException, IllegalAccessException {
+        mTablero.reiniciarTablero();
+        iniciarCasillas();
+    }
+
     @Test
     void ponerPosicionesIniciales() throws NoSuchFieldException, IllegalAccessException {
-
-        mTablero.ponerPosicionesIniciales();
-
-        iniciarCasillas();
 
         comprobarBlancas();
 
@@ -71,7 +78,6 @@ class TableroTest {
 
     @Test
     void hacerMovimiento() throws NoSuchFieldException, IllegalAccessException {
-        iniciarTableroYCasillas();
 
         mTablero.hacerMovimiento(casillas[1][0], casillas[2][0]);
         mTablero.hacerMovimiento(casillas[7][1], casillas[5][2]);
@@ -80,11 +86,6 @@ class TableroTest {
 
         assertEquals(casillas[2][0].getPiezaValue().getClass(), PeonBlanco.class);
         assertEquals(casillas[5][2].getPiezaValue().getClass(), migrupo.ajedrez.model.Piezas.Caballo.class);
-    }
-
-    private void iniciarTableroYCasillas() throws NoSuchFieldException, IllegalAccessException {
-        mTablero.reiniciarTablero();
-        iniciarCasillas();
     }
 
     @Test
@@ -99,8 +100,6 @@ class TableroTest {
 
     @Test
     void casillaVacia() throws NoSuchFieldException, IllegalAccessException {
-        iniciarTableroYCasillas();
-
         assertTrue(mTablero.casillaVacia(new Casilla('c', 3)));
         assertTrue(mTablero.casillaVacia(new Casilla('f', 4)));
         assertFalse(mTablero.casillaVacia(new Casilla('b', 0)));
@@ -109,7 +108,6 @@ class TableroTest {
 
     @Test
     void hayPiezasEntreCasillaOrigenYCasillaDestino() throws NoSuchFieldException, IllegalAccessException {
-        iniciarTableroYCasillas();
 
         mTablero.hacerMovimiento(new Casilla('d', 1), new Casilla('d', 3));
 
@@ -124,7 +122,6 @@ class TableroTest {
 
     @Test
     void reyQuedaEnJaque() throws NoSuchFieldException, IllegalAccessException {
-        iniciarTableroYCasillas();
 
         assertFalse(mTablero.reyQuedaEnJaque(mTablero.getCasilla('e', 1), mTablero.getCasilla('e', 2)));
         mTablero.hacerMovimiento(mTablero.getCasilla('e', 1), mTablero.getCasilla('e', 2));
@@ -141,7 +138,6 @@ class TableroTest {
 
     @Test
     void vaciarTablero() throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        iniciarTableroYCasillas();
 
         Method vaciarTablero = mTablero.getClass().getDeclaredMethod("vaciarTablero");
         vaciarTablero.setAccessible(true);
@@ -166,7 +162,6 @@ class TableroTest {
 
     @Test
     void getMovimientosPosiblesTest() throws NoSuchFieldException, IllegalAccessException {
-        iniciarTableroYCasillas();
         vaciarCasillas();
 
 
@@ -265,6 +260,40 @@ class TableroTest {
         mTablero.getCasilla('b', 0).setPieza(new Caballo(Color.BLANCO));
 
         assertTrue(mTablero.materialInsuficiente());
+    }
+
+    @Test
+    void deshacerEnroqueTest(){
+        mTablero.vaciarTablero();
+
+        mTablero.getCasilla('e', 0).setPieza(new Rey(Color.BLANCO));
+        mTablero.getCasilla('a', 0).setPieza(new Torre(Color.BLANCO));
+        mTablero.getCasilla('h', 0).setPieza(new Torre(Color.BLANCO));
+
+        testDeshacerEnroqueLargo();
+
+        testDeshacerEnroqueCorto();
+    }
+
+    private void testDeshacerEnroqueLargo() {
+        mTablero.hacerMovimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0));
+        mTablero.deshacerEnroque(mTablero.getCasilla('e', 0), mTablero.getCasilla('a', 0));
+
+        assertInstanceOf(Torre.class, mTablero.getCasilla('a', 0).getPiezaValue());
+        assertInstanceOf(PiezaNula.class, mTablero.getCasilla('b', 0).getPiezaValue());
+        assertInstanceOf(PiezaNula.class, mTablero.getCasilla('c', 0).getPiezaValue());
+        assertInstanceOf(PiezaNula.class, mTablero.getCasilla('d', 0).getPiezaValue());
+        assertInstanceOf(Rey.class, mTablero.getCasilla('e', 0).getPiezaValue());
+    }
+
+    private void testDeshacerEnroqueCorto() {
+        mTablero.hacerMovimiento(mTablero.getCasilla('e', 0), mTablero.getCasilla('h', 0));
+        mTablero.deshacerEnroque(mTablero.getCasilla('e', 0), mTablero.getCasilla('h', 0));
+
+        assertInstanceOf(Torre.class, mTablero.getCasilla('h', 0).getPiezaValue());
+        assertInstanceOf(PiezaNula.class, mTablero.getCasilla('g', 0).getPiezaValue());
+        assertInstanceOf(PiezaNula.class, mTablero.getCasilla('f', 0).getPiezaValue());
+        assertInstanceOf(Rey.class, mTablero.getCasilla('e', 0).getPiezaValue());
     }
 
 
