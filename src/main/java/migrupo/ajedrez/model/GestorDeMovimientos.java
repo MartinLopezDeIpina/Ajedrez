@@ -170,6 +170,7 @@ public class GestorDeMovimientos {
         ejecutarMovimientosGuardados(identificador);
     }
 
+    // todo: test de esto
     public void setPartidaParaVer(int identificador, Usuario usuarioB, Usuario usuarioN){
         ponerPosicionesIniciales();
 
@@ -236,7 +237,10 @@ public class GestorDeMovimientos {
     }
 
 
+    //todo: test de esto
     public void movimientoParaAlante(){
+        if (indexMovimientosPartidaParaVer == movimientosParaVerPartida.length) return;
+
         Movimiento movimientoSiguiente = movimientosParaVerPartida[indexMovimientosPartidaParaVer];
 
         cargarPiezasEnMovimiento(movimientoSiguiente);
@@ -246,6 +250,35 @@ public class GestorDeMovimientos {
         indexMovimientosPartidaParaVer++;
     }
     public void movimientoParaAtras(){
+        if(indexMovimientosPartidaParaVer == 0) return;
 
+        Movimiento movimientoAnterior = movimientosParaVerPartida[indexMovimientosPartidaParaVer - 1];
+
+        deshacerMovimiento(movimientoAnterior);
+
+        indexMovimientosPartidaParaVer--;
     }
+
+    private void deshacerMovimiento(Movimiento movimientoAnterior) {
+        Casilla casillaOrigen = movimientoAnterior.getCasillaOrigen();
+        Casilla casillaDestino = movimientoAnterior.getCasillaDestino();
+
+        if(esEnroque(movimientoAnterior)){
+            deshacerEnroque(movimientoAnterior);
+        }else{
+            mTablero.deshacerMovimiento(casillaOrigen, casillaDestino, casillaOrigen.getPiezaValue(), casillaDestino.getPiezaValue());
+        }
+
+        mGestorDeTurnos.pasarTurno();
+    }
+
+    private boolean esEnroque(Movimiento movimientoAnterior) {
+        return mTablero.esEnroque(movimientoAnterior.getCasillaOrigen(), movimientoAnterior.getCasillaDestino());
+    }
+
+    private void deshacerEnroque(Movimiento movimientoAnterior) {
+        mTablero.deshacerEnroque(movimientoAnterior.getCasillaOrigen(), movimientoAnterior.getCasillaDestino());
+    }
+
+
 }

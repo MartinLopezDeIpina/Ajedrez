@@ -195,7 +195,7 @@ public class Tablero {
 
         return reyQuedaEnJaque;
     }
-    private void deshacerMovimiento(Casilla casillaOrigen, Casilla casillaDestino, Pieza piezaOrigen, Pieza piezaDestino) {
+    public void deshacerMovimiento(Casilla casillaOrigen, Casilla casillaDestino, Pieza piezaOrigen, Pieza piezaDestino) {
         setPiezaEnCasilla(casillaOrigen, piezaOrigen);
         setPiezaEnCasilla(casillaDestino, piezaDestino);
     }
@@ -312,16 +312,30 @@ public class Tablero {
         return piezas.stream().filter(pieza -> pieza instanceof Caballo).count() == 2 && piezas.size() == 2;
     }
 
-
     public boolean esEnroqueValido(Casilla casillaOrigen, Casilla casillaDestino) {
         Pieza piezaOrigen = getPiezaEnCasillaValue(casillaOrigen);
         Pieza piezaDestino = getPiezaEnCasillaValue(casillaDestino);
 
-        if(piezaOrigen instanceof Rey && piezaDestino instanceof Torre){
+        if(esEnroque(casillaOrigen, casillaDestino)){
             return ((Rey) piezaOrigen).puedeEnrocar() && ((Torre) piezaDestino).puedeEnrocar();
         }
         return false;
     }
+
+    public boolean esEnroque(Casilla casillaOrigen, Casilla casillaDestino) {
+        Pieza piezaOrigen = casillaOrigen.getPiezaValue();
+        Pieza piezaDestino = casillaDestino.getPiezaValue();
+
+        return sonPiezasDeEnroqeu(piezaOrigen, piezaDestino) && piezasTienenDistanciaDeDos(casillaOrigen, casillaDestino);
+    }
+    private boolean sonPiezasDeEnroqeu(Pieza piezaOrigen, Pieza piezaDestino){
+        return piezaOrigen instanceof Rey && piezaDestino instanceof Torre;
+    }
+    private boolean piezasTienenDistanciaDeDos(Casilla casillaOrigen, Casilla casillaDestino) {
+        return Math.abs(casillaOrigen.getNumLetra() - casillaDestino.getNumLetra()) >= 2;
+    }
+
+
     public void enrocar(Casilla casillaOrigen, Casilla casillaDestino) {
         Pieza piezaOrigen = getPiezaEnCasillaValue(casillaOrigen);
         Pieza piezaDestino = getPiezaEnCasillaValue(casillaDestino);
@@ -367,4 +381,39 @@ public class Tablero {
     private boolean reyQuedaEnJaqueAlEnrocarLargo(Casilla casillaOrigen) {
         return reyQuedaEnJaque(casillaOrigen, new Casilla(Casilla.getLetra(casillaOrigen.getNumLetra() - 2), casillaOrigen.getNum()));
     }
+
+    public void deshacerEnroque(Casilla casillaOrigen, Casilla casillaDestino) {
+
+        if(esEnroqueLargo(casillaOrigen, casillaDestino)){
+
+            deshacerEnroqueLargo(casillaOrigen, casillaDestino);
+
+        }else{
+
+            deshacerEnroqueCorto(casillaOrigen, casillaDestino);
+
+        }
+    }
+
+    private void deshacerEnroqueLargo(Casilla casillaOrigen, Casilla casillaDestino) {
+        Color color = casillaOrigen.getColorPiezaCasilla();
+
+        setPiezaEnCasilla(casillaOrigen, new Rey(color));
+        setPiezaEnCasilla(getCasilla(Casilla.getLetra(casillaOrigen.getNumLetra() - 4), casillaOrigen.getNum()), new Torre(color));
+
+        setPiezaEnCasilla(getCasilla(Casilla.getLetra(casillaOrigen.getNumLetra() - 1), casillaOrigen.getNum()), new PiezaNula());
+        setPiezaEnCasilla(getCasilla(Casilla.getLetra(casillaOrigen.getNumLetra() - 2), casillaOrigen.getNum()), new PiezaNula());
+
+    }
+    private void deshacerEnroqueCorto(Casilla casillaOrigen, Casilla casillaDestino) {
+        Color color = casillaOrigen.getColorPiezaCasilla();
+
+        setPiezaEnCasilla(casillaOrigen, new Rey(color));
+        setPiezaEnCasilla(getCasilla(Casilla.getLetra(casillaOrigen.getNumLetra() + 3), casillaOrigen.getNum()), new Torre(color));
+
+        setPiezaEnCasilla(getCasilla(Casilla.getLetra(casillaOrigen.getNumLetra() + 1), casillaOrigen.getNum()), new PiezaNula());
+        setPiezaEnCasilla(getCasilla(Casilla.getLetra(casillaOrigen.getNumLetra() + 2), casillaOrigen.getNum()), new PiezaNula());
+    }
+
+
 }
