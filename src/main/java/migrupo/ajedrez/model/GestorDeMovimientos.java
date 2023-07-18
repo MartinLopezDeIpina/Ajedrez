@@ -263,22 +263,8 @@ public class GestorDeMovimientos {
         Casilla casillaOrigen = movimientoAnterior.getCasillaOrigen();
         Casilla casillaDestino = movimientoAnterior.getCasillaDestino();
 
-        if(esEnroque(movimientoAnterior)){
-            deshacerEnroque(movimientoAnterior);
-        }else{
-            mTablero.deshacerMovimiento(casillaOrigen, casillaDestino, casillaOrigen.getPiezaValue(), casillaDestino.getPiezaValue());
-        }
+        mTablero.deshacerMovimiento(casillaOrigen, casillaDestino, casillaOrigen.getPiezaValue(), casillaDestino.getPiezaValue());
 
         mGestorDeTurnos.pasarTurno();
     }
-
-    private boolean esEnroque(Movimiento movimientoAnterior) {
-        return mTablero.esEnroque(movimientoAnterior.getCasillaOrigen(), movimientoAnterior.getCasillaDestino());
-    }
-
-    private void deshacerEnroque(Movimiento movimientoAnterior) {
-        mTablero.deshacerEnroque(movimientoAnterior.getCasillaOrigen(), movimientoAnterior.getCasillaDestino());
-    }
-
-
 }

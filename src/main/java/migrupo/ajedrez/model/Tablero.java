@@ -196,9 +196,19 @@ public class Tablero {
         return reyQuedaEnJaque;
     }
     public void deshacerMovimiento(Casilla casillaOrigen, Casilla casillaDestino, Pieza piezaOrigen, Pieza piezaDestino) {
+
+        if(!esEnroque(casillaOrigen, casillaDestino)){
+            deshacerMovimientoNormal(casillaOrigen, casillaDestino, piezaOrigen, piezaDestino);
+        }else{
+            deshacerEnroque(casillaOrigen, casillaDestino);
+        }
+    }
+
+    private void deshacerMovimientoNormal(Casilla casillaOrigen, Casilla casillaDestino, Pieza piezaOrigen, Pieza piezaDestino) {
         setPiezaEnCasilla(casillaOrigen, piezaOrigen);
         setPiezaEnCasilla(casillaDestino, piezaDestino);
     }
+
     private boolean guardarPuedeEnrocar(Pieza piezaOrigen) {
         boolean puedeEnrocar = false;
         if (piezaOrigen instanceof Rey) {
@@ -326,9 +336,9 @@ public class Tablero {
         Pieza piezaOrigen = casillaOrigen.getPiezaValue();
         Pieza piezaDestino = casillaDestino.getPiezaValue();
 
-        return sonPiezasDeEnroqeu(piezaOrigen, piezaDestino) && piezasTienenDistanciaDeDos(casillaOrigen, casillaDestino);
+        return sonPiezasDeEnroque(piezaOrigen, piezaDestino) && piezasTienenDistanciaDeDos(casillaOrigen, casillaDestino);
     }
-    private boolean sonPiezasDeEnroqeu(Pieza piezaOrigen, Pieza piezaDestino){
+    private boolean sonPiezasDeEnroque(Pieza piezaOrigen, Pieza piezaDestino){
         return piezaOrigen instanceof Rey && piezaDestino instanceof Torre;
     }
     private boolean piezasTienenDistanciaDeDos(Casilla casillaOrigen, Casilla casillaDestino) {
@@ -382,6 +392,7 @@ public class Tablero {
         return reyQuedaEnJaque(casillaOrigen, new Casilla(Casilla.getLetra(casillaOrigen.getNumLetra() - 2), casillaOrigen.getNum()));
     }
 
+    // todo: test de esto
     public void deshacerEnroque(Casilla casillaOrigen, Casilla casillaDestino) {
 
         if(esEnroqueLargo(casillaOrigen, casillaDestino)){
