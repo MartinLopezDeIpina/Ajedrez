@@ -20,7 +20,17 @@ public class GestorDeTurnos {
 
 
     private GestorDeTurnos() {
+        usuarioActual = new SimpleObjectProperty<>();
 
+        siUsuarioActualEsBotIniciarTurno();
+    }
+
+    private void siUsuarioActualEsBotIniciarTurno() {
+        usuarioActual.addListener((observable, oldValue, newValue) -> {
+            if(newValue instanceof Bot){
+                ((Bot) newValue).iniciarTurno();
+            }
+        });
     }
 
     public void iniciarPartida(Usuario usuarioA, Usuario usuarioB) {
@@ -40,6 +50,7 @@ public class GestorDeTurnos {
     private void iniciarTurno(){
         usuarioActual.set(usuarioA.getValue().getColor().equals(Color.BLANCO) ? usuarioA.getValue() : usuarioB.getValue());
     }
+
     private void quitarAcabado() {
         acabado = new SimpleBooleanProperty(false);
     }

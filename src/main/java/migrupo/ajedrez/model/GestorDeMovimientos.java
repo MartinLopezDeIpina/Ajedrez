@@ -264,4 +264,12 @@ public class GestorDeMovimientos {
 
         mGestorDeTurnos.pasarTurno();
     }
+
+
+    public List<Movimiento> getTodosLosMovimientosPosibles(Color color) {
+        return mTablero.getMovimientosPosibles(color).stream()
+                .map(movimiento -> new Movimiento(movimiento[0], movimiento[1]))
+                .filter(movimiento -> movimientoPosible(movimiento))
+                .toList();
+    }
 }

@@ -529,4 +529,22 @@ class GestorDeMovimientosTest {
         mPartidaDAO.eliminarPartida(idPartida);
     }
 
+    @Test
+    void getTodosLosMovimientosPosiblesTest(){
+        int idPartida = crearPartidaPrueba();
+        mTablero.vaciarTablero();
+
+        mTablero.getCasilla('e', 0).setPieza(new Rey(Color.BLANCO));
+        mTablero.getCasilla('e', 7).setPieza(new Rey(Color.NEGRO));
+        mTablero.getCasilla('a', 1).setPieza(new PeonBlanco());
+
+        assertEquals(7, mGestorDeMovimientos.getTodosLosMovimientosPosibles(Color.BLANCO).size());
+
+        mGestorDeTurnos.pasarTurno();
+
+        assertEquals(5, mGestorDeMovimientos.getTodosLosMovimientosPosibles(Color.NEGRO).size());
+
+        mPartidaDAO.eliminarPartida(idPartida);
+    }
+
 }
