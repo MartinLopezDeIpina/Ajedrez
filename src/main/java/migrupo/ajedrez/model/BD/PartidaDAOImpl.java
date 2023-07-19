@@ -21,12 +21,12 @@ public class PartidaDAOImpl implements PartidaDAO{
     }
 
     @Override
-    public int registrarPartida(Usuario dueno, Usuario contrinctante) {
+    public int registrarPartida(Usuario dueno, Usuario contrinctante, boolean[] sonBot) {
         try {
 
             int identificador = getIdentificadorCorrespondiente();
 
-            registrarPartida(identificador, dueno, contrinctante);
+            registrarPartida(identificador, dueno, contrinctante, sonBot);
 
             return identificador;
 
@@ -44,9 +44,9 @@ public class PartidaDAOImpl implements PartidaDAO{
 
         return rs.getInt("max(identificador)") + 1;
     }
-    private void registrarPartida(int identificador, Usuario dueno, Usuario contrinctante) throws SQLException{
-        String queryRegistrarPartida = "insert into partida values (?, ?, ?, ?)";
-        mConexionBD.executeUpdate(queryRegistrarPartida, new Object[]{identificador, dueno.getNombre().get(), contrinctante.getNombre().get(), 0});
+    private void registrarPartida(int identificador, Usuario dueno, Usuario contrinctante, boolean[] sonBot) throws SQLException{
+        String queryRegistrarPartida = "insert into partida values (?, ?, ?, ?, ?, ?)";
+        mConexionBD.executeUpdate(queryRegistrarPartida, new Object[]{identificador, dueno.getNombre().get(), contrinctante.getNombre().get(), 0, sonBot[0], sonBot[1]});
     }
 
     @Override

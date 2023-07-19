@@ -211,7 +211,9 @@ public class GestorDeMovimientos {
         if(!hayCasillaSeleccionada()) {
             seleccionarCasilla(casilla);
         }else {
-            seleccionarSegundaCasilla(casilla);
+            if(!turnoDeBot()){
+                seleccionarSegundaCasilla(casilla);
+            }
         }
     }
 
@@ -222,6 +224,9 @@ public class GestorDeMovimientos {
     private void seleccionarCasilla(Casilla casilla) {
         casillaSeleccionada = casilla;
         casilla.seleccionarCasilla();
+    }
+    private boolean turnoDeBot() {
+        return mGestorDeTurnos.turnoDeBot();
     }
     private void seleccionarSegundaCasilla(Casilla casilla) {
         hacerMovimientoPasarTurnoYGuardarMovimiento(new Movimiento(casillaSeleccionada, casilla));

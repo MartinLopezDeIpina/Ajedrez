@@ -38,6 +38,8 @@ public class GestorDeTurnos {
 
         asignarUsuarios(usuarioA, usuarioB);
 
+        siUsuarioActualEsBotIniciarTurno();
+
         quitarAcabado();
 
         iniciarTurno();
@@ -97,5 +99,9 @@ public class GestorDeTurnos {
 
     public int getIdentificadorPartida() {
         return mPartida.getIdentificador();
+    }
+
+    public boolean turnoDeBot() {
+        return usuarioActual.getValue() instanceof Bot;
     }
 }

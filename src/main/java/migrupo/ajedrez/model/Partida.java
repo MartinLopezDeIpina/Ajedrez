@@ -28,11 +28,17 @@ public class Partida {
 
         ponerColoresRandom(usuarioA, usuarioB);
 
-        int identificador = mPartidaDAO.registrarPartida(this.usuarioB, this.usuarioN);
+        boolean sonBot[] = getSonBot(usuarioA, usuarioB);
+
+        int identificador = mPartidaDAO.registrarPartida(this.usuarioB, this.usuarioN, sonBot);
 
         setPartidaParaJugar(identificador, this.usuarioB, this.usuarioN);
 
         return identificador;
+    }
+
+    private boolean[] getSonBot(Usuario usuarioA, Usuario usuarioB) {
+        return new boolean[]{usuarioA instanceof Bot, usuarioB instanceof Bot};
     }
 
     private void ponerColoresRandom(Usuario usuarioA, Usuario usuarioB) {

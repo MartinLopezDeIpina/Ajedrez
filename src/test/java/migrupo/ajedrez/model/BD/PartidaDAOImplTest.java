@@ -41,7 +41,7 @@ class PartidaDAOImplTest {
     @Test
     void registrarPartida() {
 
-        int idPartida = mPartidaDAO.registrarPartida(new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
+        int idPartida = mPartidaDAO.registrarPartida(new Jugador("pepe", "123"), new Jugador("pepe2", "123"), new boolean[]{false, false});
 
         int maximoIdentificador = getMaximoIdentificador();
 
@@ -67,7 +67,7 @@ class PartidaDAOImplTest {
     @Test
     void eliminarPartida() {
 
-        int idPartida = mPartidaDAO.registrarPartida(new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
+        int idPartida = mPartidaDAO.registrarPartida(new Jugador("pepe", "123"), new Jugador("pepe2", "123"), new boolean[]{false, false});
 
         mPartidaDAO.eliminarPartida(idPartida);
 
@@ -76,7 +76,7 @@ class PartidaDAOImplTest {
 
     @Test
     void finalizarPartidaTest(){
-        int idPartida = mPartidaDAO.registrarPartida(new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
+        int idPartida = mPartidaDAO.registrarPartida(new Jugador("pepe", "123"), new Jugador("pepe2", "123"), new boolean[]{false, false});
 
         assertEquals(0, mPartidaDAO.getEstadoPartida(idPartida));
 
@@ -89,7 +89,7 @@ class PartidaDAOImplTest {
 
     @Test
     void getEstadoPartidaTest(){
-        int idPartida = mPartidaDAO.registrarPartida(new Jugador("pepe", "123"), new Jugador("pepe2", "123"));
+        int idPartida = mPartidaDAO.registrarPartida(new Jugador("pepe", "123"), new Jugador("pepe2", "123"), new boolean[]{false, false});
 
         assertEquals(0, mPartidaDAO.getEstadoPartida(idPartida));
 
