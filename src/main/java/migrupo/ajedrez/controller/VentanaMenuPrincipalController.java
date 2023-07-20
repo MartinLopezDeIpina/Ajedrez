@@ -136,9 +136,9 @@ public class VentanaMenuPrincipalController implements Initializable {
     private void anadirPartidasComboBox(boolean acabadas) {
         List<String[]> partidas = acabadas ? mPartidaDAOImpl.getPartidasAcabadas(mSesion.getJugador().getNombreValue()) : mPartidaDAOImpl.getPartidasSinAcabar(mSesion.getJugador().getNombreValue());
         partidas.stream().forEach(partida -> comboBoxElegirPartida.getItems().add(String.format("(%s) %sº , contrincante: %s, %s"
-                ,partida[2].equals("1") ? "Bot" : "Jugador"
+                ,Integer.parseInt(partida[2]) == 1 ? "Bot" : "Jugador"
                 ,partida[0]
-                ,partida[2].equals("1") ? "Bot" : "Jugador"
+                ,Integer.parseInt(partida[3]) == 1 ? "Bot" : "Jugador"
                 ,partida[1])));
     }
     void mostrarElegirPartida(){

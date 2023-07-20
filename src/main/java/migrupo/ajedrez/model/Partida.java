@@ -44,7 +44,7 @@ public class Partida {
 
     private void ponerColoresRandom(Usuario usuarioA, Usuario usuarioB) {
 
-        if (Math.random() < 0.25) {
+        if (Math.random() < 0.5) {
 
             this.usuarioB = usuarioA;
             this.usuarioN = usuarioB;
