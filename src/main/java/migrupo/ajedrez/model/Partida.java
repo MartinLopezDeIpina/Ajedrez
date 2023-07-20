@@ -1,5 +1,6 @@
 package migrupo.ajedrez.model;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import migrupo.ajedrez.model.BD.PartidaDAOImpl;
 
 public class Partida {
@@ -28,7 +29,7 @@ public class Partida {
 
         ponerColoresRandom(usuarioA, usuarioB);
 
-        boolean sonBot[] = getSonBot(usuarioA, usuarioB);
+        boolean sonBot[] = getSonBot();
 
         int identificador = mPartidaDAO.registrarPartida(this.usuarioB, this.usuarioN, sonBot);
 
@@ -37,13 +38,13 @@ public class Partida {
         return identificador;
     }
 
-    private boolean[] getSonBot(Usuario usuarioA, Usuario usuarioB) {
-        return new boolean[]{usuarioA instanceof Bot, usuarioB instanceof Bot};
+    private boolean[] getSonBot() {
+        return new boolean[]{this.usuarioB instanceof Bot, this.usuarioN instanceof Bot};
     }
 
     private void ponerColoresRandom(Usuario usuarioA, Usuario usuarioB) {
 
-        if (Math.random() < 0.5) {
+        if (Math.random() < 0.25) {
 
             this.usuarioB = usuarioA;
             this.usuarioN = usuarioB;

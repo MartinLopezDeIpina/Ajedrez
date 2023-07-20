@@ -135,7 +135,11 @@ public class VentanaMenuPrincipalController implements Initializable {
 
     private void anadirPartidasComboBox(boolean acabadas) {
         List<String[]> partidas = acabadas ? mPartidaDAOImpl.getPartidasAcabadas(mSesion.getJugador().getNombreValue()) : mPartidaDAOImpl.getPartidasSinAcabar(mSesion.getJugador().getNombreValue());
-        partidas.stream().forEach(partida -> comboBoxElegirPartida.getItems().add(String.format("%sº, contrincante: %s", partida[0], partida[1])));
+        partidas.stream().forEach(partida -> comboBoxElegirPartida.getItems().add(String.format("(%s) %sº , contrincante: %s, %s"
+                ,partida[2].equals("1") ? "Bot" : "Jugador"
+                ,partida[0]
+                ,partida[2].equals("1") ? "Bot" : "Jugador"
+                ,partida[1])));
     }
     void mostrarElegirPartida(){
 
@@ -188,16 +192,16 @@ public class VentanaMenuPrincipalController implements Initializable {
         return !comboBoxElegirPartida.getSelectionModel().isEmpty();
     }
     private String[] getPartidaElegidaComboBox() {
-        return comboBoxElegirPartida.getSelectionModel().getSelectedItem().toString().split(",");
+        return comboBoxElegirPartida.getSelectionModel().getSelectedItem().toString().split(" ");
     }
     private int getIdPartida(String[] partidaElegida) {
-        return Integer.parseInt((partidaElegida[0].substring(0, partidaElegida[0].length() - 1)));
+        return Integer.parseInt((partidaElegida[1].substring(0, partidaElegida[1].length() - 1)));
     }
     private void ponerPartida(int idPartida) {
         String[] usuariosPartida = mPartidaDAOImpl.getUsuariosPartida(idPartida);
 
-        Jugador usuario1 = new Jugador(usuariosPartida[0], mUsuarioDAOImpl.getContrasena(usuariosPartida[0]));
-        Jugador usuario2 = new Jugador(usuariosPartida[1], mUsuarioDAOImpl.getContrasena(usuariosPartida[1]));
+        Usuario usuario1 = usuariosPartida[2].equals("1") && !verPartida ? new Bot(usuariosPartida[0], mUsuarioDAOImpl.getContrasena(usuariosPartida[0])) : new Jugador(usuariosPartida[0], mUsuarioDAOImpl.getContrasena(usuariosPartida[0]));
+        Usuario usuario2 = usuariosPartida[3].equals("1") && !verPartida ? new Bot(usuariosPartida[1], mUsuarioDAOImpl.getContrasena(usuariosPartida[1])) : new Jugador(usuariosPartida[1], mUsuarioDAOImpl.getContrasena(usuariosPartida[1]));
 
         if(verPartida){
             mPartida.setPartidaParaVer(idPartida, usuario1, usuario2);

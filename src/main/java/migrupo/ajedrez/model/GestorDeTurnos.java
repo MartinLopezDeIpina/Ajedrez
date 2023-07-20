@@ -18,16 +18,25 @@ public class GestorDeTurnos {
 
     private SimpleBooleanProperty acabado;
 
+    private SimpleBooleanProperty listoParaJugar;
+
 
     private GestorDeTurnos() {
         usuarioActual = new SimpleObjectProperty<>();
+        listoParaJugar = new SimpleBooleanProperty(false);
 
         siUsuarioActualEsBotIniciarTurno();
     }
 
     private void siUsuarioActualEsBotIniciarTurno() {
+        listoParaJugar.addListener((observable, oldValue, newValue) -> {
+            if(usuarioActual.getValue() instanceof Bot){
+                ((Bot) usuarioActual.getValue()).iniciarTurno();
+            }
+        });
+
         usuarioActual.addListener((observable, oldValue, newValue) -> {
-            if(newValue instanceof Bot){
+            if(listoParaJugar.getValue() && newValue instanceof Bot){
                 ((Bot) newValue).iniciarTurno();
             }
         });
@@ -103,5 +112,9 @@ public class GestorDeTurnos {
 
     public boolean turnoDeBot() {
         return usuarioActual.getValue() instanceof Bot;
+    }
+
+    public void setPartidaListaParaJugar(boolean partidaListaParaJugar){
+        listoParaJugar.set(partidaListaParaJugar);
     }
 }

@@ -21,12 +21,12 @@ public class PartidaDAOImpl implements PartidaDAO{
     }
 
     @Override
-    public int registrarPartida(Usuario dueno, Usuario contrinctante, boolean[] sonBot) {
+    public int registrarPartida(Usuario usuarioB, Usuario ususarioN, boolean[] sonBot) {
         try {
 
             int identificador = getIdentificadorCorrespondiente();
 
-            registrarPartida(identificador, dueno, contrinctante, sonBot);
+            registrarPartida(identificador, usuarioB, ususarioN, sonBot);
 
             return identificador;
 
@@ -44,9 +44,9 @@ public class PartidaDAOImpl implements PartidaDAO{
 
         return rs.getInt("max(identificador)") + 1;
     }
-    private void registrarPartida(int identificador, Usuario dueno, Usuario contrinctante, boolean[] sonBot) throws SQLException{
+    private void registrarPartida(int identificador, Usuario usuarioB, Usuario usuarioN, boolean[] sonBot) throws SQLException{
         String queryRegistrarPartida = "insert into partida values (?, ?, ?, ?, ?, ?)";
-        mConexionBD.executeUpdate(queryRegistrarPartida, new Object[]{identificador, dueno.getNombre().get(), contrinctante.getNombre().get(), 0, sonBot[0], sonBot[1]});
+        mConexionBD.executeUpdate(queryRegistrarPartida, new Object[]{identificador, usuarioB.getNombre().get(), usuarioN.getNombre().get(), 0, sonBot[0], sonBot[1]});
     }
 
     @Override
@@ -111,7 +111,7 @@ public class PartidaDAOImpl implements PartidaDAO{
 
     private String[] getSiguientePartida(ResultSet rs, String nombreValue) throws SQLException {
 
-        String[] partida = new String[2];
+        String[] partida = new String[4];
 
         partida[0] = rs.getString("identificador");
 
@@ -120,12 +120,15 @@ public class PartidaDAOImpl implements PartidaDAO{
 
         partida[1] = nombreJugadorA.equals(nombreValue) ? nombreJugadorB : nombreJugadorA;
 
+        partida[2] = partida[1].equals(nombreJugadorA) ? rs.getString("esBotB") : rs.getString("esBotA");
+        partida[3] = partida[1].equals(nombreJugadorA) ? rs.getString("esBotA") : rs.getString("esBotB");
+
         return partida;
     }
 
     public String[] getUsuariosPartida(int idPartida) {
 
-        String queryGetUsuariosPartida = "select nombreJugadorA, nombreJugadorB from partida where identificador = ?";
+        String queryGetUsuariosPartida = "select * from partida where identificador = ?";
         ResultSet rs = mConexionBD.executeQuery(queryGetUsuariosPartida, new Object[]{idPartida});
 
         try {
@@ -134,7 +137,10 @@ public class PartidaDAOImpl implements PartidaDAO{
             String nombreJugadorA = rs.getString("nombreJugadorA");
             String nombreJugadorB = rs.getString("nombreJugadorB");
 
-            return new String[]{nombreJugadorA, nombreJugadorB};
+            String esBotA = rs.getString("esBotA");
+            String esBotB = rs.getString("esBotB");
+
+            return new String[]{nombreJugadorA, nombreJugadorB, esBotA, esBotB};
 
         } catch (SQLException e) {
             e.printStackTrace();

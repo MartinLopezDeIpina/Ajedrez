@@ -264,8 +264,13 @@ public class VentanaJuegoController implements Initializable {
     }
 
     @FXML protected void onButtonAceptarClicked() {
+        volverAlMenuPrincipal();
+    }
+
+    private void volverAlMenuPrincipal() {
         ocultarVentanaJuego();
         mostrarVentanaMenu();
+        setPartidaNoListaParaJugar();
     }
 
     private void ocultarVentanaJuego() {
@@ -281,8 +286,11 @@ public class VentanaJuegoController implements Initializable {
     }
 
     @FXML protected void onButtonAtrasClicked(){
-        ocultarVentanaJuego();
-        mostrarVentanaMenu();
+        volverAlMenuPrincipal();
+    }
+
+    private void setPartidaNoListaParaJugar() {
+        mGestorDeTurnos.setPartidaListaParaJugar(false);
     }
 
     @FXML protected void onButtonFlechaAlanteClicked(){
