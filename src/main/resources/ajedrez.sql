@@ -27,7 +27,7 @@ CREATE TABLE `efectos` (
   `efecto` varchar(50) DEFAULT NULL,
   `tipoEfecto` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`nombreEfecto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -51,7 +51,7 @@ CREATE TABLE `imagenesPiezas` (
   `pathImagen` varchar(30) NOT NULL,
   `tipoPieza` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`pathImagen`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,7 +78,7 @@ CREATE TABLE `movimientoPartida` (
   `casillaDestino` char(2) DEFAULT NULL,
   PRIMARY KEY (`idPartida`,`numMovimiento`),
   CONSTRAINT `movimientoPartida_ibfk_1` FOREIGN KEY (`idPartida`) REFERENCES `partida` (`identificador`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -110,7 +110,7 @@ CREATE TABLE `partida` (
   KEY `claveNombreB` (`nombreJugadorB`),
   CONSTRAINT `claveNombre` FOREIGN KEY (`nombreJugadorA`) REFERENCES `usuario` (`nombre`),
   CONSTRAINT `claveNombreB` FOREIGN KEY (`nombreJugadorB`) REFERENCES `usuario` (`nombre`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -134,7 +134,7 @@ CREATE TABLE `usuario` (
   `nombre` varchar(20) NOT NULL,
   `contrasena` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`nombre`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
